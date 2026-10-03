@@ -86,7 +86,7 @@
         </div>
       </div>
       <button class="address-submit" type="submit"><span aria-hidden="true">✦</span> Continue with address <span aria-hidden="true">→</span></button>
-      <p class="address-note">Demo only: delivery details are not saved or sent anywhere. A production store needs secure account sessions and checkout integration.</p>
+      <p class="address-note">Saved only in this browser on this device. It is not sent to Nexora or linked to your Google account.</p>
       <div class="address-status" id="addressStatus" role="status"></div>
     </form>
     <div class="login-divider">WHY JOIN NEXORA?</div>
@@ -223,7 +223,33 @@ function initGoogleSignIn(){
   }
 }
 window.addEventListener('load',initGoogleSignIn);
-document.getElementById('addressForm').addEventListener('submit',e=>{e.preventDefault();const status=document.getElementById('addressStatus');status.textContent='Looks good! This is only a design preview, so your address has not been saved or sent. Real accounts and checkout can be connected later.';status.classList.add('show')});
+const ADDRESS_STORAGE_KEY='nexora_delivery_address_v1';
+const addressForm=document.getElementById('addressForm');
+const addressStatus=document.getElementById('addressStatus');
+const addressFields=['deliveryAddress','deliveryArea','deliveryCity','deliveryPin'];
+function loadSavedAddress(){
+  try {
+    const saved=JSON.parse(localStorage.getItem(ADDRESS_STORAGE_KEY)||'null');
+    if(!saved) return;
+    addressFields.forEach(id=>{const field=document.getElementById(id);if(saved[id]) field.value=saved[id];});
+    addressStatus.textContent='Your address was loaded from this browser. You can update it and save again.';
+    addressStatus.classList.add('show');
+  } catch(error) { /* Storage may be unavailable in private or restricted browsing. */ }
+}
+addressForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  const address={};
+  addressFields.forEach(id=>address[id]=document.getElementById(id).value.trim());
+  try {
+    localStorage.setItem(ADDRESS_STORAGE_KEY,JSON.stringify(address));
+    addressStatus.textContent='Address saved on this browser and device. It will be filled in next time you visit here, but it is not synced to your Google account or sent to Nexora.';
+    addressStatus.classList.add('show');
+  } catch(error) {
+    addressStatus.textContent='Your browser could not save this address. Check browser storage settings and try again.';
+    addressStatus.classList.add('show');
+  }
+});
+loadSavedAddress();
 document.getElementById('year').textContent=new Date().getFullYear();render();updateCart();
 </script>
 </body>
