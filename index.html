@@ -38,10 +38,22 @@
 
 .cart-overlay{position:fixed;inset:0;background:#02040bd9;backdrop-filter:blur(10px);z-index:120;display:none;justify-content:flex-end}.cart-overlay.open{display:flex}.cart-panel{height:100%;width:min(100%,520px);overflow:auto;background:linear-gradient(155deg,#141b2d,#090d18 75%);border-left:1px solid #34415e;padding:25px;box-shadow:-25px 0 80px #0008;animation:cartIn .22s ease-out}@keyframes cartIn{from{transform:translateX(35px);opacity:.5}to{transform:translateX(0);opacity:1}}.cart-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #29344d;padding-bottom:18px;margin-bottom:20px}.cart-head h2{margin:0;font-size:26px}.cart-close{width:40px;height:40px;border:1px solid #34415e;background:#1b2438;color:white;border-radius:12px;font-size:24px}.cart-empty{text-align:center;padding:55px 12px;color:#aab6d0}.cart-empty .empty-icon{font-size:58px;margin-bottom:12px}.cart-empty h3{color:#f5f7ff;margin:8px}.cart-item{display:grid;grid-template-columns:64px 1fr auto;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid #253049}.cart-item-icon{height:64px;display:grid;place-items:center;background:linear-gradient(145deg,#202b4b,#17152f);border:1px solid #34415e;border-radius:15px;font-size:30px}.cart-item h3{margin:0 0 5px;font-size:14px}.cart-item-price{font-weight:800;color:#8fdcff}.cart-item-controls{display:flex;align-items:center;gap:9px;margin-top:9px}.qty-btn{width:28px;height:28px;border:1px solid #354360;border-radius:8px;background:#1b2438;color:white}.qty-num{min-width:14px;text-align:center;font-size:13px}.remove-item{border:0;background:transparent;color:#ff9aab;font-size:12px;margin-left:5px}.cart-summary{margin-top:22px;padding:18px;border:1px solid #2e3d5b;background:#10182a;border-radius:17px}.summary-line{display:flex;justify-content:space-between;gap:12px;color:#b6c2db;margin:9px 0;font-size:14px}.summary-total{border-top:1px solid #2b3852;padding-top:15px;margin-top:15px;color:white;font-size:18px;font-weight:800}.checkout-btn{width:100%;margin-top:16px;border:0;border-radius:13px;padding:15px;color:white;font-weight:800;background:linear-gradient(110deg,#10b9f7,#8055f6);box-shadow:0 10px 28px #4a5cff2b}.continue-btn{width:100%;margin-top:10px;border:1px solid #354360;border-radius:13px;padding:13px;color:#dce5fa;background:#171f32}.cart-disclaimer{font-size:11px;color:#8190ad;line-height:1.5;margin-top:15px}@media(max-width:520px){.cart-panel{padding:19px}.cart-item{grid-template-columns:54px 1fr auto;gap:9px}.cart-item-icon{height:54px;font-size:25px}}
 
+
+/* Calm Nexora entrance animation */
+.entry-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 42%,#182650 0%,#0b1020 48%,#070a12 100%);opacity:1;visibility:visible;transition:opacity .75s ease,visibility .75s ease}
+.entry-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.entry-content{display:flex;flex-direction:column;align-items:center;gap:17px;animation:entryFloat 1.25s cubic-bezier(.2,.7,.25,1) both}
+.entry-mark{width:72px;height:72px;display:grid;place-items:center;border-radius:23px;background:linear-gradient(135deg,#16baff,#8b5cf6);font-size:39px;font-weight:900;box-shadow:0 0 55px #4389ff4d, inset 0 1px 0 #ffffff66;color:#fff;animation:entryGlow 2.4s ease-in-out infinite}
+.entry-name{font-size:clamp(28px,6vw,38px);font-weight:850;letter-spacing:-1.5px;color:#f5f7ff}.entry-tagline{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#aab6d0;opacity:0;animation:entryText .65s .25s ease forwards}.entry-loader{height:2px;width:92px;background:#273653;border-radius:9px;overflow:hidden;margin-top:5px}.entry-loader:after{content:"";display:block;width:42%;height:100%;border-radius:9px;background:linear-gradient(90deg,#16baff,#a06aff);animation:entryLoad 1.25s ease-in-out infinite}
+@keyframes entryFloat{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes entryGlow{0%,100%{box-shadow:0 0 35px #4389ff35,inset 0 1px 0 #ffffff66}50%{box-shadow:0 0 60px #4389ff66,inset 0 1px 0 #ffffff66}}@keyframes entryText{to{opacity:1}}@keyframes entryLoad{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+@media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-tagline,.entry-loader:after{animation:none}.entry-tagline{opacity:1}.entry-screen{transition:none}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
 <body>
+<div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora" role="status"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"></div></div></div>
+
 <header class="nav">
   <a class="brand" href="#" style="color:inherit;text-decoration:none"><span class="logo">N</span>Nexora</a>
   <nav class="links"><a href="#home">Home</a><a href="#shop">Shop</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
@@ -259,6 +271,15 @@ addressForm.addEventListener('submit',e=>{
 });
 loadSavedAddress();
 document.getElementById('year').textContent=new Date().getFullYear();render();updateCart();
+
+// Show a short, calm welcome animation whenever the storefront opens.
+(function(){
+  const screen=document.getElementById('entryScreen');
+  if(!screen) return;
+  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.setTimeout(()=>{screen.classList.add('is-leaving');window.setTimeout(()=>screen.remove(),800);},reduced?250:1750);
+})();
+
 </script>
 </body>
 </html>
