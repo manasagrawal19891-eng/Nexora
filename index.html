@@ -149,9 +149,18 @@ const products=[
 let cart=JSON.parse(localStorage.getItem('nexoraCart')||'[]'),activeCategory='All';
 const productsEl=document.getElementById('products'),searchEl=document.getElementById('search');
 function money(n){return '₹'+n.toLocaleString('en-IN')}
+function normalizeSearch(value){
+ return String(value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+}
 function render(){
- const q=searchEl.value.trim().toLowerCase();
- const list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&p.name.toLowerCase().includes(q));
+ const q=normalizeSearch(searchEl.value);
+ const terms=q.split(/\s+/).filter(Boolean);
+ const list=products.filter(p=>{
+  const matchesCategory=activeCategory==='All'||p.category===activeCategory;
+  const searchable=normalizeSearch([p.name,p.category,p.tag].join(' '));
+  const matchesSearch=terms.every(term=>searchable.includes(term));
+  return matchesCategory&&matchesSearch;
+ });
  productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><span aria-hidden="true">${p.icon}</span></div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span><span class="old">${money(p.old)}</span><span class="discount">${p.discount}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
 }
 function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
