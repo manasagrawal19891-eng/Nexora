@@ -73,7 +73,7 @@
   <button class="cat" data-category="Home"><span>🏠</span><small>Home & Office</small></button>
 </section>
 <section class="section" id="shop">
-  <div class="section-head"><div><h2>Top Picks ✨</h2><p class="sub">Useful finds for your everyday setup</p></div><a class="viewall" href="#shop" id="viewAll">View all →</a></div>
+  <div class="section-head"><div><h2>Top Picks ✨</h2><p class="sub">Useful finds for your everyday setup · sample catalogue</p></div><a class="viewall" href="#shop" id="viewAll">View all →</a></div>
   <div class="products" id="products"></div>
 </section>
 <section class="banner" id="about"><div><div class="eyebrow">Small upgrades. Big difference.</div><h2>Make your setup <span class="gradient">your own.</span></h2><p>Thoughtful accessories, clean design, and everyday convenience.</p></div><button class="primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Explore products →</button></section>
@@ -124,11 +124,11 @@
       <ul class="detail-feature-list"><li><span class="detail-check">✓</span> Selected for everyday convenience</li><li><span class="detail-check">✓</span> Simple, setup-friendly design</li><li><span class="detail-check">✓</span> Easy to add to your demo cart</li></ul>
       <div class="detail-price-line"><span class="detail-price" id="detailPrice">₹499</span><span class="detail-old" id="detailOld">₹799</span><span class="detail-discount" id="detailDiscount">SAVE 36%</span></div>
       <button class="detail-add" id="detailAddButton">＋ &nbsp; Add to Cart</button>
-      <p class="detail-note">Demo storefront · Product prices and reviews are sample content. No real orders or payments are processed.</p>
+      <p class="detail-note">Catalogue preview · Prices, discounts and ratings are examples, not verified offers or customer reviews. No real orders or payments are processed.</p>
     </div>
   </section>
 </div>
-<div class="cart-overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><section class="cart-panel"><div class="cart-head"><div><div class="eyebrow">YOUR NEXORA BAG</div><h2 id="cartTitle">Shopping Cart <span id="cartItemLabel" style="font-size:14px;color:#9eacc8;font-weight:500"></span></h2></div><button class="cart-close" id="cartClose" aria-label="Close cart">×</button></div><div id="cartContents"></div><div class="cart-disclaimer">Demo checkout only. This cart does not place real orders or accept payments.</div></section></div>
+<div class="cart-overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><section class="cart-panel"><div class="cart-head"><div><div class="eyebrow">YOUR NEXORA BAG</div><h2 id="cartTitle">Shopping Cart <span id="cartItemLabel" style="font-size:14px;color:#9eacc8;font-weight:500"></span></h2></div><button class="cart-close" id="cartClose" aria-label="Close cart">×</button></div><div id="cartContents"></div><div class="cart-disclaimer">Demo checkout only · no real orders or payments are processed.</div></section></div>
 <div class="toast" id="toast" role="status"></div>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
@@ -140,7 +140,11 @@ const products=[
 {id:5,name:"Cable Organizer Kit",category:"Desk",icon:"🔌",price:199,old:299,rating:"4.5",reviews:63,tag:"Useful Find",discount:"33% OFF"},
 {id:6,name:"Desk Light",category:"Home",icon:"💡",price:799,old:1199,rating:"4.7",reviews:84,tag:"Trending",discount:"33% OFF"},
 {id:7,name:"Wireless Earbuds Case",category:"Audio",icon:"🎵",price:349,old:499,rating:"4.4",reviews:52,tag:"Compact",discount:"30% OFF"},
-{id:8,name:"Laptop Riser",category:"Desk",icon:"💻",price:899,old:1299,rating:"4.8",reviews:109,tag:"Desk Upgrade",discount:"31% OFF"}
+{id:8,name:"Laptop Riser",category:"Desk",icon:"💻",price:899,old:1299,rating:"4.8",reviews:109,tag:"Desk Upgrade",discount:"31% OFF"},
+{id:9,name:"Foldable Phone Stand",category:"Phone",icon:"📱",price:249,old:399,rating:"—",reviews:0,tag:"New Arrival",discount:"Sample price"},
+{id:10,name:"XL Gaming Mouse Pad",category:"Gaming",icon:"🖱️",price:399,old:599,rating:"—",reviews:0,tag:"Gaming Setup",discount:"Sample price"},
+{id:11,name:"Desk Organizer Tray",category:"Desk",icon:"🗂️",price:299,old:449,rating:"—",reviews:0,tag:"Stay Organized",discount:"Sample price"},
+{id:12,name:"USB-C Cable 2-Pack",category:"Phone",icon:"🔌",price:199,old:299,rating:"—",reviews:0,tag:"Everyday Essential",discount:"Sample price"}
 ];
 let cart=JSON.parse(localStorage.getItem('nexoraCart')||'[]'),activeCategory='All';
 const productsEl=document.getElementById('products'),searchEl=document.getElementById('search');
@@ -148,7 +152,7 @@ function money(n){return '₹'+n.toLocaleString('en-IN')}
 function render(){
  const q=searchEl.value.trim().toLowerCase();
  const list=products.filter(p=>(activeCategory==='All'||p.category===activeCategory)&&p.name.toLowerCase().includes(q));
- productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><span aria-hidden="true">${p.icon}</span></div><div class="product-info"><h3>${p.name}</h3><div class="rating">★★★★★ <span>${p.rating} (${p.reviews})</span></div><div class="price-row"><span class="price">${money(p.price)}</span><span class="old">${money(p.old)}</span><span class="discount">${p.discount}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
+ productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><span aria-hidden="true">${p.icon}</span></div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span><span class="old">${money(p.old)}</span><span class="discount">${p.discount}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
 }
 function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
 let toastTimer;
@@ -174,7 +178,11 @@ function productDescription(p){
   'Cable Organizer Kit':'Tame messy charging and desk cables with a simple organising kit that helps your workspace look cleaner.',
   'Desk Light':'Add focused light to your desk for reading, working or winding down with your favourite setup.',
   'Wireless Earbuds Case':'Keep your earbuds case protected and easy to carry with a compact accessory for everyday use.',
-  'Laptop Riser':'Raise your laptop to create a more organised desk and free up a little extra space underneath.'
+  'Laptop Riser':'Raise your laptop to create a more organised desk and free up a little extra space underneath.',
+  'Foldable Phone Stand':'A compact foldable stand concept for keeping your phone upright on a desk. Check final dimensions and compatibility before listing for sale.',
+  'XL Gaming Mouse Pad':'A large mouse-pad concept for a gaming or study desk. Confirm exact dimensions and material with a supplier before selling.',
+  'Desk Organizer Tray':'A tray concept for keeping small desk accessories together. Verify size, material and compartments against the supplier listing.',
+  'USB-C Cable 2-Pack':'A two-cable listing concept for compatible USB-C devices. Confirm cable length, charging speed and data support with the supplier before publishing.'
  };
  return descriptions[p.name]||'A thoughtful everyday upgrade, selected to make your setup more organised and convenient.';
 }
@@ -183,7 +191,7 @@ function openProductDetails(id){
  document.getElementById('detailIcon').textContent=p.icon;
  document.getElementById('detailCategory').textContent=p.category+' · NEXORA PICK';
  document.getElementById('detailName').textContent=p.name;
- document.getElementById('detailRating').innerHTML='★★★★★ <span>'+p.rating+' rating · '+p.reviews+' sample reviews</span>';
+ document.getElementById('detailRating').textContent=p.rating==='—'?'No verified customer reviews yet':'★★★★★ '+p.rating+' · sample rating only';
  document.getElementById('detailDescription').textContent=productDescription(p);
  document.getElementById('detailPrice').textContent=money(p.price);
  document.getElementById('detailOld').textContent=money(p.old);
