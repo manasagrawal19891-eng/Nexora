@@ -66,6 +66,21 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
 
+
+/* Clear already-signed-in account state */
+.signed-in-panel{display:flex;align-items:center;gap:16px;width:100%;padding:16px 18px;margin:0 0 20px;border:1px solid #235a91;border-radius:18px;background:linear-gradient(115deg,#0b2038,#101a34);box-sizing:border-box}
+.signed-in-panel[hidden]{display:none!important}
+.signed-google-mark{flex:0 0 48px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#fff;font:800 30px Arial;color:#4285f4;text-shadow:2px 1px #34a853,-1px -1px #ea4335}
+.signed-in-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px;color:#f4f7ff}
+.signed-in-copy strong{font-size:15px}.signed-in-copy span{font-size:13px;color:#a9c6ed;overflow-wrap:anywhere}
+.change-account-btn{flex:0 0 auto;border:1px solid #2d5b8b;border-radius:999px;background:#102b4a;color:#c4e4ff;padding:11px 14px;font-size:12px;font-weight:750;cursor:pointer}
+.change-account-btn:hover{background:#183b61}
+.login-overlay.signed-in #googleButtonContainer,.login-overlay.signed-in #googleSignInFallback{display:none!important}
+.login-overlay.signed-in .login-badge{color:#69d7ff;background:#0c2945;border-color:#1b5b8b}
+.login-overlay.signed-in .login-badge:after{content:" · SIGNED IN"}
+.login-overlay.signed-in #loginTitle{font-size:clamp(30px,4.4vw,43px)}
+@media(max-width:520px){.signed-in-panel{gap:10px;padding:13px}.signed-google-mark{flex-basis:40px;width:40px;height:40px;font-size:25px}.signed-in-copy strong{font-size:13px}.signed-in-copy span{font-size:11px}.change-account-btn{padding:9px 10px;font-size:11px}}
+
 /* Login modal alignment refresh */
 .login-overlay{padding:24px;align-items:center;justify-content:center}
 .login-card{width:min(100%,640px);max-height:calc(100vh - 48px);padding:40px;background:linear-gradient(145deg,#151e35 0%,#0b1122 75%);border-color:#30466e;border-radius:30px}
@@ -130,6 +145,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
     <div class="login-badge"><span aria-hidden="true">✦</span> Your Nexora account</div>
     <h2 id="loginTitle">Welcome to <span class="gradient">Nexora.</span></h2>
     <p class="login-intro">Sign in to make checkout smoother and keep your shopping experience in one place.</p>
+    <div class="signed-in-panel" id="signedInPanel" hidden><span class="signed-google-mark" aria-hidden="true">G</span><div class="signed-in-copy"><strong>Signed in with Google</strong><span id="signedInEmail"></span></div><button type="button" class="change-account-btn" id="changeAccountButton">Change account</button></div>
     <div class="google-button-wrap" id="googleButtonContainer" aria-label="Sign in with Google"></div>
     <button class="google-signin" id="googleSignInFallback" type="button"><span class="google-mark" aria-hidden="true">G</span> Continue with Google</button>
     <div class="login-status" id="loginStatus" role="status" aria-live="polite">Google sign-in setup is needed before you can choose an account.</div>
@@ -271,9 +287,10 @@ document.getElementById('detailClose').addEventListener('click',closeProductDeta
 detailOverlay.addEventListener('click',e=>{if(e.target===detailOverlay)closeProductDetails()});
 document.getElementById('detailAddButton').addEventListener('click',()=>{if(selectedDetailProduct){addToCart(selectedDetailProduct.id);closeProductDetails()}});
 const loginOverlay=document.getElementById('loginOverlay');
-document.getElementById('accountButton').addEventListener('click',()=>{loginOverlay.classList.remove('checkout-mode');document.getElementById('loginTitle').innerHTML='Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent='Sign in to make checkout smoother and keep your shopping experience in one place.';loginOverlay.classList.add('open')});
+document.getElementById('accountButton').addEventListener('click',()=>{loginOverlay.classList.remove('checkout-mode');document.getElementById('loginTitle').innerHTML=googleSignedInUser?'Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>':'Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent=googleSignedInUser?'You’re already signed in. Let’s get your delivery details so we can complete your order smoothly.':'Sign in to make checkout smoother and keep your shopping experience in one place.';syncSignedInPanel();loginOverlay.classList.add('open')});
 function openCheckoutAddress(){loginOverlay.classList.remove('open');loginOverlay.classList.add('checkout-mode');document.getElementById('loginTitle').innerHTML='Delivery <span class="gradient">details.</span>';document.querySelector('.login-intro').textContent='Enter your delivery address to continue. No account or Google sign-in is needed.';loginOverlay.classList.add('open');setTimeout(()=>document.getElementById('deliveryAddress').focus({preventScroll:true}),150)}
 document.getElementById('loginClose').addEventListener('click',()=>loginOverlay.classList.remove('open','checkout-mode'));
+document.getElementById('changeAccountButton').addEventListener('click',()=>{googleSignedInUser=null;syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent='Choose a Google account or add your delivery address below.';if(window.google&&google.accounts&&google.accounts.id){try{google.accounts.id.disableAutoSelect();google.accounts.id.prompt()}catch(e){}}});
 loginOverlay.addEventListener('click',e=>{if(e.target===loginOverlay)loginOverlay.classList.remove('open','checkout-mode')});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){loginOverlay.classList.remove('open','checkout-mode');closeProductDetails()}});
 const GOOGLE_CLIENT_ID = '473464890510-jupia0f52gqrcq0lfaufkiutsntpcnm4.apps.googleusercontent.com';
@@ -282,6 +299,8 @@ const googleButtonContainer = document.getElementById('googleButtonContainer');
 const googleFallbackButton = document.getElementById('googleSignInFallback');
 let googleSignedInUser = null;
 function showGoogleSetupMessage(message){loginStatus.textContent=message;loginStatus.classList.add('show');}
+function escapeHtml(value){return String(value||'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]));}
+function syncSignedInPanel(){const panel=document.getElementById('signedInPanel');const overlay=document.getElementById('loginOverlay');const email=document.getElementById('signedInEmail');const signed=!!googleSignedInUser;panel.hidden=!signed;overlay.classList.toggle('signed-in',signed);document.getElementById('googleButtonContainer').style.display=signed?'none':'';document.getElementById('googleSignInFallback').style.display=signed?'none':'';if(email)email.textContent=googleSignedInUser.email||'Google account selected';}
 function handleGoogleCredential(response){
   // Google returns a signed ID token. This static demo only displays basic profile details;
   // a production store must verify the token on a trusted backend before granting account access.
@@ -290,7 +309,7 @@ function handleGoogleCredential(response){
     const base64=parts[1].replace(/-/g,'+').replace(/_/g,'/');
     const payload=JSON.parse(decodeURIComponent(Array.prototype.map.call(atob(base64),c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
     googleSignedInUser={name:payload.name||'Google user',email:payload.email||'',picture:payload.picture||''};
-    showGoogleSetupMessage('Google account selected: '+googleSignedInUser.name+(googleSignedInUser.email?' · '+googleSignedInUser.email:'')+'. This demo does not save your profile or create a verified server session.');
+    loginStatus.classList.remove('show');syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>';document.querySelector('.login-intro').textContent='You’re already signed in. Let’s get your delivery details so we can complete your order smoothly.';
     const accountButton=document.getElementById('accountButton');
     accountButton.textContent='👤 '+(googleSignedInUser.name.split(' ')[0]||'Account');
     accountButton.setAttribute('aria-label','Google account selected: '+googleSignedInUser.name);
