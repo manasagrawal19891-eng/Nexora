@@ -485,7 +485,7 @@ window.nexoraFirebaseAuth = auth;
     try {
       sessionStorage.setItem(KEY, JSON.stringify({
         scrollY: window.scrollY || 0,
-        search: document.getElementById('searchInput')?.value || '',
+        search: document.getElementById('search')?.value || '',
         category: document.querySelector('.cat.active')?.dataset.category || 'All'
       }));
     } catch (_) {}
