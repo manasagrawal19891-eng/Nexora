@@ -48,6 +48,23 @@
 @keyframes entryFloat{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes entryGlow{0%,100%{box-shadow:0 0 35px #4389ff35,inset 0 1px 0 #ffffff66}50%{box-shadow:0 0 60px #4389ff66,inset 0 1px 0 #ffffff66}}@keyframes entryText{to{opacity:1}}@keyframes entryLoad{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
 @media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-tagline,.entry-loader:after{animation:none}.entry-tagline{opacity:1}.entry-screen{transition:none}}
 
+
+/* Nexora polish pass: clearer focus states and more comfortable layouts */
+:root{scroll-behavior:smooth;scroll-padding-top:88px}
+.nav{position:sticky;top:0;z-index:40;background:#090d18eF;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+button,a,input{ -webkit-tap-highlight-color:transparent}
+button,a{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cfff;outline-offset:3px}
+.product{min-width:0}
+.product h3{line-height:1.4;min-height:2.8em}
+.price-row{flex-wrap:wrap}
+.product-actions button{min-height:42px}
+.cat:focus-visible,.primary:focus-visible,.add:focus-visible,.details-btn:focus-visible{outline-offset:3px}
+.search{transition:width .2s,border-color .2s,box-shadow .2s}
+.search:focus{border-color:#648cff;box-shadow:0 0 0 3px #648cff25}
+@media(max-width:600px){.nav{position:relative}.right{width:100%;display:flex;gap:8px;justify-content:space-between;margin:8px 0 0}.search{flex:1;min-width:0;width:auto}.search:focus{width:auto}.account-btn,.cart{white-space:nowrap}.product h3{min-height:0}.product-actions{grid-template-columns:1fr}.details-btn,.add{min-height:42px}.price-row{gap:6px}.price{font-size:16px}.old{font-size:11px}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
