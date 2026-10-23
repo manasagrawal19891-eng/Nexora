@@ -191,7 +191,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 </div>
 <div class="cart-overlay" id="cartOverlay" role="dialog" aria-modal="true" aria-labelledby="cartTitle"><section class="cart-panel"><div class="cart-head"><div><div class="eyebrow">YOUR NEXORA BAG</div><h2 id="cartTitle">Shopping Cart <span id="cartItemLabel" style="font-size:14px;color:#9eacc8;font-weight:500"></span></h2></div><button class="cart-close" id="cartClose" aria-label="Close cart">×</button></div><div id="cartContents"></div><div class="cart-disclaimer">Demo checkout only · no real orders or payments are processed.</div></section></div>
 <div class="toast" id="toast" role="status"></div>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <script>
 const products=[
 {id:1,name:"Controller Stand",category:"Gaming",icon:"🎮",price:499,old:799,rating:"4.8",reviews:124,tag:"Best Seller",discount:"36% OFF"},
@@ -297,7 +297,7 @@ const GOOGLE_CLIENT_ID = '473464890510-jupia0f52gqrcq0lfaufkiutsntpcnm4.apps.goo
 const loginStatus = document.getElementById('loginStatus');
 const googleButtonContainer = document.getElementById('googleButtonContainer');
 const googleFallbackButton = document.getElementById('googleSignInFallback');
-let googleSignedInUser = null;
+var googleSignedInUser = null;
 const GOOGLE_PROFILE_STORAGE_KEY='nexora_google_profile_v1';
 function restoreRememberedGoogleProfile(){
   try{const raw=localStorage.getItem(GOOGLE_PROFILE_STORAGE_KEY);if(!raw)return;const saved=JSON.parse(raw);if(saved&&typeof saved.name==='string'&&typeof saved.email==='string'&&saved.email){googleSignedInUser={name:saved.name,email:saved.email,picture:''};const btn=document.getElementById('accountButton');btn.textContent='👤 '+(saved.name.split(' ')[0]||'Account');btn.setAttribute('aria-label','Google account remembered on this device: '+saved.name);syncSignedInPanel();}}catch(e){}
@@ -328,25 +328,9 @@ function handleGoogleCredential(response){
   }
 }
 function initGoogleSignIn(){
-  const configured=GOOGLE_CLIENT_ID && !GOOGLE_CLIENT_ID.includes('PASTE_YOUR_');
-  if(!configured){
-    googleFallbackButton.style.display='flex';
-    googleButtonContainer.style.display='none';
-    googleFallbackButton.addEventListener('click',()=>showGoogleSetupMessage('Almost there! Add your Google OAuth Client ID in index.html after creating a Web application OAuth client in Google Cloud. Follow GOOGLE_SIGNIN_SETUP.txt included in the download.'));
-    return;
-  }
-  if(!window.google || !google.accounts || !google.accounts.id){
-    showGoogleSetupMessage('Google sign-in could not load. Check your internet connection and refresh the page.');
-    return;
-  }
-  try {
-    google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false,cancel_on_tap_outside:true});
-    google.accounts.id.renderButton(googleButtonContainer,{type:'standard',theme:'outline',size:'large',text:'continue_with',shape:'rectangular',logo_alignment:'left',width:Math.min(400,Math.max(220,document.querySelector('.login-card').clientWidth-44))});
-    googleFallbackButton.style.display='none';
-    googleButtonContainer.style.display='flex';
-  } catch(error) {
-    showGoogleSetupMessage('Google sign-in setup needs a valid Client ID and authorized website origin. Check GOOGLE_SIGNIN_SETUP.txt.');
-  }
+  googleButtonContainer.style.display='none';
+  googleFallbackButton.style.display='flex';
+  googleFallbackButton.innerHTML='<span class="google-mark" aria-hidden="true">G</span> Continue with Google';
 }
 window.addEventListener('load',()=>{restoreRememberedGoogleProfile();initGoogleSignIn()});
 const ADDRESS_STORAGE_KEY='nexora_delivery_address_v1';
@@ -414,6 +398,79 @@ document.getElementById('year').textContent=new Date().getFullYear();render();up
   window.setTimeout(()=>{screen.classList.add('is-leaving');window.setTimeout(()=>screen.remove(),800);},reduced?250:1750);
 })();
 
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCWCO5LB-R3sma7TNyvb7tiq8_mqK2NAgB8",
+  authDomain: "nexora-4f0b3.firebaseapp.com",
+  projectId: "nexora-4f0b3",
+  storageBucket: "nexora-4f0b3.firebasestorage.app",
+  messagingSenderId: "535692334739",
+  appId: "1:535692334739:web:07936928038acae9ba5f66",
+  measurementId: "G-9VJGTYPXKP"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+const status = document.getElementById("loginStatus");
+const fallback = document.getElementById("googleSignInFallback");
+const accountButton = document.getElementById("accountButton");
+
+function showStatus(message) {
+  if (!status) return;
+  status.textContent = message;
+  status.classList.add("show");
+}
+function paintUser(user) {
+  window.googleSignedInUser = user ? {
+    name: user.displayName || "Nexora customer",
+    email: user.email || "",
+    picture: user.photoURL || "",
+    uid: user.uid
+  } : null;
+  if (user) {
+    try { localStorage.removeItem("nexora_google_profile_v1"); } catch (_) {}
+    accountButton.textContent = "👤 " + ((user.displayName || "Account").split(" ")[0]);
+    accountButton.setAttribute("aria-label", "Signed in as " + (user.displayName || user.email));
+    document.getElementById("loginTitle").innerHTML = 'Welcome back, <span class="gradient">' + (user.displayName || "there").split(" ")[0].replace(/[&<>"]/g, "") + '!</span>';
+    document.querySelector(".login-intro").textContent = "You're securely signed in to Nexora. Your delivery address can be linked to your account once address storage is enabled.";
+    if (typeof syncSignedInPanel === "function") syncSignedInPanel();
+  } else {
+    accountButton.textContent = "👤 Account";
+    accountButton.setAttribute("aria-label", "Sign in to Nexora");
+    if (typeof syncSignedInPanel === "function") syncSignedInPanel();
+  }
+}
+setPersistence(auth, browserLocalPersistence).catch(() => {});
+onAuthStateChanged(auth, paintUser);
+fallback.addEventListener("click", async () => {
+  fallback.disabled = true;
+  fallback.textContent = "Connecting securely…";
+  try {
+    await signInWithPopup(auth, provider);
+    if (status) status.classList.remove("show");
+  } catch (error) {
+    const messages = {
+      "auth/unauthorized-domain": "This website domain isn't authorized yet. Add manasagrawal19891-eng.github.io in Firebase Authentication settings.",
+      "auth/operation-not-allowed": "Google sign-in isn't enabled in Firebase Authentication yet.",
+      "auth/popup-blocked": "Your browser blocked the sign-in popup. Allow popups for this site and try again.",
+      "auth/popup-closed-by-user": "The sign-in window was closed before finishing. Try again when you're ready."
+    };
+    showStatus(messages[error.code] || ("Sign-in couldn't finish (" + error.code + "). Check Firebase Authentication settings and try again."));
+  } finally {
+    fallback.disabled = false;
+    fallback.innerHTML = '<span class="google-mark" aria-hidden="true">G</span> Continue with Google';
+  }
+});
+document.getElementById("changeAccountButton").addEventListener("click", async () => {
+  try { await signOut(auth); } catch (_) {}
+});
+window.nexoraFirebaseAuth = auth;
 </script>
 </body>
 </html>
