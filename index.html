@@ -158,10 +158,10 @@ const products=[
 {id:6,name:"Desk Light",category:"Home",icon:"💡",price:799,old:1199,rating:"4.7",reviews:84,tag:"Trending",discount:"33% OFF"},
 {id:7,name:"Wireless Earbuds Case",category:"Audio",icon:"🎵",price:349,old:499,rating:"4.4",reviews:52,tag:"Compact",discount:"30% OFF"},
 {id:8,name:"Laptop Riser",category:"Desk",icon:"💻",price:899,old:1299,rating:"4.8",reviews:109,tag:"Desk Upgrade",discount:"31% OFF"},
-{id:9,name:"Foldable Phone Stand",category:"Phone",icon:"📱",price:249,old:399,rating:"—",reviews:0,tag:"New Arrival",discount:"Sample price"},
-{id:10,name:"XL Gaming Mouse Pad",category:"Gaming",icon:"🖱️",price:399,old:599,rating:"—",reviews:0,tag:"Gaming Setup",discount:"Sample price"},
-{id:11,name:"Desk Organizer Tray",category:"Desk",icon:"🗂️",price:299,old:449,rating:"—",reviews:0,tag:"Stay Organized",discount:"Sample price"},
-{id:12,name:"USB-C Cable 2-Pack",category:"Phone",icon:"🔌",price:199,old:299,rating:"—",reviews:0,tag:"Everyday Essential",discount:"Sample price"}
+{id:9,name:"Foldable Phone Stand",category:"Phone",icon:"📱",price:249,old:null,rating:"—",reviews:0,tag:"New Arrival",discount:""},
+{id:10,name:"XL Gaming Mouse Pad",category:"Gaming",icon:"🖱️",price:399,old:null,rating:"—",reviews:0,tag:"Gaming Setup",discount:""},
+{id:11,name:"Desk Organizer Tray",category:"Desk",icon:"🗂️",price:299,old:null,rating:"—",reviews:0,tag:"Stay Organized",discount:""},
+{id:12,name:"USB-C Cable 2-Pack",category:"Phone",icon:"🔌",price:199,old:null,rating:"—",reviews:0,tag:"Everyday Essential",discount:""}
 ];
 let cart=JSON.parse(localStorage.getItem('nexoraCart')||'[]'),activeCategory='All';
 const productsEl=document.getElementById('products'),searchEl=document.getElementById('search');
@@ -192,7 +192,7 @@ function render(){
   const matchesSearch=terms.every(term=>searchable.includes(term));
   return matchesCategory&&matchesSearch;
  });
- productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()"></div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span><span class="old">${money(p.old)}</span><span class="discount">${p.discount}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
+ productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()"></div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span>${p.old?'<span class="old">'+money(p.old)+'</span>':''}${p.discount?'<span class="discount">'+p.discount+'</span>':''}</div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
 }
 function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
 let toastTimer;
@@ -234,7 +234,7 @@ function openProductDetails(id){
  document.getElementById('detailRating').textContent=p.rating==='—'?'No verified customer reviews yet':'★★★★★ '+p.rating+' · sample rating only';
  document.getElementById('detailDescription').textContent=productDescription(p);
  document.getElementById('detailPrice').textContent=money(p.price);
- document.getElementById('detailOld').textContent=money(p.old);
+ document.getElementById('detailOld').textContent=p.old?money(p.old):'No comparison price';
  document.getElementById('detailDiscount').textContent='SAVE '+p.discount.replace(' OFF','');
  detailOverlay.classList.add('open');document.body.style.overflow='hidden';
 }
