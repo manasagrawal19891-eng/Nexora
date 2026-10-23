@@ -287,10 +287,10 @@ document.getElementById('detailClose').addEventListener('click',closeProductDeta
 detailOverlay.addEventListener('click',e=>{if(e.target===detailOverlay)closeProductDetails()});
 document.getElementById('detailAddButton').addEventListener('click',()=>{if(selectedDetailProduct){addToCart(selectedDetailProduct.id);closeProductDetails()}});
 const loginOverlay=document.getElementById('loginOverlay');
-document.getElementById('accountButton').addEventListener('click',()=>{loginOverlay.classList.remove('checkout-mode');document.getElementById('loginTitle').innerHTML=googleSignedInUser?'Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>':'Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent=googleSignedInUser?'You’re already signed in. Let’s get your delivery details so we can complete your order smoothly.':'Sign in to make checkout smoother and keep your shopping experience in one place.';syncSignedInPanel();loginOverlay.classList.add('open')});
+document.getElementById('accountButton').addEventListener('click',()=>{loginOverlay.classList.remove('checkout-mode');document.getElementById('loginTitle').innerHTML=googleSignedInUser?'Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>':'Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent=googleSignedInUser?'Your account is remembered on this device. Delivery details help make checkout smoother.':'Sign in to make checkout smoother and keep your shopping experience in one place.';syncSignedInPanel();loginOverlay.classList.add('open')});
 function openCheckoutAddress(){loginOverlay.classList.remove('open');loginOverlay.classList.add('checkout-mode');document.getElementById('loginTitle').innerHTML='Delivery <span class="gradient">details.</span>';document.querySelector('.login-intro').textContent='Enter your delivery address to continue. No account or Google sign-in is needed.';loginOverlay.classList.add('open');setTimeout(()=>document.getElementById('deliveryAddress').focus({preventScroll:true}),150)}
 document.getElementById('loginClose').addEventListener('click',()=>loginOverlay.classList.remove('open','checkout-mode'));
-document.getElementById('changeAccountButton').addEventListener('click',()=>{googleSignedInUser=null;syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent='Choose a Google account or add your delivery address below.';if(window.google&&google.accounts&&google.accounts.id){try{google.accounts.id.disableAutoSelect();google.accounts.id.prompt()}catch(e){}}});
+document.getElementById('changeAccountButton').addEventListener('click',()=>{googleSignedInUser=null;clearRememberedGoogleProfile();syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome to <span class="gradient">Nexora.</span>';document.querySelector('.login-intro').textContent='Choose a Google account or add your delivery address below.';if(window.google&&google.accounts&&google.accounts.id){try{google.accounts.id.disableAutoSelect();google.accounts.id.prompt()}catch(e){}}});
 loginOverlay.addEventListener('click',e=>{if(e.target===loginOverlay)loginOverlay.classList.remove('open','checkout-mode')});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){loginOverlay.classList.remove('open','checkout-mode');closeProductDetails()}});
 const GOOGLE_CLIENT_ID = '473464890510-jupia0f52gqrcq0lfaufkiutsntpcnm4.apps.googleusercontent.com';
@@ -298,6 +298,16 @@ const loginStatus = document.getElementById('loginStatus');
 const googleButtonContainer = document.getElementById('googleButtonContainer');
 const googleFallbackButton = document.getElementById('googleSignInFallback');
 let googleSignedInUser = null;
+const GOOGLE_PROFILE_STORAGE_KEY='nexora_google_profile_v1';
+function restoreRememberedGoogleProfile(){
+  try{const raw=localStorage.getItem(GOOGLE_PROFILE_STORAGE_KEY);if(!raw)return;const saved=JSON.parse(raw);if(saved&&typeof saved.name==='string'&&typeof saved.email==='string'&&saved.email){googleSignedInUser={name:saved.name,email:saved.email,picture:''};const btn=document.getElementById('accountButton');btn.textContent='👤 '+(saved.name.split(' ')[0]||'Account');btn.setAttribute('aria-label','Google account remembered on this device: '+saved.name);syncSignedInPanel();}}catch(e){}
+}
+function rememberGoogleProfileOnThisDevice(user){
+  try{localStorage.setItem(GOOGLE_PROFILE_STORAGE_KEY,JSON.stringify({name:user.name,email:user.email}));}catch(e){}
+}
+function clearRememberedGoogleProfile(){
+  try{localStorage.removeItem(GOOGLE_PROFILE_STORAGE_KEY);}catch(e){}
+}
 function showGoogleSetupMessage(message){loginStatus.textContent=message;loginStatus.classList.add('show');}
 function escapeHtml(value){return String(value||'').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]));}
 function syncSignedInPanel(){const panel=document.getElementById('signedInPanel');const overlay=document.getElementById('loginOverlay');const email=document.getElementById('signedInEmail');const signed=!!googleSignedInUser;panel.hidden=!signed;overlay.classList.toggle('signed-in',signed);document.getElementById('googleButtonContainer').style.display=signed?'none':'';document.getElementById('googleSignInFallback').style.display=signed?'none':'';if(email)email.textContent=googleSignedInUser.email||'Google account selected';}
@@ -309,7 +319,7 @@ function handleGoogleCredential(response){
     const base64=parts[1].replace(/-/g,'+').replace(/_/g,'/');
     const payload=JSON.parse(decodeURIComponent(Array.prototype.map.call(atob(base64),c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));
     googleSignedInUser={name:payload.name||'Google user',email:payload.email||'',picture:payload.picture||''};
-    loginStatus.classList.remove('show');syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>';document.querySelector('.login-intro').textContent='You’re already signed in. Let’s get your delivery details so we can complete your order smoothly.';
+    rememberGoogleProfileOnThisDevice(googleSignedInUser);loginStatus.classList.remove('show');syncSignedInPanel();document.getElementById('loginTitle').innerHTML='Welcome back, <span class="gradient">'+escapeHtml(googleSignedInUser.name.split(' ')[0])+'!</span>';document.querySelector('.login-intro').textContent='Your account is remembered on this device. Delivery details help make checkout smoother.';
     const accountButton=document.getElementById('accountButton');
     accountButton.textContent='👤 '+(googleSignedInUser.name.split(' ')[0]||'Account');
     accountButton.setAttribute('aria-label','Google account selected: '+googleSignedInUser.name);
@@ -338,7 +348,7 @@ function initGoogleSignIn(){
     showGoogleSetupMessage('Google sign-in setup needs a valid Client ID and authorized website origin. Check GOOGLE_SIGNIN_SETUP.txt.');
   }
 }
-window.addEventListener('load',initGoogleSignIn);
+window.addEventListener('load',()=>{restoreRememberedGoogleProfile();initGoogleSignIn()});
 const ADDRESS_STORAGE_KEY='nexora_delivery_address_v1';
 const addressForm=document.getElementById('addressForm');
 const addressStatus=document.getElementById('addressStatus');
