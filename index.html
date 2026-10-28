@@ -108,6 +108,54 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @media(max-width:600px){.login-overlay{padding:10px;align-items:flex-start}.login-card{width:100%;max-height:calc(100vh - 20px);padding:24px 20px;border-radius:24px}.login-top{margin-bottom:22px}.login-top .brand{font-size:23px}.login-top .logo{width:38px;height:38px}.login-card h2{font-size:clamp(29px,8vw,36px);margin-top:18px}.login-card .login-intro{font-size:14px;margin-bottom:22px}.address-panel{padding:16px;border-radius:18px}.address-two{grid-template-columns:1fr 1fr;gap:10px}.address-input{padding:12px 10px;font-size:13px}.address-heading{font-size:15px}}
 @media(max-width:380px){.login-card{padding:21px 15px}.address-two{grid-template-columns:1fr}.login-badge{font-size:10px;letter-spacing:1px}}
 
+
+/* Nexora visual refresh — refined hero, calmer contrast, and clear store highlights */
+.hero{min-height:490px;padding-top:76px;padding-bottom:76px;background:radial-gradient(ellipse at 78% 42%,#253fd0 0%,#21155f 25%,transparent 54%),radial-gradient(ellipse at 4% 0%,#102c43 0%,transparent 38%),linear-gradient(110deg,#080b14 22%,#10142a 100%)}
+.hero-copy{position:relative;z-index:2;max-width:620px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid #3c5680;background:#0e1b30c9;border-radius:999px;letter-spacing:1.7px;font-size:10px}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#53e4bd;box-shadow:0 0 12px #53e4bd}
+.hero h1{font-size:clamp(43px,5.4vw,70px);letter-spacing:-3.2px;line-height:1.02;margin:22px 0 18px}
+.hero p{font-size:16px;max-width:470px;color:#bdc8e0}
+.hero-actions{display:flex;align-items:center;gap:19px;flex-wrap:wrap;margin-top:27px}
+.hero-actions .primary{display:inline-flex;align-items:center;gap:13px;padding:15px 22px}
+.hero-secondary{display:inline-flex;align-items:center;gap:10px;color:#dce5fa;text-decoration:none;font-size:13px;font-weight:700;transition:color .2s,gap .2s}
+.hero-secondary:hover{color:#78d9ff;gap:14px}
+.hero-note{display:flex;align-items:center;gap:9px;margin-top:28px;color:#8f9fbe;font-size:12px}
+.hero-note-icon{display:grid;place-items:center;width:23px;height:23px;border-radius:8px;color:#9fe9ff;background:#152c48;border:1px solid #2c4b70}
+.hero-art{min-height:340px;isolation:isolate}
+.hero-art:before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;border:1px solid #94a9ff22;box-shadow:0 0 0 28px #9aabff08,0 0 0 58px #9aabff05}
+.orb{position:relative;z-index:1;width:min(290px,68%);border:1px solid #b7c2ff70;background:radial-gradient(circle at 32% 25%,#9ba7ff 0%,#4658df 30%,#1a236b 67%,#11132c 100%);box-shadow:0 0 85px #247bff5e,inset 0 0 30px #ffffff18}
+.headphone{font-size:clamp(95px,12vw,155px);filter:drop-shadow(0 20px 24px #0009)}
+.hero-orbit{position:absolute;border:1px solid #7b9cff38;border-radius:50%;pointer-events:none}
+.orbit-one{width:390px;height:150px;transform:rotate(-29deg)}
+.orbit-two{width:370px;height:130px;transform:rotate(42deg)}
+.floating-chip{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid #687cb55c;border-radius:15px;background:linear-gradient(135deg,#17243bd9,#111629eF);box-shadow:0 16px 38px #0004;backdrop-filter:blur(14px);animation:float 5.4s ease-in-out infinite}
+.floating-chip strong,.floating-chip small{display:block;white-space:nowrap}
+.floating-chip strong{font-size:12px;color:#f5f7ff;margin-bottom:3px}
+.floating-chip small{font-size:10px;color:#9eafcf}
+.chip-symbol{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#23345a;color:#94dcff;font-size:17px}
+.chip-top{top:22px;right:0}
+.chip-bottom{bottom:24px;left:0;animation-delay:-2.3s}
+.benefit-strip{position:relative;z-index:3;max-width:1080px;margin:-24px auto 56px;padding:0 18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.benefit-item{display:flex;align-items:center;gap:13px;min-width:0;padding:17px 18px;border:1px solid #2a3854;border-radius:17px;background:linear-gradient(145deg,#141d30f5,#0d1321f5);box-shadow:0 14px 35px #0002;transition:transform .25s,border-color .25s}
+.benefit-item:hover{transform:translateY(-3px);border-color:#536ab0}
+.benefit-symbol{flex:0 0 39px;width:39px;height:39px;display:grid;place-items:center;border:1px solid #30486c;border-radius:12px;background:linear-gradient(145deg,#1a3652,#27214b);color:#91dfff;font-size:20px}
+.benefit-item strong,.benefit-item small{display:block}
+.benefit-item strong{font-size:12px;color:#f0f4ff;margin-bottom:5px}
+.benefit-item small{font-size:10px;line-height:1.45;color:#9eacc6}
+.section-head{gap:18px}
+.section h2{letter-spacing:-1.2px}
+.product{border-radius:20px}
+.product-image{background:linear-gradient(145deg,#f8f9fc,#e8edf6)}
+.product-info{padding:16px}
+.add,.details-btn{font-weight:700}
+.banner{position:relative;overflow:hidden}
+.banner:after{content:"N";position:absolute;right:10%;top:50%;transform:translateY(-54%);font-size:170px;font-weight:900;line-height:1;color:#ffffff06;pointer-events:none}
+.footer{flex-wrap:wrap;align-items:center}
+@media(max-width:900px){.hero{padding-left:6vw;padding-right:6vw}.hero-art:before{width:290px;height:290px}.orbit-one{width:310px;height:120px}.orbit-two{width:300px;height:110px}.benefit-strip{margin-bottom:45px}.benefit-item{padding:14px 12px;gap:9px}}
+@media(max-width:600px){.hero{min-height:0;padding:48px 22px 30px;grid-template-columns:1fr;text-align:left}.hero h1{font-size:clamp(42px,11vw,58px);letter-spacing:-2.5px;margin:20px 0 15px}.hero p{font-size:15px;line-height:1.7}.hero-actions{gap:15px;margin-top:22px}.hero-note{margin-top:22px}.hero-art{min-height:250px;margin-top:10px}.orb{width:185px}.headphone{font-size:100px}.hero-art:before{width:230px;height:230px}.orbit-one{width:260px;height:95px}.orbit-two{width:245px;height:90px}.chip-top{top:13px;right:-3px}.chip-bottom{bottom:12px;left:-3px}.floating-chip{padding:9px 10px;gap:8px}.floating-chip strong{font-size:11px}.floating-chip small{font-size:9px}.chip-symbol{width:27px;height:27px}.benefit-strip{grid-template-columns:1fr;margin:12px auto 42px;gap:9px}.benefit-item{padding:13px 15px}.benefit-item small{font-size:11px}.categories{margin-top:0}.section-head{align-items:flex-start}.banner:after{right:2%;font-size:125px}}
+@media(prefers-reduced-motion:reduce){.floating-chip,.benefit-item{animation:none;transition:none}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -121,8 +169,24 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 </header>
 <main>
 <section class="hero" id="home">
-  <div><div class="eyebrow">Premium tech accessories</div><h1>Upgrade Your<br><span class="gradient">Everyday</span></h1><p>Discover clever tech accessories designed to make your life easier, smarter and more stylish.</p><button class="primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Shop Now &nbsp; →</button></div>
-  <div class="hero-art" aria-label="Stylish headphones illustration"><div class="orb"><div class="headphone">🎧</div></div></div>
+  <div class="hero-copy">
+    <div class="eyebrow hero-eyebrow"><span class="eyebrow-dot"></span> Tech & everyday essentials</div>
+    <h1>Small upgrades.<br><span class="gradient">Better everyday.</span></h1>
+    <p>Explore clever accessories for your phone, gaming corner and desk — all in one clean, easy-to-browse place.</p>
+    <div class="hero-actions"><button class="primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Explore the shop <span aria-hidden="true">↗</span></button><a class="hero-secondary" href="#about">Discover Nexora <span aria-hidden="true">↓</span></a></div>
+    <div class="hero-note"><span class="hero-note-icon">✦</span> A fresh look for your everyday setup</div>
+  </div>
+  <div class="hero-art" aria-label="Stylish headphones illustration">
+    <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+    <div class="orb"><div class="headphone">🎧</div></div>
+    <div class="floating-chip chip-top"><span class="chip-symbol">✧</span><span><strong>Find your fit</strong><small>Phone · Gaming · Desk</small></span></div>
+    <div class="floating-chip chip-bottom"><span class="chip-symbol">↗</span><span><strong>Make it yours</strong><small>Little things, better setup</small></span></div>
+  </div>
+</section>
+<section class="benefit-strip" aria-label="Nexora store highlights">
+  <div class="benefit-item"><span class="benefit-symbol">⌕</span><span><strong>Easy to explore</strong><small>Search and browse by category</small></span></div>
+  <div class="benefit-item"><span class="benefit-symbol">◇</span><span><strong>Everyday essentials</strong><small>Tech, phone and desk finds</small></span></div>
+  <div class="benefit-item"><span class="benefit-symbol">✓</span><span><strong>Clear demo checkout</strong><small>No real payments are taken</small></span></div>
 </section>
 <section class="categories" aria-label="Product categories">
   <button class="cat active" data-category="All"><span>🎮</span><small>All Products</small></button>
