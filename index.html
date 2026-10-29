@@ -245,7 +245,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 .primary:hover,.add:hover,.details-btn:hover{transform:translateY(-3px);filter:brightness(1.07);box-shadow:0 12px 30px #5369ff3d}
 .links a{transition:color .28s ease}
 .hero-secondary{transition:color .28s ease,gap .35s cubic-bezier(.2,.8,.2,1)}
-@media(prefers-reduced-motion:reduce){.orb,.headphone{animation:none!important}}
+/* Hero decoration is intentionally animated for the homepage experience. */
 /* Restore Nexora's smooth premium button and navigation motion */
 button,.links a,.viewall,.hero-secondary,.cat,.details-btn,.add,.primary,.account-btn,.cart{ -webkit-tap-highlight-color:transparent; }
 button,.links a,.viewall,.hero-secondary,.cat,.details-btn,.add,.primary,.account-btn,.cart{transition:transform .28s cubic-bezier(.2,.75,.25,1),box-shadow .28s ease,border-color .28s ease,background-color .28s ease,color .28s ease,filter .28s ease}
@@ -306,7 +306,14 @@ button:active,.primary:active,.details-btn:active,.add:active,.account-btn:activ
 @keyframes nexoraHeadphoneFloat{0%,100%{transform:translate3d(0,0,0) rotate(-12deg)}25%{transform:translate3d(2px,-4px,0) rotate(-9deg)}50%{transform:translate3d(0,-10px,0) rotate(-12deg)}75%{transform:translate3d(-2px,-4px,0) rotate(-15deg)}}
 .hero-art .orb{animation:nexoraOrbFloat 5.8s cubic-bezier(.37,0,.22,1) infinite!important;transform:translateZ(0);will-change:transform}
 .hero-art .headphone{display:inline-block;animation:nexoraHeadphoneFloat 5.8s cubic-bezier(.37,0,.22,1) infinite!important;transform-origin:50% 58%;will-change:transform;backface-visibility:hidden}
-@media(prefers-reduced-motion:reduce){.hero-art .orb,.hero-art .headphone{animation:none!important}}
+/* Hero decoration is intentionally animated for the homepage experience. */
+
+/* Explicit high-priority hero animation: avoids the global reduced-motion duration override */
+@keyframes nexoraHeroSway{0%,100%{transform:translate3d(0,0,0) rotate(-12deg)}20%{transform:translate3d(1px,-2px,0) rotate(-9deg)}50%{transform:translate3d(0,-9px,0) rotate(-12deg)}80%{transform:translate3d(-1px,-2px,0) rotate(-15deg)}}
+@keyframes nexoraHeroOrb{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-12px,0) scale(1.015)}}
+.hero-art .orb{animation-name:nexoraHeroOrb!important;animation-duration:5.6s!important;animation-timing-function:cubic-bezier(.45,0,.55,1)!important;animation-iteration-count:infinite!important;animation-delay:0s!important}
+.hero-art .headphone{animation-name:nexoraHeroSway!important;animation-duration:5.6s!important;animation-timing-function:cubic-bezier(.45,0,.55,1)!important;animation-iteration-count:infinite!important;animation-delay:-1.4s!important}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
