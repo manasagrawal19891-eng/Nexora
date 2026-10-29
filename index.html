@@ -314,6 +314,50 @@ button:active,.primary:active,.details-btn:active,.add:active,.account-btn:activ
 .hero-art .orb{animation-name:nexoraHeroOrb!important;animation-duration:5.6s!important;animation-timing-function:cubic-bezier(.45,0,.55,1)!important;animation-iteration-count:infinite!important;animation-delay:0s!important}
 .hero-art .headphone{animation-name:nexoraHeroSway!important;animation-duration:5.6s!important;animation-timing-function:cubic-bezier(.45,0,.55,1)!important;animation-iteration-count:infinite!important;animation-delay:-1.4s!important}
 
+
+/* Refined hover motion: smooth lift, soft glow and quick but gentle return */
+button,.cat,.viewall,.hero-secondary,.links a{
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .42s cubic-bezier(.16,1,.3,1),
+             box-shadow .42s cubic-bezier(.16,1,.3,1),
+             border-color .32s ease,
+             background-color .32s ease,
+             color .32s ease,
+             filter .32s ease !important;
+}
+@media(hover:hover) and (pointer:fine){
+  button:hover,.cat:hover{
+    transform:translate3d(0,-3px,0) scale(1.015);
+    filter:brightness(1.06);
+    box-shadow:0 12px 28px #416bff2b;
+  }
+  .primary:hover,.add:hover,.details-btn:hover,.address-submit:hover,.checkout-btn:hover{
+    transform:translate3d(0,-4px,0) scale(1.018);
+    filter:brightness(1.09);
+    box-shadow:0 15px 34px #5369ff47;
+  }
+  .account-btn:hover,.cart:hover,.continue-btn:hover,.controller-preview-toggle:hover{
+    transform:translate3d(0,-3px,0) scale(1.015);
+    box-shadow:0 11px 27px #315dff32;
+    border-color:#7895ff;
+  }
+  .login-close:hover,.qty-btn:hover{
+    transform:translate3d(0,-2px,0) scale(1.04);
+  }
+  .links a:hover,.viewall:hover,.hero-secondary:hover{
+    transform:translate3d(0,-1px,0);
+  }
+  button:active,.cat:active{
+    transform:translate3d(0,0,0) scale(.985);
+    transition-duration:.12s !important;
+  }
+}
+/* Let keyboard users see the same considered focus feedback */
+button:focus-visible,.cat:focus-visible,.links a:focus-visible,.viewall:focus-visible{
+  outline:2px solid #86b7ff;
+  outline-offset:3px;
+}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
