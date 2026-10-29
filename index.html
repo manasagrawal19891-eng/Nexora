@@ -41,12 +41,17 @@
 
 /* Calm Nexora entrance animation */
 .entry-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 42%,#182650 0%,#0b1020 48%,#070a12 100%);opacity:1;visibility:visible;transition:opacity .75s ease,visibility .75s ease}
-.entry-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
-.entry-content{display:flex;flex-direction:column;align-items:center;gap:17px;animation:entryFloat 1.25s cubic-bezier(.2,.7,.25,1) both}
+.entry-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .78s cubic-bezier(.65,0,.35,1),visibility .78s ease}
+.entry-screen:before{content:"";position:absolute;width:min(68vw,360px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#6555ff24 0%,#16baff10 42%,transparent 70%);filter:blur(8px);animation:entryAura 2.1s ease-in-out both;pointer-events:none}
+.entry-screen.is-leaving:before{animation:entryAuraExit .72s cubic-bezier(.5,0,.8,.3) both}
+.entry-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:17px;animation:entryFloat 1.25s cubic-bezier(.2,.7,.25,1) both;will-change:transform,opacity,filter}
+.entry-screen.is-leaving .entry-content{animation:entryZoomOut .72s cubic-bezier(.55,0,.85,.35) both}
+.entry-screen.is-leaving .entry-mark{animation:entryMarkOut .72s cubic-bezier(.55,0,.85,.35) both}
+.entry-screen.is-leaving .entry-tagline,.entry-screen.is-leaving .entry-loader{opacity:0;transition:opacity .2s ease}
 .entry-mark{width:72px;height:72px;display:grid;place-items:center;border-radius:23px;background:linear-gradient(135deg,#16baff,#8b5cf6);font-size:39px;font-weight:900;box-shadow:0 0 55px #4389ff4d, inset 0 1px 0 #ffffff66;color:#fff;animation:entryGlow 2.4s ease-in-out infinite}
 .entry-name{font-size:clamp(28px,6vw,38px);font-weight:850;letter-spacing:-1.5px;color:#f5f7ff}.entry-tagline{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#aab6d0;opacity:0;animation:entryText .65s .25s ease forwards}.entry-loader{height:2px;width:92px;background:#273653;border-radius:9px;overflow:hidden;margin-top:5px}.entry-loader:after{content:"";display:block;width:42%;height:100%;border-radius:9px;background:linear-gradient(90deg,#16baff,#a06aff);animation:entryLoad 1.25s ease-in-out infinite}
-@keyframes entryFloat{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes entryGlow{0%,100%{box-shadow:0 0 35px #4389ff35,inset 0 1px 0 #ffffff66}50%{box-shadow:0 0 60px #4389ff66,inset 0 1px 0 #ffffff66}}@keyframes entryText{to{opacity:1}}@keyframes entryLoad{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
-@media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-tagline,.entry-loader:after{animation:none}.entry-tagline{opacity:1}.entry-screen{transition:none}}
+@keyframes entryFloat{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes entryZoomOut{0%{opacity:1;transform:scale(1) translateY(0);filter:blur(0)}65%{opacity:.45;transform:scale(.82) translateY(-6px);filter:blur(2px)}100%{opacity:0;transform:scale(.58) translateY(-14px);filter:blur(9px)}}@keyframes entryMarkOut{0%{transform:scale(1) rotate(0);opacity:1}100%{transform:scale(.55) rotate(-9deg);opacity:0;filter:blur(5px)}}@keyframes entryAura{0%{opacity:0;transform:scale(.55)}35%{opacity:1;transform:scale(1)}100%{opacity:.7;transform:scale(1.08)}}@keyframes entryAuraExit{to{opacity:0;transform:scale(.45)}}@keyframes entryGlow{0%,100%{box-shadow:0 0 35px #4389ff35,inset 0 1px 0 #ffffff66}50%{box-shadow:0 0 60px #4389ff66,inset 0 1px 0 #ffffff66}}@keyframes entryText{to{opacity:1}}@keyframes entryLoad{0%{transform:translateX(-110%)}100%{transform:translateX(250%)}}
+@media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-tagline,.entry-loader:after,.entry-screen:before{animation:none}.entry-tagline{opacity:1}.entry-screen,.entry-screen.is-leaving{transition:none}.entry-screen.is-leaving .entry-content,.entry-screen.is-leaving .entry-mark{animation:none;opacity:0}}
 
 
 /* Nexora polish pass: clearer focus states and more comfortable layouts */
