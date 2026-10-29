@@ -178,6 +178,36 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @media(max-width:600px){.search-wrap{width:125px;flex:0 1 125px;min-width:0}.search-wrap .search:focus{width:100%}.search-suggestions{left:0;right:auto;width:min(310px,calc(100vw - 24px));max-width:calc(100vw - 24px);box-sizing:border-box;max-height:60vh;overflow-x:hidden}.search-suggestion{box-sizing:border-box;min-width:0;padding:9px}.search-suggestion-copy{min-width:0;overflow:hidden}.search-suggestion-icon{width:34px;height:34px;flex-basis:34px}.search-suggestion-price{flex-shrink:0}.search-suggestion-label,.search-suggestion-footer{overflow-wrap:anywhere}}
 
 
+/* Nexora themed search suggestions: blue-violet glass, softer spacing */
+.search-suggestions{
+  padding:10px;
+  border:1px solid #35466a;
+  border-radius:20px;
+  background:
+    radial-gradient(ellipse at 100% 0%,#40327a55 0%,transparent 44%),
+    radial-gradient(ellipse at 0% 100%,#0e9fd52b 0%,transparent 42%),
+    linear-gradient(150deg,#151d32f7 0%,#0b1020f8 78%);
+  box-shadow:0 22px 55px #0009,0 0 0 1px #ffffff05,inset 0 1px 0 #ffffff0b;
+  backdrop-filter:blur(24px) saturate(130%);
+}
+.search-suggestion-label{padding:9px 10px 10px;color:#9baed0;font-size:10px;font-weight:800;letter-spacing:1.5px}
+.search-suggestion{gap:10px;padding:10px;border-radius:13px;border-color:transparent;background:linear-gradient(100deg,#ffffff03,transparent);transition:background .2s,border-color .2s,transform .2s}
+.search-suggestion:hover,.search-suggestion:focus-visible,.search-suggestion[aria-selected="true"]{background:linear-gradient(105deg,#123b55aa,#302453aa);border-color:#4c70a0;box-shadow:inset 0 1px 0 #ffffff0b}
+.search-suggestion-icon{border-color:#3b5782;background:linear-gradient(135deg,#123d5b,#2c285c 70%,#432c6b);box-shadow:inset 0 1px 0 #ffffff12}
+.search-suggestion-name{font-size:13px;letter-spacing:-.15px;color:#f5f7ff}
+.search-suggestion-meta{color:#9baac7;font-size:10px}
+.search-suggestion-price{color:#a9e7ff;font-size:12px;text-shadow:0 0 16px #16baff25}
+.search-suggestion-footer{border-top:1px solid #293750;margin-top:7px;padding:11px 10px 5px;color:#8d9fc0;font-size:10px}
+.search-suggestion-empty{color:#b4c2dc}
+@media(max-width:600px){
+ .search-suggestions{border-radius:18px;padding:8px;box-shadow:0 18px 45px #000a,0 0 28px #6155ed18,inset 0 1px 0 #ffffff0b}
+ .search-suggestion-label{padding:8px 9px 9px}
+ .search-suggestion{gap:9px;padding:9px;border-radius:12px}
+ .search-suggestion-name{font-size:12px}
+ .search-suggestion-meta{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.search-suggestions,.search-suggestion{animation:none;transition:none}}
+
 /* Nexora mobile image containment + cinematic entrance polish */
 .product,.product-image,.product-info,.products,.section,.search-wrap{min-width:0;max-width:100%}
 .product{isolation:isolate}
