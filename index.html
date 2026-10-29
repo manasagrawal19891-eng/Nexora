@@ -221,21 +221,17 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 }
 /* Unified, mobile-safe Nexora welcome animation */
 .entry-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 43%,#182650 0%,#0b1020 48%,#05070d 100%);opacity:1;visibility:visible;transition:opacity .38s ease,visibility .38s ease}
-.entry-screen:before,.entry-screen:after{content:"";position:absolute;left:50%;top:44%;width:min(76vw,340px);aspect-ratio:1;border:1px solid #5f8dff30;border-radius:50%;transform:translate(-50%,-50%) scale(.7);opacity:0;pointer-events:none;animation:nexoraWelcomeRing 1.8s ease-out .1s both}
+.entry-screen:before,.entry-screen:after{content:"";position:absolute;left:50%;top:44%;width:min(76vw,340px);aspect-ratio:1;border:1px solid #5f8dff30;border-radius:50%;transform:translate(-50%,-50%) scale(.7);opacity:0;pointer-events:none;animation:nexoraRingOnly 1.8s ease-out .1s both}
 .entry-screen:after{width:min(56vw,250px);border-color:#9b7bff35;animation-delay:.25s}
 .entry-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none}
-.entry-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px;animation:nexoraWelcomeIn .7s cubic-bezier(.2,.7,.25,1) both}
-.entry-mark{position:relative;width:72px;height:72px;display:grid;place-items:center;overflow:hidden;border-radius:23px;background:linear-gradient(135deg,#16baff,#8b5cf6);font-size:39px;font-weight:900;color:#fff;box-shadow:0 0 36px #4389ff40,inset 0 1px 0 #ffffff66;transform-origin:center;animation:nexoraMarkPulse 1.8s ease-in-out .2s infinite}
-.entry-mark:after{content:"";position:absolute;inset:-60% auto -60% -90%;width:55%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,#ffffff65,transparent);animation:nexoraWelcomeShine 1.5s ease-in-out .35s infinite}
+.entry-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px;opacity:1;transform:none;animation:none}
+.entry-mark{position:relative;width:72px;height:72px;display:grid;place-items:center;overflow:hidden;border-radius:23px;background:linear-gradient(135deg,#16baff,#8b5cf6);font-size:39px;font-weight:900;color:#fff;box-shadow:0 0 36px #4389ff40,inset 0 1px 0 #ffffff66;transform:none;animation:none}
+.entry-mark:after{content:"";position:absolute;inset:-60% auto -60% -90%;width:55%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,#ffffff65,transparent);animation:none}
 .entry-name{font-size:clamp(28px,6vw,38px);font-weight:850;letter-spacing:-1.5px;color:#f5f7ff;text-shadow:0 0 24px #6a91ff25}
-.entry-tagline{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#aab6d0;animation:nexoraWelcomeText .5s .18s both}
+.entry-tagline{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#aab6d0;animation:none}
 .entry-loader{height:3px;width:100px;background:#273653;border-radius:9px;overflow:hidden;margin-top:2px}
 .entry-loader:after{content:"";display:block;width:38%;height:100%;border-radius:9px;background:linear-gradient(90deg,#16baff,#a06aff);animation:nexoraWelcomeLoad 1.05s ease-in-out infinite}
-@keyframes nexoraWelcomeIn{from{opacity:0;transform:scale(.9) translateY(6px)}to{opacity:1;transform:scale(1) translateY(0)}}
-@keyframes nexoraWelcomeRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}35%{opacity:.7}100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}}
-@keyframes nexoraMarkPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-@keyframes nexoraWelcomeShine{0%,25%{left:-90%}70%,100%{left:140%}}
-@keyframes nexoraWelcomeText{from{opacity:0}to{opacity:1}}
+@keyframes nexoraRingOnly{0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}35%{opacity:.7}100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}}
 @keyframes nexoraWelcomeLoad{0%{transform:translateX(-120%)}100%{transform:translateX(280%)}}
 @media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-mark:after,.entry-tagline,.entry-loader:after,.entry-screen:before,.entry-screen:after{animation:none!important}.entry-screen{transition:none}.entry-content{opacity:1;transform:none}}
 </style>
@@ -621,7 +617,7 @@ addressForm.addEventListener('submit',e=>{
 loadSavedAddress();
 document.getElementById('year').textContent=new Date().getFullYear();render();updateCart();
 
-// Single-stage welcome animation: avoid competing finish/leave animations.
+// Keep the logo stationary; only fade the welcome screen away once.
 (function(){
   const screen=document.getElementById('entryScreen');
   if(!screen) return;
@@ -629,7 +625,7 @@ document.getElementById('year').textContent=new Date().getFullYear();render();up
   window.setTimeout(()=>{
     screen.classList.add('is-leaving');
     window.setTimeout(()=>screen.remove(),reduced?50:400);
-  },reduced?250:1800);
+  },reduced?250:1500);
 })();
 
 </script>
