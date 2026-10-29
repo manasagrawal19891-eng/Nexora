@@ -300,6 +300,13 @@ button:active,.primary:active,.details-btn:active,.add:active,.account-btn:activ
 .product-image.controller-image-missing:after{content:"CONTROLLER STAND";position:absolute;left:0;right:0;top:72%;text-align:center;color:#253858;font-size:11px;font-weight:800;letter-spacing:1.4px}
 @media(hover:hover) and (pointer:fine){.product.has-controller-preview:hover .product-image>img{transform:scale(1.045)}}
 @media(prefers-reduced-motion:reduce){.product.has-controller-preview .product-image>img,.product.has-controller-preview .product-image:before,.controller-preview-toggle{transition:none!important}}
+
+/* Hero motion v2: smooth continuous floating, independent of the orb's movement */
+@keyframes nexoraOrbFloat{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-12px,0) scale(1.012)}}
+@keyframes nexoraHeadphoneFloat{0%,100%{transform:translate3d(0,0,0) rotate(-12deg)}25%{transform:translate3d(2px,-4px,0) rotate(-9deg)}50%{transform:translate3d(0,-10px,0) rotate(-12deg)}75%{transform:translate3d(-2px,-4px,0) rotate(-15deg)}}
+.hero-art .orb{animation:nexoraOrbFloat 5.8s cubic-bezier(.37,0,.22,1) infinite!important;transform:translateZ(0);will-change:transform}
+.hero-art .headphone{display:inline-block;animation:nexoraHeadphoneFloat 5.8s cubic-bezier(.37,0,.22,1) infinite!important;transform-origin:50% 58%;will-change:transform;backface-visibility:hidden}
+@media(prefers-reduced-motion:reduce){.hero-art .orb,.hero-art .headphone{animation:none!important}}
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
