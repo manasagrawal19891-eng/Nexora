@@ -414,22 +414,25 @@ button:focus-visible,.cat:focus-visible,.links a:focus-visible,.viewall:focus-vi
   border-color:#b9a5ff70!important;
   background:linear-gradient(145deg,#252049a8,#11192cc2)!important;
 }
-/* Cross-fade and glide product cards when switching categories */
+/* Horizontal glide between product categories: old cards exit left, new cards enter right */
+.products.product-motion-enabled{
+  overflow:hidden;
+}
 .products.product-motion-enabled > *{
   animation:none!important;
-  transition:opacity .25s ease,transform .34s cubic-bezier(.22,1,.36,1),filter .25s ease;
+  transition:opacity .28s ease,transform .44s cubic-bezier(.22,1,.36,1),filter .28s ease;
   will-change:opacity,transform,filter;
 }
 .products.product-motion-enabled.is-leaving > *{
   opacity:0;
-  transform:translate3d(0,9px,0) scale(.99);
-  filter:blur(2px);
+  transform:translate3d(-46px,0,0) scale(.985);
+  filter:blur(1.5px);
   pointer-events:none;
 }
 .products.product-motion-enabled.is-entering > *{
   opacity:0;
-  transform:translate3d(0,11px,0) scale(.99);
-  filter:blur(2px);
+  transform:translate3d(46px,0,0) scale(.99);
+  filter:blur(1.5px);
 }
 .products.product-motion-enabled.is-entering.is-ready > *{
   opacity:1;
@@ -719,15 +722,15 @@ function render(animateProducts=false){
    productsEl.innerHTML=nextProductMarkup;
    productsEl.classList.remove('is-leaving');
    productsEl.classList.add('is-entering');
-   Array.from(productsEl.children).forEach((card,index)=>{card.style.transitionDelay=(Math.min(index,6)*22)+'ms';});
+   Array.from(productsEl.children).forEach((card,index)=>{card.style.transitionDelay=(Math.min(index,6)*24)+'ms';});
    void productsEl.offsetWidth;
    requestAnimationFrame(()=>{if(transitionId===productTransitionToken)productsEl.classList.add('is-ready');});
    productSwitchTimeout=window.setTimeout(()=>{
     if(transitionId!==productTransitionToken)return;
     productsEl.classList.remove('is-entering','is-ready');
     Array.from(productsEl.children).forEach(card=>{card.style.transitionDelay='';});
-   },480);
-  },130);
+   },630);
+  },225);
  }else{
   ++productTransitionToken;
   window.clearTimeout(productSwitchTimeout);
