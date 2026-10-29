@@ -437,6 +437,40 @@ button:focus-visible,.cat:focus-visible,.links a:focus-visible,.viewall:focus-vi
   filter:none;
 }
 
+
+/* Category-tab selection cue: icon pop + soft selected-state glide */
+@keyframes nexoraTabSelect{
+  0%{transform:translate3d(0,2px,0) scale(.78) rotate(-10deg);filter:brightness(.9)}
+  58%{transform:translate3d(0,-3px,0) scale(1.16) rotate(5deg);filter:brightness(1.22)}
+  78%{transform:translate3d(0,1px,0) scale(.97) rotate(-2deg)}
+  100%{transform:translate3d(0,0,0) scale(1) rotate(0);filter:brightness(1)}
+}
+@keyframes nexoraTabTextIn{
+  0%{opacity:.72;transform:translate3d(0,4px,0)}
+  65%{opacity:1;transform:translate3d(0,-1px,0)}
+  100%{opacity:1;transform:translate3d(0,0,0)}
+}
+.categories .cat{
+  transition:background .38s ease,border-color .38s ease,color .32s ease,box-shadow .38s ease !important;
+}
+.categories .cat > span{
+  display:block;
+  transform-origin:50% 70%;
+}
+.categories .cat.tab-just-selected > span{
+  animation:nexoraTabSelect .48s cubic-bezier(.22,1,.36,1) both;
+}
+.categories .cat.tab-just-selected > small{
+  animation:nexoraTabTextIn .34s cubic-bezier(.22,1,.36,1) both;
+}
+.categories .cat.active{
+  color:#fff!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .categories .cat.tab-just-selected > span,
+  .categories .cat.tab-just-selected > small{animation:none!important}
+}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -561,6 +595,13 @@ const categoryAura=document.createElement('span');
 categoryAura.className='category-aura';
 categoryAura.setAttribute('aria-hidden','true');
 categoriesEl.prepend(categoryAura);
+function animateCategorySelection(button){
+ if(!button)return;
+ document.querySelectorAll('.cat').forEach(item=>item.classList.remove('tab-just-selected'));
+ void button.offsetWidth;
+ button.classList.add('tab-just-selected');
+ window.setTimeout(()=>button.classList.remove('tab-just-selected'),540);
+}
 function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
  if(!active)return;
@@ -699,7 +740,7 @@ function updateCart(){document.getElementById('cartCount').textContent=cart.leng
 let toastTimer;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
 function addToCart(id){cart.push(id);updateCart();toast(products.find(p=>p.id===id).name+' added to your cart!')}
-document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');activeCategory=btn.dataset.category;render(true)}));
+document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');animateCategorySelection(btn);activeCategory=btn.dataset.category;render(true)}));
 searchEl.addEventListener('input',()=>{render();showSearchSuggestions()});
 searchEl.addEventListener('focus',()=>{if(searchEl.value.trim())showSearchSuggestions()});
 searchEl.addEventListener('keydown',e=>{
@@ -720,7 +761,7 @@ function renderCart(){const root=document.getElementById('cartContents'),counts=
 function openCart(){cartOverlay.classList.add('open');document.body.style.overflow='hidden';renderCart()}
 function closeCart(){cartOverlay.classList.remove('open');document.body.style.overflow=''}
 document.getElementById('cartButton').addEventListener('click',openCart);document.getElementById('cartClose').addEventListener('click',closeCart);cartOverlay.addEventListener('click',e=>{if(e.target===cartOverlay)closeCart()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCart();}});
-document.getElementById('viewAll').addEventListener('click',()=>{activeCategory='All';document.querySelectorAll('.cat').forEach(b=>b.classList.toggle('active',b.dataset.category==='All'));searchEl.value='';render(true)});
+document.getElementById('viewAll').addEventListener('click',()=>{activeCategory='All';document.querySelectorAll('.cat').forEach(b=>b.classList.toggle('active',b.dataset.category==='All'));animateCategorySelection(document.querySelector('.cat.active'));searchEl.value='';render(true)});
 
 const detailOverlay=document.getElementById('productDetailOverlay');
 let selectedDetailProduct=null;
