@@ -236,6 +236,30 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @keyframes nexoraTextIn{to{opacity:1}}
 @keyframes nexoraProgress{0%{transform:translateX(-120%)}100%{transform:translateX(330%)}}
 @media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-mark:after,.entry-tagline,.entry-loader,.entry-loader:after{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}.entry-screen{transition:none}}
+
+/* Interactive premium controller-stand preview */
+.controller-preview-scene{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,#253b70 0%,#111a31 48%,#080c16 100%);transition:opacity .35s ease}
+.controller-preview-scene:before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:#3c78ff35;filter:blur(25px);transform:translateY(-4px);transition:transform .5s ease,background .5s ease}
+.controller-preview-scene:after{content:"";position:absolute;left:18%;right:18%;bottom:23%;height:1px;background:linear-gradient(90deg,transparent,#7abaffb8,transparent);box-shadow:0 0 18px #459cff99}
+.controller-preview-pad{position:absolute;bottom:22%;width:118px;height:18px;border-radius:50%;background:linear-gradient(180deg,#a8caff,#283c63 55%,#101727);box-shadow:0 12px 18px #0009,0 0 18px #4b94ff55;transform:perspective(120px) rotateX(20deg) translateY(16px);opacity:.25;transition:transform .5s ease,opacity .5s ease}
+.controller-preview-stand{position:absolute;bottom:28%;width:48px;height:43px;border-radius:9px 9px 12px 12px;background:linear-gradient(110deg,#c9d7ee,#566a8e 40%,#1b2942 80%);box-shadow:inset 2px 0 3px #ffffff75,0 10px 18px #0008;transform:translateY(24px) scale(.88);opacity:0;transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .35s ease}
+.controller-preview-stand:before{content:"";position:absolute;left:7px;right:7px;top:-7px;height:10px;border-radius:50%;background:linear-gradient(90deg,#d7e8ff,#6d83a9,#e0edff)}
+.controller-preview-controller{position:absolute;z-index:2;font-size:68px;line-height:1;filter:drop-shadow(0 16px 14px #000b);transform:translateY(-34px) rotate(-18deg) scale(.8);opacity:0;transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .35s ease;animation:none}
+.controller-preview-label{position:absolute;top:14px;left:14px;color:#c7dcff;font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:0;transform:translateY(5px);transition:opacity .3s ease .12s,transform .3s ease .12s}
+.controller-preview-caption{position:absolute;bottom:12px;left:12px;right:12px;color:#f4f7ff;font-size:10px;letter-spacing:.5px;text-align:center;opacity:0;transform:translateY(5px);transition:opacity .3s ease .18s,transform .3s ease .18s}
+.product.controller-preview-active .controller-preview-scene,.product:has(.controller-preview-toggle:hover) .controller-preview-scene{opacity:1}
+.product.controller-preview-active .product-image>img,.product:hover .product-image>img{opacity:1}
+.product.controller-preview-active .controller-preview-controller{opacity:1;transform:translateY(-8px) rotate(0) scale(1);animation:controllerSettle .7s ease-out .1s both}
+.product.controller-preview-active .controller-preview-stand{opacity:1;transform:translateY(0) scale(1)}
+.product.controller-preview-active .controller-preview-pad{opacity:1;transform:perspective(120px) rotateX(20deg) translateY(0)}
+.product.controller-preview-active .controller-preview-scene:before{transform:translateY(8px) scale(1.12);background:#3c78ff4a}
+.product.controller-preview-active .controller-preview-label,.product.controller-preview-active .controller-preview-caption{opacity:1;transform:translateY(0)}
+.controller-preview-toggle{position:absolute;z-index:4;right:10px;bottom:10px;border:1px solid #ffffff55;background:#0b1226d9;color:#f7f9ff;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:700;backdrop-filter:blur(10px);cursor:pointer;transition:background .2s,transform .2s}
+.controller-preview-toggle:hover{background:#335be7;transform:translateY(-1px)}
+@keyframes controllerSettle{0%{transform:translateY(-34px) rotate(-18deg) scale(.8)}70%{transform:translateY(-4px) rotate(3deg) scale(1.02)}100%{transform:translateY(-8px) rotate(0) scale(1)}}
+@media(hover:hover) and (pointer:fine){.product:has(.controller-preview-toggle):hover .controller-preview-scene{opacity:1}.product:has(.controller-preview-toggle):hover .controller-preview-controller{opacity:1;transform:translateY(-8px) rotate(0) scale(1);animation:controllerSettle .7s ease-out .1s both}.product:has(.controller-preview-toggle):hover .controller-preview-stand{opacity:1;transform:translateY(0) scale(1)}.product:has(.controller-preview-toggle):hover .controller-preview-pad{opacity:1;transform:perspective(120px) rotateX(20deg) translateY(0)}.product:has(.controller-preview-toggle):hover .controller-preview-scene:before{transform:translateY(8px) scale(1.12);background:#3c78ff4a}.product:has(.controller-preview-toggle):hover .controller-preview-label,.product:has(.controller-preview-toggle):hover .controller-preview-caption{opacity:1;transform:translateY(0)}.product:has(.controller-preview-toggle):hover .controller-preview-toggle{opacity:1}}
+@media(hover:none){.controller-preview-toggle{opacity:1}.controller-preview-scene{transition:opacity .25s ease}}
+@media(prefers-reduced-motion:reduce){.controller-preview-scene,.controller-preview-controller,.controller-preview-stand,.controller-preview-pad,.controller-preview-label,.controller-preview-caption{transition:none!important;animation:none!important}}
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -440,6 +464,7 @@ function productImage(p){
  if(n.includes('organizer tray'))return 'https://modernquests.com/cdn/shop/files/Sectional_Desk_Tray_-_Speckled_Grey_3.jpg?v=1770203231&width=2048';
  return 'https://cdn.mos.cms.futurecdn.net/G4DQ6CWMjVTiPn5PeqSZeR-1024-80.jpg';
 }
+function toggleControllerPreview(event,button){event.preventDefault();event.stopPropagation();const card=button.closest('.product');if(!card)return;const active=card.classList.toggle('controller-preview-active');button.setAttribute('aria-pressed',String(active));button.textContent=active?'× Close':'▶ Preview';}
 function render(){
  const q=normalizeSearch(searchEl.value);
  const terms=q.split(/\s+/).filter(Boolean);
@@ -449,7 +474,7 @@ function render(){
   const matchesSearch=terms.every(term=>searchable.includes(term));
   return matchesCategory&&matchesSearch;
  });
- productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()"></div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span>${p.old?'<span class="old">'+money(p.old)+'</span>':''}${p.discount?'<span class="discount">'+p.discount+'</span>':''}</div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
+ productsEl.innerHTML=list.length?list.map((p,i)=>`<article class="product ${p.id===1?"has-controller-preview":""}" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()">${p.id===1?`<div class="controller-preview-scene" aria-hidden="true"><span class="controller-preview-label">NEXORA · AFTER HOURS</span><span class="controller-preview-pad"></span><span class="controller-preview-stand"></span><span class="controller-preview-controller">🎮</span><span class="controller-preview-caption">SESSION COMPLETE · SET IT DOWN IN STYLE</span></div><button class="controller-preview-toggle" type="button" aria-pressed="false" onclick="toggleControllerPreview(event,this)">▶ Preview</button>`:""}</div><div class="product-info"><h3>${p.name}</h3><div class="rating">${p.rating==="—"?"<span>New listing · no verified reviews</span>":"★★★★★ <span>"+p.rating+" · sample rating</span>"}</div><div class="price-row"><span class="price">${money(p.price)}</span>${p.old?'<span class="old">'+money(p.old)+'</span>':''}${p.discount?'<span class="discount">'+p.discount+'</span>':''}</div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">View Details ↗</button><button class="add" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
 }
 function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
 let toastTimer;
