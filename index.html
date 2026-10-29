@@ -237,6 +237,22 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @keyframes nexoraProgress{0%{transform:translateX(-120%)}100%{transform:translateX(330%)}}
 @media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-mark:after,.entry-tagline,.entry-loader,.entry-loader:after{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}.entry-screen{transition:none}}
 
+/* Restore Nexora's smooth premium button and navigation motion */
+button,.links a,.viewall,.hero-secondary,.cat,.details-btn,.add,.primary,.account-btn,.cart{ -webkit-tap-highlight-color:transparent; }
+button,.links a,.viewall,.hero-secondary,.cat,.details-btn,.add,.primary,.account-btn,.cart{transition:transform .28s cubic-bezier(.2,.75,.25,1),box-shadow .28s ease,border-color .28s ease,background-color .28s ease,color .28s ease,filter .28s ease}
+button:active,.primary:active,.details-btn:active,.add:active,.account-btn:active,.cart:active{transform:translateY(1px) scale(.97)}
+.links a{position:relative;display:inline-block}
+.links a:after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;border-radius:2px;background:linear-gradient(90deg,#16c5ff,#a06aff);transition:right .28s cubic-bezier(.2,.75,.25,1)}
+.links a:hover:after,.links a:focus-visible:after{right:0}
+.primary,.add,.details-btn,.account-btn,.cart,.controller-preview-toggle{position:relative;overflow:hidden}
+.primary:before,.add:before,.details-btn:before{content:"";position:absolute;inset:0;left:-120%;width:70%;background:linear-gradient(105deg,transparent,#ffffff24,transparent);transform:skewX(-18deg);transition:left .55s ease;pointer-events:none}
+.primary:hover:before,.add:hover:before,.details-btn:hover:before{left:150%}
+.primary:hover,.add:hover,.details-btn:hover{transform:translateY(-3px);box-shadow:0 12px 28px #456bff35;filter:brightness(1.08)}
+.account-btn:hover,.cart:hover{transform:translateY(-2px);border-color:#6a86e8;box-shadow:0 8px 22px #315dff24}
+.viewall:hover{transform:translateX(4px);color:#9ce2ff}
+.cat:hover{transform:translateY(-5px);border-color:#5c72c6;box-shadow:0 12px 30px #0004}
+@media(hover:none){button:active,.cat:active,.links a:active,.viewall:active{filter:brightness(1.13)}}
+@media(prefers-reduced-motion:reduce){button,.links a,.viewall,.hero-secondary,.cat,.details-btn,.add,.primary,.account-btn,.cart,.links a:after{transition:none!important}}
 /* Cinematic preview restored: clear product scene with a smooth close state */
 .controller-preview-scene{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;opacity:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at 50% 38%,#203e78 0%,#111b32 55%,#080c14 100%);transition:opacity .35s ease}
 .controller-preview-scene:before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:#6da0ff45;filter:blur(25px);animation:nxGlow 3s ease-in-out infinite}
