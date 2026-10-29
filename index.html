@@ -175,7 +175,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 .search-suggestion-empty{padding:15px 11px;color:#aab6d0;font-size:12px;line-height:1.6}
 .search-suggestion-footer{border-top:1px solid #293750;margin-top:5px;padding:10px 10px 4px;color:#8497b7;font-size:10px}
 @media(max-width:900px){.search-wrap{width:160px;flex-basis:160px}}
-@media(max-width:600px){.search-wrap{width:125px;flex-basis:125px}.search-wrap .search:focus{width:100%}.search-suggestions{left:auto;right:-90px;width:min(310px,calc(100vw - 24px));max-height:60vh}.search-suggestion{padding:9px}.search-suggestion-icon{width:34px;height:34px;flex-basis:34px}}
+@media(max-width:600px){.search-wrap{width:125px;flex:0 1 125px;min-width:0}.search-wrap .search:focus{width:100%}.search-suggestions{left:0;right:auto;width:min(310px,calc(100vw - 24px));max-width:calc(100vw - 24px);box-sizing:border-box;max-height:60vh;overflow-x:hidden}.search-suggestion{box-sizing:border-box;min-width:0;padding:9px}.search-suggestion-copy{min-width:0;overflow:hidden}.search-suggestion-icon{width:34px;height:34px;flex-basis:34px}.search-suggestion-price{flex-shrink:0}.search-suggestion-label,.search-suggestion-footer{overflow-wrap:anywhere}}
 
 
 /* Nexora mobile image containment + cinematic entrance polish */
