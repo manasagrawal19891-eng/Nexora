@@ -177,6 +177,49 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @media(max-width:900px){.search-wrap{width:160px;flex-basis:160px}}
 @media(max-width:600px){.search-wrap{width:125px;flex-basis:125px}.search-wrap .search:focus{width:100%}.search-suggestions{left:auto;right:-90px;width:min(310px,calc(100vw - 24px));max-height:60vh}.search-suggestion{padding:9px}.search-suggestion-icon{width:34px;height:34px;flex-basis:34px}}
 
+
+/* Nexora mobile image containment + cinematic entrance polish */
+.product,.product-image,.product-info,.products,.section,.search-wrap{min-width:0;max-width:100%}
+.product{isolation:isolate}
+.product-image{width:100%;min-width:0;contain:paint;overflow:hidden;border-radius:19px 19px 0 0}
+.product-image img{display:block;width:calc(100% - 12px);max-width:100%;height:calc(100% - 12px);max-height:100%;min-width:0;object-fit:contain;object-position:center;padding:6px;margin:6px;border-radius:12px;transform:translateZ(0)}
+.product:hover .product-image img{transform:scale(1.025)}
+@media(max-width:600px){
+ .products{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;overflow:clip}
+ .product{min-width:0;width:100%;overflow:hidden;border-radius:16px}
+ .product-image{height:clamp(118px,35vw,155px);padding:8px}
+ .product-image img{width:100%;height:100%;max-width:100%;max-height:100%;padding:8px;margin:0;object-fit:contain}
+ .product-info{min-width:0;overflow-wrap:anywhere}
+ .product h3{overflow-wrap:anywhere}
+ .search-wrap{min-width:0}
+}
+@media(max-width:360px){
+ .products{gap:8px}
+ .product-image{height:116px;padding:6px}
+ .product-image img{padding:5px}
+ .product-info{padding:9px}
+}
+.entry-screen{isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 43%,#1a2b59 0%,#0b1020 45%,#05070d 100%);transition:opacity .9s cubic-bezier(.2,.7,.2,1),visibility .9s ease}
+.entry-screen:before,.entry-screen:after{content:"";position:absolute;left:50%;top:44%;width:min(78vw,360px);aspect-ratio:1;border:1px solid #5f8dff35;border-radius:50%;transform:translate(-50%,-50%) scale(.72);opacity:0;pointer-events:none;animation:entryRings 2.2s ease-out .08s both}
+.entry-screen:after{width:min(58vw,270px);border-color:#9b7bff45;animation-delay:.28s}
+.entry-content{position:relative;z-index:1;gap:18px;animation:entryCinematic 1.15s cubic-bezier(.16,.75,.24,1) both}
+.entry-mark{position:relative;overflow:hidden;transform-origin:center;animation:entryMarkPulse 2s ease-in-out .25s infinite}
+.entry-mark:after{content:"";position:absolute;inset:-60% auto -60% -80%;width:55%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,#ffffff75,transparent);animation:entryShine 1.6s ease-in-out .45s infinite}
+.entry-name{text-shadow:0 0 28px #6a91ff30;animation:entryText .75s .2s ease both}
+.entry-tagline{letter-spacing:3px}
+.entry-loader{width:118px;height:3px;background:#263453;margin-top:2px;box-shadow:0 0 18px #4778ff28}
+.entry-loader:after{width:36%;animation:entryLoad 1.05s ease-in-out infinite}
+@keyframes entryCinematic{0%{opacity:0;transform:translateY(14px) scale(.78);filter:blur(8px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+@keyframes entryRings{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}35%{opacity:.85}100%{opacity:0;transform:translate(-50%,-50%) scale(1.22)}}
+@keyframes entryMarkPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@keyframes entryShine{0%,25%{left:-80%}70%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){
+ .entry-content,.entry-mark,.entry-mark:after,.entry-name,.entry-tagline,.entry-loader:after,.entry-screen:before,.entry-screen:after{animation:none!important}
+ .entry-content{opacity:1;transform:none;filter:none}
+ .entry-tagline{opacity:1}
+ .product,.product-image img{animation:none;transition:none}
+}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
