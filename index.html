@@ -751,13 +751,10 @@ window.nexoraFirebaseAuth = auth;
     let saved = null;
     try {
       saved = JSON.parse(sessionStorage.getItem(KEY) || 'null');
-      const seen = sessionStorage.getItem(ENTRY_KEY);
-      if (seen === '1') {
-        const entry = document.getElementById('entryScreen');
-        if (entry) entry.remove();
-      } else {
-        sessionStorage.setItem(ENTRY_KEY, '1');
-      }
+      // Let the welcome screen run on each fresh page load so the logo
+      // completion animation is visible; do not remove it just because this
+      // browser tab has visited Nexora before.
+      sessionStorage.setItem(ENTRY_KEY, '1');
     } catch (_) {}
 
     if (!saved) return;
