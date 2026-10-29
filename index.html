@@ -301,14 +301,39 @@ function normalizeSearch(value){
 
 const searchSuggestionsEl=document.getElementById('searchSuggestions');
 let activeSuggestionIndex=-1;
+const searchSynonyms={
+ phone:['mobile','smartphone','charger','charging','cable','usb','headphone','headphones','earbuds','audio','stand'],
+ mobile:['phone','smartphone','charger','charging','cable','usb','headphone','headphones','earbuds','audio','stand'],
+ headphone:['headphones','headset','earphone','earphones','earbuds','audio','stand'],
+ headphones:['headphone','headset','earphone','earphones','earbuds','audio','stand'],
+ audio:['headphone','headphones','earbuds','earphone','earphones','sound'],
+ gaming:['controller','keyboard','mouse','mousepad','pad','desk'],
+ desk:['organizer','tray','light','laptop','riser','keyboard','mousepad','stand'],
+ cable:['charger','charging','usb','phone','mobile'],
+ accessories:['phone','mobile','audio','desk','cable','stand']
+};
 function matchingProducts(query){
  const q=normalizeSearch(query);
  if(!q)return [];
  const terms=q.split(/\s+/).filter(Boolean);
- return products.filter(p=>{
+ const expanded=new Set(terms);
+ terms.forEach(term=>{
+  Object.entries(searchSynonyms).forEach(([key,values])=>{
+   if(key.startsWith(term)||term.startsWith(key)||values.some(v=>v.startsWith(term))){
+    expanded.add(key);values.forEach(v=>expanded.add(v));
+   }
+  });
+ });
+ const candidates=products.map(p=>{
   const searchable=normalizeSearch([p.name,p.category,p.tag].join(' '));
-  return terms.every(term=>searchable.includes(term));
- }).slice(0,6);
+  const words=searchable.split(' ');
+  const direct=terms.every(term=>searchable.includes(term)||words.some(word=>word.startsWith(term)));
+  const related=[...expanded].some(term=>term.length>1&&(searchable.includes(term)||words.some(word=>word.startsWith(term))));
+  const score=terms.reduce((sum,term)=>sum+(normalizeSearch(p.name).startsWith(term)?5:normalizeSearch(p.name).includes(term)?3:normalizeSearch(p.category).includes(term)?2:normalizeSearch(p.tag).includes(term)?1:0),0);
+  return {p,direct,related,score};
+ }).filter(x=>x.direct||x.related);
+ candidates.sort((a,b)=>(Number(b.direct)-Number(a.direct))||b.score-a.score);
+ return candidates.slice(0,6).map(x=>x.p);
 }
 function hideSearchSuggestions(){
  searchSuggestionsEl.hidden=true;
@@ -321,8 +346,8 @@ function showSearchSuggestions(){
  if(!query){hideSearchSuggestions();return}
  const matches=matchingProducts(query);
  activeSuggestionIndex=-1;
- searchSuggestionsEl.innerHTML='<div class="search-suggestion-label">'+(matches.length?'Matching products':'Search')+'</div>'+
-  (matches.length?matches.map((p,i)=>'<button type="button" class="search-suggestion" role="option" id="search-option-'+p.id+'" aria-selected="false" data-product-id="'+p.id+'"><span class="search-suggestion-icon" aria-hidden="true">'+p.icon+'</span><span class="search-suggestion-copy"><span class="search-suggestion-name">'+p.name+'</span><span class="search-suggestion-meta">'+p.category+' · '+p.tag+'</span></span><span class="search-suggestion-price">'+money(p.price)+'</span></button>').join(''):'<div class="search-suggestion-empty">No matching products yet. Try “phone”, “headphone”, “gaming” or “desk”.</div>')+
+ searchSuggestionsEl.innerHTML='<div class="search-suggestion-label">'+(matches.length?'Products & related picks':'Search suggestions')+'</div>'+
+  (matches.length?matches.map((p,i)=>'<button type="button" class="search-suggestion" role="option" id="search-option-'+p.id+'" aria-selected="false" data-product-id="'+p.id+'"><span class="search-suggestion-icon" aria-hidden="true">'+p.icon+'</span><span class="search-suggestion-copy"><span class="search-suggestion-name">'+p.name+'</span><span class="search-suggestion-meta">'+p.category+' · '+p.tag+'</span></span><span class="search-suggestion-price">'+money(p.price)+'</span></button>').join(''):'<div class="search-suggestion-empty">No close matches yet. Try phone, headphones, gaming, cable or desk.</div>')+
   '<div class="search-suggestion-footer">Choose a product to view details · Enter to see all matches</div>';
  searchSuggestionsEl.hidden=false;
  searchEl.setAttribute('aria-expanded','true');
