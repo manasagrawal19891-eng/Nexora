@@ -414,31 +414,51 @@ button:focus-visible,.cat:focus-visible,.links a:focus-visible,.viewall:focus-vi
   border-color:#b9a5ff70!important;
   background:linear-gradient(145deg,#252049a8,#11192cc2)!important;
 }
-/* Horizontal glide between product categories: old cards exit left, new cards enter right */
+/* Continuous product-panel glide: outgoing category moves left as the next slides in from the right */
 .products.product-motion-enabled{
+  position:relative;
   overflow:hidden;
+  transition:height .64s cubic-bezier(.22,1,.36,1);
 }
-.products.product-motion-enabled > *{
+.products.product-motion-enabled > .product-transition-layer{
+  position:absolute;
+  inset:0 auto auto 0;
+  display:grid;
+  grid-template-columns:inherit;
+  gap:inherit;
+  align-content:start;
+  width:100%;
+  min-width:0;
   animation:none!important;
-  transition-property:opacity,transform,filter!important;
-  transition-duration:.42s,.50s,.36s!important;
-  transition-timing-function:cubic-bezier(.22,1,.36,1),cubic-bezier(.22,1,.36,1),ease!important;
-  will-change:opacity,transform,filter;
+  transition-property:transform,opacity,filter!important;
+  transition-duration:.64s,.48s,.48s!important;
+  transition-timing-function:cubic-bezier(.22,1,.36,1),ease,cubic-bezier(.22,1,.36,1)!important;
+  will-change:transform,opacity,filter;
+  z-index:1;
 }
-.products.product-motion-enabled.is-leaving > *{
-  opacity:0;
-  transform:translate3d(-46px,0,0) scale(.985);
-  filter:blur(1.5px);
+.products.product-motion-enabled .product-transition-layer > *{
+  animation:none!important;
+}
+.products.product-motion-enabled > .product-transition-layer.is-outgoing{
+  opacity:1;
+  transform:translate3d(0,0,0);
+  filter:none;
   pointer-events:none;
 }
-.products.product-motion-enabled.is-entering > *{
+.products.product-motion-enabled > .product-transition-layer.is-outgoing.is-moving{
   opacity:0;
-  transform:translate3d(46px,0,0) scale(.99);
-  filter:blur(1.5px);
+  transform:translate3d(-8%,0,0);
+  filter:blur(1px);
 }
-.products.product-motion-enabled.is-entering.is-ready > *{
+.products.product-motion-enabled > .product-transition-layer.is-incoming{
+  opacity:0;
+  transform:translate3d(8%,0,0);
+  filter:blur(1px);
+  pointer-events:auto;
+}
+.products.product-motion-enabled > .product-transition-layer.is-incoming.is-moving{
   opacity:1;
-  transform:translate3d(0,0,0) scale(1);
+  transform:translate3d(0,0,0);
   filter:none;
 }
 
@@ -717,26 +737,51 @@ function render(animateProducts=false){
  if(animateProducts && productsEl.children.length){
   const transitionId=++productTransitionToken;
   window.clearTimeout(productSwitchTimeout);
-  productsEl.classList.remove('is-entering','is-ready');
-  productsEl.classList.add('is-leaving');
+
+  // If a previous slide is still running, keep its incoming products as the
+  // starting set so rapid category clicks do not wait on a stale animation.
+  const currentIncoming=productsEl.querySelector(':scope > .product-transition-layer.is-incoming');
+  if(currentIncoming){
+   const currentNodes=Array.from(currentIncoming.childNodes);
+   productsEl.innerHTML='';
+   currentNodes.forEach(node=>productsEl.appendChild(node));
+  }
+  productsEl.querySelectorAll(':scope > .product-transition-layer').forEach(layer=>layer.remove());
+  productsEl.classList.remove('is-leaving','is-entering','is-ready');
+  productsEl.style.height='';
+  const outgoingHeight=Math.max(1,Math.ceil(productsEl.getBoundingClientRect().height));
+  const outgoingLayer=document.createElement('div');
+  outgoingLayer.className='product-transition-layer is-outgoing';
+  while(productsEl.firstChild)outgoingLayer.appendChild(productsEl.firstChild);
+
+  const incomingLayer=document.createElement('div');
+  incomingLayer.className='product-transition-layer is-incoming';
+  incomingLayer.innerHTML=nextProductMarkup;
+
+  productsEl.style.height=outgoingHeight+'px';
+  productsEl.append(outgoingLayer,incomingLayer);
+  void productsEl.offsetWidth;
+  const incomingHeight=Math.max(1,Math.ceil(incomingLayer.scrollHeight));
+  requestAnimationFrame(()=>{
+   if(transitionId!==productTransitionToken)return;
+   outgoingLayer.classList.add('is-moving');
+   incomingLayer.classList.add('is-moving');
+   productsEl.style.height=incomingHeight+'px';
+  });
   productSwitchTimeout=window.setTimeout(()=>{
    if(transitionId!==productTransitionToken)return;
-   productsEl.innerHTML=nextProductMarkup;
-   productsEl.classList.remove('is-leaving');
-   productsEl.classList.add('is-entering');
-   Array.from(productsEl.children).forEach((card,index)=>{card.style.transitionDelay=(Math.min(index,6)*24)+'ms';});
-   void productsEl.offsetWidth;
-   requestAnimationFrame(()=>{if(transitionId===productTransitionToken)productsEl.classList.add('is-ready');});
-   productSwitchTimeout=window.setTimeout(()=>{
-    if(transitionId!==productTransitionToken)return;
-    productsEl.classList.remove('is-entering','is-ready');
-    Array.from(productsEl.children).forEach(card=>{card.style.transitionDelay='';});
-   },760);
-  },520);
+   const finalNodes=Array.from(incomingLayer.childNodes);
+   productsEl.innerHTML='';
+   finalNodes.forEach(node=>productsEl.appendChild(node));
+   productsEl.style.height='';
+   productsEl.classList.remove('is-leaving','is-entering','is-ready');
+   requestAnimationFrame(moveCategoryAura);
+  },700);
  }else{
   ++productTransitionToken;
   window.clearTimeout(productSwitchTimeout);
   productsEl.classList.remove('is-leaving','is-entering','is-ready');
+  productsEl.style.height='';
   productsEl.innerHTML=nextProductMarkup;
  }
  requestAnimationFrame(moveCategoryAura);
