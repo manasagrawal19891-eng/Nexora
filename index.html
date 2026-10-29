@@ -420,7 +420,9 @@ button:focus-visible,.cat:focus-visible,.links a:focus-visible,.viewall:focus-vi
 }
 .products.product-motion-enabled > *{
   animation:none!important;
-  transition:opacity .28s ease,transform .44s cubic-bezier(.22,1,.36,1),filter .28s ease;
+  transition-property:opacity,transform,filter!important;
+  transition-duration:.42s,.50s,.36s!important;
+  transition-timing-function:cubic-bezier(.22,1,.36,1),cubic-bezier(.22,1,.36,1),ease!important;
   will-change:opacity,transform,filter;
 }
 .products.product-motion-enabled.is-leaving > *{
@@ -729,8 +731,8 @@ function render(animateProducts=false){
     if(transitionId!==productTransitionToken)return;
     productsEl.classList.remove('is-entering','is-ready');
     Array.from(productsEl.children).forEach(card=>{card.style.transitionDelay='';});
-   },630);
-  },225);
+   },760);
+  },445);
  }else{
   ++productTransitionToken;
   window.clearTimeout(productSwitchTimeout);
