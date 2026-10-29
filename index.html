@@ -220,6 +220,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
  .product-info{padding:9px}
 }
 /* Unified, mobile-safe Nexora welcome animation */
+/* Remove any orbit/ring decoration from the welcome logo */
+ .entry-screen:before,.entry-screen:after,.entry-content:before,.entry-content:after,.entry-mark:before,.entry-mark:after{content:none!important;display:none!important;animation:none!important;transform:none!important;box-shadow:none!important}
+ .entry-mark{box-shadow:0 0 22px #4389ff25,inset 0 1px 0 #ffffff66!important;border:0!important;outline:0!important}
+ 
 .entry-screen{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 43%,#182650 0%,#0b1020 48%,#05070d 100%);opacity:1;visibility:visible}
 .entry-screen.is-leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .4s ease,visibility .4s ease}
 .entry-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px;opacity:1;transform:none;animation:none}
