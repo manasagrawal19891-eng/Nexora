@@ -237,25 +237,31 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #65cf
 @keyframes nexoraProgress{0%{transform:translateX(-120%)}100%{transform:translateX(330%)}}
 @media(prefers-reduced-motion:reduce){.entry-content,.entry-mark,.entry-mark:after,.entry-tagline,.entry-loader,.entry-loader:after{animation:none!important;opacity:1!important;filter:none!important;transform:none!important}.entry-screen{transition:none}}
 
-/* Clean, self-contained controller stand preview: no remote assets needed */
-.controller-preview-scene{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 35%,#202e50 0%,#101727 55%,#080c14 100%);transition:opacity .28s ease}
-.controller-preview-scene:before{content:"";position:absolute;width:155px;height:155px;border-radius:50%;background:#5e8dff2b;filter:blur(24px);transition:transform .4s ease}
-.controller-preview-floor{position:absolute;bottom:19%;width:72%;height:12px;border-radius:50%;background:#050812;box-shadow:0 0 22px #4b86ff35}
-.controller-preview-stand{position:absolute;bottom:25%;width:56px;height:44px;border-radius:8px 8px 12px 12px;background:linear-gradient(90deg,#26344e,#d4e2f7 24%,#667b9d 52%,#202b41);box-shadow:inset 0 1px 1px #fff9,0 14px 22px #0009;transform:translateY(12px) scale(.95);opacity:0;transition:transform .42s ease,opacity .28s ease}
+/* Cinematic controller stand preview */
+.controller-preview-scene{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 50% 38%,#234c9c 0%,#12234b 38%,#080c18 78%);transition:opacity .45s ease}
+.controller-preview-scene:before{content:"";position:absolute;width:155px;height:155px;border-radius:50%;background:#5795ff55;filter:blur(25px);animation:controllerCorePulse 3s ease-in-out infinite}
+.controller-preview-scene:after{content:"";position:absolute;left:-70%;top:0;width:45%;height:100%;background:linear-gradient(100deg,transparent,#ffffff18,transparent);transform:skewX(-18deg);opacity:0}
+.controller-preview-floor{position:absolute;bottom:19%;width:72%;height:12px;border-radius:50%;background:#050812;box-shadow:0 0 28px #4b86ff60;animation:controllerFloorPulse 3s ease-in-out infinite}
+.controller-preview-stand{position:absolute;bottom:25%;width:56px;height:44px;border-radius:8px 8px 12px 12px;background:linear-gradient(90deg,#26344e,#e1ecff 24%,#7189b0 52%,#202b41);box-shadow:inset 0 1px 1px #fff9,0 14px 22px #0009;transform:translateY(24px) scale(.9);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s ease}
 .controller-preview-stand:before{content:"";position:absolute;left:6px;right:6px;top:-6px;height:11px;border-radius:50%;background:linear-gradient(90deg,#d9e7ff,#657b9f,#e7f0ff)}
-.controller-preview-pad{position:absolute;bottom:22%;width:108px;height:12px;border-radius:50%;background:linear-gradient(#a9c5f1,#283957);box-shadow:0 9px 14px #0008;opacity:0;transition:opacity .3s ease}
-.controller-preview-controller{position:absolute;z-index:2;width:112px;height:75px;object-fit:contain;filter:drop-shadow(0 13px 10px #000b);transform:translateY(-26px) rotate(-13deg) scale(.9);opacity:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),opacity .28s ease}
-.controller-preview-label{position:absolute;top:13px;left:13px;color:#bcd2ff;font-size:9px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;opacity:0;transition:opacity .25s ease}
-.controller-preview-caption{position:absolute;bottom:12px;left:10px;right:10px;color:#f3f6ff;font-size:10px;letter-spacing:.7px;text-align:center;opacity:0;transition:opacity .25s ease}
-.controller-preview-toggle{position:absolute;z-index:4;right:10px;bottom:10px;border:1px solid #ffffff50;background:#0b1226e8;color:#f7f9ff;padding:7px 10px;border-radius:999px;font-size:10px;font-weight:700;cursor:pointer}
-.controller-preview-toggle:hover{background:#335be7}
-.product.controller-preview-active .controller-preview-scene{opacity:1}
-.product.controller-preview-active .controller-preview-controller{opacity:1;transform:translateY(-6px) rotate(0) scale(1)}
+.controller-preview-pad{position:absolute;bottom:22%;width:108px;height:12px;border-radius:50%;background:linear-gradient(#a9c5f1,#283957);box-shadow:0 9px 18px #0008,0 0 20px #5795ff40;opacity:0;transition:opacity .5s ease}
+.controller-preview-controller{position:absolute;z-index:2;width:112px;height:75px;object-fit:contain;filter:drop-shadow(0 13px 10px #000b) drop-shadow(0 0 9px #77aaff45);transform:translateY(-58px) rotate(-18deg) scale(.78);opacity:0;transition:transform .85s cubic-bezier(.16,1,.3,1),opacity .35s ease}
+.controller-preview-label{position:absolute;top:13px;left:13px;color:#c6dcff;font-size:9px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;opacity:0;transition:opacity .4s ease}
+.controller-preview-caption{position:absolute;bottom:12px;left:10px;right:10px;color:#f3f6ff;font-size:10px;letter-spacing:.7px;text-align:center;opacity:0;transition:opacity .4s ease}
+.controller-preview-toggle{position:absolute;z-index:4;right:10px;bottom:10px;border:1px solid #ffffff60;background:#285bfa;color:#fff;padding:8px 12px;border-radius:999px;font-size:10px;font-weight:800;cursor:pointer;box-shadow:0 4px 18px #164cff55}
+.controller-preview-toggle:hover{background:#4775ff;transform:translateY(-1px)}
+.product.controller-preview-active .controller-preview-scene{opacity:1;pointer-events:auto}
+.product.controller-preview-active .controller-preview-scene:after{animation:controllerLightSweep 1.2s .15s ease-out 1}
+.product.controller-preview-active .controller-preview-controller{opacity:1;transform:translateY(-6px) rotate(0) scale(1);animation:controllerFloat 3s 1s ease-in-out infinite}
 .product.controller-preview-active .controller-preview-stand{opacity:1;transform:translateY(0) scale(1)}
 .product.controller-preview-active .controller-preview-pad,.product.controller-preview-active .controller-preview-label,.product.controller-preview-active .controller-preview-caption{opacity:1}
-.product.controller-preview-active .controller-preview-scene:before{transform:scale(1.12)}
+.product.controller-preview-active .controller-preview-scene:before{transform:scale(1.15)}
+@keyframes controllerCorePulse{0%,100%{transform:scale(.9);opacity:.65}50%{transform:scale(1.18);opacity:1}}
+@keyframes controllerFloorPulse{0%,100%{box-shadow:0 0 18px #4b86ff30}50%{box-shadow:0 0 32px #4b86ff75}}
+@keyframes controllerFloat{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@keyframes controllerLightSweep{0%{left:-70%;opacity:0}15%{opacity:1}100%{left:135%;opacity:0}}
 @media(hover:hover) and (pointer:fine){.product.has-controller-preview:hover .controller-preview-scene{opacity:1}.product.has-controller-preview:hover .controller-preview-controller{opacity:1;transform:translateY(-6px) rotate(0) scale(1)}.product.has-controller-preview:hover .controller-preview-stand,.product.has-controller-preview:hover .controller-preview-pad,.product.has-controller-preview:hover .controller-preview-label,.product.has-controller-preview:hover .controller-preview-caption{opacity:1}.product.has-controller-preview:hover .controller-preview-stand{transform:translateY(0) scale(1)}}
-@media(prefers-reduced-motion:reduce){.controller-preview-scene,.controller-preview-controller,.controller-preview-stand,.controller-preview-pad{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.controller-preview-scene,.controller-preview-controller,.controller-preview-stand,.controller-preview-pad{transition:none!important;animation:none!important}}
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
