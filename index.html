@@ -901,6 +901,23 @@ body[data-theme="gifts"]{--detail-page-bg:#efd0a7;--detail-top-bg:#dfb783;--deta
 @media(max-width:720px){.detail-content{padding:25px 20px!important;border-radius:20px!important}.detail-breadcrumb{padding:12px 18px}}
 @media(prefers-reduced-motion:reduce){.product-detail-overlay,.detail-breadcrumb,.detail-content,.detail-visual{transition:none!important}}
 </style>
+<style>
+/* Category icon flight animation: button to oversized floating category emblem */
+.cat{position:relative;isolation:isolate;overflow:hidden;cursor:pointer;transition:transform .42s cubic-bezier(.16,1,.3,1),border-color .4s,background .4s,box-shadow .42s!important}
+.cat:before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--theme-accent) 34%,transparent),transparent 72%);opacity:0;transform:scale(.65);transition:opacity .45s,transform .55s cubic-bezier(.16,1,.3,1)}
+.cat:hover,.cat:focus-visible{transform:translateY(-8px) scale(1.035)!important;border-color:var(--theme-accent)!important;box-shadow:0 16px 34px color-mix(in srgb,var(--theme-accent) 24%,transparent)!important;outline:none}
+.cat:hover:before,.cat:focus-visible:before,.cat.active:before{opacity:1;transform:scale(1)}
+.cat span{display:inline-block;transform-origin:center;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s}
+.cat:hover span,.cat:focus-visible span{transform:translateY(-5px) scale(1.32) rotate(-8deg);filter:drop-shadow(0 8px 10px color-mix(in srgb,var(--theme-accent) 48%,transparent))}
+.cat.active span{transform:scale(1.13)}
+.cat.tab-just-selected{animation:categoryButtonLand .56s cubic-bezier(.16,1,.3,1)}
+@keyframes categoryButtonLand{0%{transform:translateY(0) scale(1)}38%{transform:translateY(-9px) scale(1.055)}72%{transform:translateY(1px) scale(.99)}100%{transform:translateY(0) scale(1)}}
+.category-flight-icon{position:fixed;z-index:9999;display:grid;place-items:center;pointer-events:none;font-size:clamp(36px,5vw,58px);line-height:1;filter:drop-shadow(0 12px 18px #0003);will-change:transform,opacity;transform-origin:center}
+body[data-theme="men"] .category-flight-icon,body[data-theme="tops"] .category-flight-icon{filter:hue-rotate(175deg) saturate(1.45) drop-shadow(0 12px 18px #0003)}
+body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1,.3,1)}
+@keyframes categoryBackgroundPulse{0%{opacity:.35;transform:scale(.96)}45%{opacity:1;transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.cat,.cat span{transition:none!important}.cat.tab-just-selected{animation:none!important}}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1068,7 +1085,33 @@ function animateCategorySelection(button){
  document.querySelectorAll('.cat').forEach(item=>item.classList.remove('tab-just-selected'));
  void button.offsetWidth;
  button.classList.add('tab-just-selected');
+ animateCategoryFlight(button);
  window.setTimeout(()=>button.classList.remove('tab-just-selected'),540);
+}
+function animateCategoryFlight(button){
+ const source=button.querySelector('span');
+ if(!source||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const from=source.getBoundingClientRect();
+ const icon=document.createElement('span');
+ icon.className='category-flight-icon';
+ icon.textContent=source.textContent.trim();
+ icon.setAttribute('aria-hidden','true');
+ document.body.appendChild(icon);
+ const size=Math.max(from.width,from.height,30);
+ const startX=from.left+from.width/2-size/2;
+ const startY=from.top+from.height/2-size/2;
+ const endSize=Math.min(150,window.innerWidth*.22);
+ const endX=Math.max(24,Math.min(window.innerWidth*.09,90));
+ const endY=Math.max(115,Math.min(window.innerHeight*.48,window.innerHeight-190));
+ icon.style.left=startX+'px';icon.style.top=startY+'px';icon.style.width=size+'px';icon.style.height=size+'px';
+ const dx=endX-startX,dy=endY-startY,scale=endSize/size;
+ const animation=icon.animate([
+  {transform:'translate3d(0,0,0) scale(1) rotate(0deg)',opacity:0,filter:'blur(2px)'},
+  {transform:'translate3d(0,0,0) scale(1.12) rotate(-9deg)',opacity:1,filter:'blur(0)',offset:.16},
+  {transform:'translate3d('+dx*.72+'px,'+dy*.72+'px,0) scale('+(1+(scale-1)*.72)+') rotate(5deg)',opacity:1,filter:'blur(0)',offset:.78},
+  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+scale+') rotate(0deg)',opacity:0,filter:'blur(1px)'}
+ ],{duration:920,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});
+ animation.onfinish=()=>icon.remove();
 }
 function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
