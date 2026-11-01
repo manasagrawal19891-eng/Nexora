@@ -1151,18 +1151,17 @@ function animateCategoryFlight(button){
   categoryAmbientIcon=icon;
 
   const mobile=window.matchMedia('(max-width:720px)').matches;
-  const targetSize=mobile?185:260;
+  // Keep the floating emoji deliberately compact on phones.
+  const targetSize=mobile?68:190;
+  const targetFont=mobile?48:138;
   const startSize=Math.max(18,Math.min(from.width,from.height));
   const startX=from.left+from.width/2-startSize/2;
   const startY=from.top+from.height/2-startSize/2;
-  const endX=mobile?4:8;
-  const endY=Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-targetSize-55));
+  const endX=mobile?6:8;
+  const endY=Math.max(90,Math.min(window.innerHeight*.22,window.innerHeight-targetSize-35));
   const dx=endX-startX,dy=endY-startY;
   const grow=targetSize/startSize;
 
-  /* Begin at the exact on-screen emoji bounds. The first frame is visible
-     at the button itself; it then enlarges and travels, so it cannot pop
-     into existence at the destination. */
   icon.style.position='fixed';
   icon.style.left=startX+'px';
   icon.style.top=startY+'px';
@@ -1180,7 +1179,7 @@ function animateCategoryFlight(button){
     icon.style.top=(window.scrollY+endY)+'px';
     icon.style.width=targetSize+'px';
     icon.style.height=targetSize+'px';
-    icon.style.fontSize=(mobile?132:190)+'px';
+    icon.style.fontSize=targetFont+'px';
     icon.style.transform='';
     icon.classList.remove('is-flying');
     icon.classList.add('settled');
@@ -1188,13 +1187,12 @@ function animateCategoryFlight(button){
 
   const animation=icon.animate([
     {transform:'translate3d(0,0,0) scale(1) rotate(-8deg)',opacity:1},
-    {transform:'translate3d('+dx*.18+'px,'+(dy*.18-8)+'px,0) scale('+(1+(grow-1)*.35)+') rotate(-5deg)',opacity:1,offset:.25},
-    {transform:'translate3d('+dx*.62+'px,'+(dy*.62-20)+'px,0) scale('+(1+(grow-1)*.78)+') rotate(3deg)',opacity:1,offset:.7},
+    {transform:'translate3d('+dx*.2+'px,'+(dy*.2-4)+'px,0) scale('+(1+(grow-1)*.35)+') rotate(-5deg)',opacity:1,offset:.25},
+    {transform:'translate3d('+dx*.68+'px,'+(dy*.68-8)+'px,0) scale('+(1+(grow-1)*.8)+') rotate(3deg)',opacity:1,offset:.72},
     {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+grow+') rotate(0deg)',opacity:1}
-  ],{duration:2100,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+  ],{duration:1500,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
   animation.onfinish=settle;
-}
-function moveCategoryAura(){
+}function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
  if(!active)return;
  const parent=categoriesEl.getBoundingClientRect(),item=active.getBoundingClientRect();
