@@ -787,51 +787,68 @@ button:disabled{cursor:not-allowed}
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 <style>
-
-/* Nexora product page visual refresh */
-.product-detail-overlay{padding:0;background:#f7f7f5;backdrop-filter:none;overflow:auto}
-.product-detail-overlay.open{align-items:stretch}
-.product-detail-card{width:100%;max-width:none;min-height:100vh;margin:0;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:0;border:0;border-radius:0;background:#fff;box-shadow:none;animation:detailReveal .55s cubic-bezier(.16,1,.3,1) both}
-@keyframes detailReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.detail-visual{min-height:100vh;background:radial-gradient(circle at 50% 46%,#fff 0%,#f3eee7 65%,#e9e1d6 100%);isolation:isolate}
-.detail-visual:before{width:min(65%,520px);height:auto;aspect-ratio:1;border-color:#aa927333;box-shadow:0 0 0 30px #aa92730a,0 0 70px #aa92731a}
-.detail-visual:after{width:min(49%,390px);height:auto;aspect-ratio:1;border-color:#aa927326}
-.detail-product-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.96;mix-blend-mode:multiply;transition:transform .9s cubic-bezier(.16,1,.3,1)}
-.product-detail-card:hover .detail-product-image{transform:scale(1.018)}
+/* Full Nexora product detail page redesign */
+.product-detail-overlay{position:fixed;inset:0;z-index:90;display:none;padding:0;overflow:auto;background:#f8f8f6;backdrop-filter:none;align-items:flex-start;justify-content:flex-start}
+.product-detail-overlay.open{display:block}
+.product-detail-card{display:block;width:100%;max-width:none;min-height:100vh;margin:0;border:0;border-radius:0;overflow:hidden;background:#fff;color:#242321;box-shadow:none;animation:detailPageIn .42s cubic-bezier(.2,.8,.2,1) both}
+@keyframes detailPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.detail-nav{height:76px;padding:0 clamp(22px,4vw,68px);display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(100deg,#07120f,#101716 55%,#0b1211);color:#fff}
+.detail-brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:24px;font-weight:850;letter-spacing:-1px;white-space:nowrap}
+.detail-brand-mark{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:linear-gradient(140deg,#9cf6c4,#00a85e);color:#06351e;font-size:24px;font-weight:950}
+.detail-nav-links{display:flex;align-items:center;gap:clamp(15px,3vw,46px);color:#e1e9e4;font-size:14px;font-weight:650}
+.detail-nav-links a{color:inherit;text-decoration:none}
+.detail-nav-links a:first-child{color:#a7f0c4}
+.detail-nav-right{display:flex;align-items:center;gap:12px;min-width:190px;color:#d3ddd8;font-size:13px}
+.detail-search-icon{font-size:25px}
+.detail-nav-icon{width:42px;height:42px;border-radius:50%;border:1px solid #ffffff20;background:#ffffff12;color:#fff;font-size:20px}
+.detail-breadcrumb{min-height:72px;padding:12px clamp(22px,4vw,68px);display:flex;align-items:center;gap:11px;color:#77766f;font-size:13px}
+.detail-breadcrumb strong{color:#252522;font-weight:700}
+.detail-close{margin-left:auto;display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 17px;border:1px solid #e8e3dc;border-radius:999px;background:#fff;color:#292723;font-size:12px;font-weight:750;white-space:nowrap}
+.detail-main{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(34px,5vw,82px);padding:10px clamp(22px,4vw,68px) 60px;max-width:1800px;margin:0 auto}
+.detail-gallery{display:grid;grid-template-columns:104px minmax(0,1fr);gap:20px;align-items:start;min-width:0}
+.detail-thumbnails{display:grid;gap:15px;padding-top:24px}
+.detail-thumb{height:116px;width:100%;padding:0;overflow:hidden;border:1px solid #e5e1db;border-radius:13px;background:#f0efed;cursor:pointer;transition:border-color .25s,transform .3s}
+.detail-thumb:hover{transform:translateY(-2px)}
+.detail-thumb.active{border:2px solid #13894d;box-shadow:0 0 0 3px #13894d16}
+.detail-thumb img{width:100%;height:100%;object-fit:cover;mix-blend-mode:multiply}
+.detail-visual{position:relative;min-height:clamp(490px,67vh,760px);height:calc(100vh - 190px);max-height:820px;display:grid;place-items:center;overflow:hidden;border-radius:28px;background:radial-gradient(circle at 50% 44%,#fff 0%,#f1ece4 68%,#e7ded2 100%);isolation:isolate}
+.detail-visual:before,.detail-visual:after{content:"";position:absolute;z-index:0;left:50%;top:50%;transform:translate(-50%,-50%);width:68%;aspect-ratio:1;border:1px solid #a98d6928;border-radius:50%;box-shadow:0 0 0 28px #a98d6908}
+.detail-visual:after{width:51%;box-shadow:none}
+.detail-product-image{position:absolute;z-index:1;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;opacity:.97;mix-blend-mode:multiply;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.detail-visual:hover .detail-product-image{transform:scale(1.025)}
 .detail-product-icon{display:none}
-.detail-image-caption{position:absolute;left:clamp(24px,5vw,80px);bottom:clamp(25px,5vh,58px);z-index:2;color:#292723;font-size:12px;font-weight:900;letter-spacing:3px}
-.detail-image-caption span{display:block;margin-top:8px;color:#81786d;font-size:10px;font-weight:650;letter-spacing:2px}
-.detail-content{min-height:100vh;padding:clamp(32px,5vw,76px) clamp(28px,6.5vw,100px);background:#fff;color:#292723;align-items:flex-start;justify-content:center}
-.detail-topline{width:100%;margin-bottom:clamp(30px,5vh,58px)}
-.detail-category{color:#806447;background:#f4efe8;border:1px solid #e8ded0;border-radius:999px;padding:10px 14px;font-size:10px;letter-spacing:1.2px}
-.detail-close{width:auto;height:42px;padding:0 15px;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#39352f;border:1px solid #e9e2d9;border-radius:999px;font-size:12px;font-weight:750;white-space:nowrap}
-.detail-content h2{max-width:620px;color:#292723;font-size:clamp(36px,4.2vw,64px);line-height:1.04;letter-spacing:-2.6px;margin:0 0 15px}
-.detail-rating{color:#9b7855;font-size:11px;font-weight:850;letter-spacing:1px;margin-bottom:22px}
-.detail-rating span{color:#8b857d;margin-left:8px;letter-spacing:0}
-.detail-description{max-width:550px;color:#777168;font-size:15px;line-height:1.8;margin:0 0 27px}
-.detail-feature-list{gap:13px;margin:0 0 31px;color:#504b44;font-size:13px}
-.detail-check{width:25px;height:25px;border-radius:8px;background:#edf5ef;border:1px solid #d6e8da;color:#367a58}
-.detail-price-line{width:100%;margin:0 0 19px;gap:12px}
-.detail-price{font-size:38px;color:#292723;letter-spacing:-1.5px}
-.detail-old{color:#9a948c}
-.detail-discount{color:#347b57;background:#edf5ef;padding:8px 11px;border-radius:9px;font-size:10px;letter-spacing:.35px}
-.detail-add{max-width:560px;min-height:62px;border-radius:16px;background:#292723;color:#fff;box-shadow:0 14px 30px #29272318;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,background .35s}
-.detail-add:hover{transform:translateY(-3px);background:#171614;box-shadow:0 20px 38px #29272325;filter:none}
-.detail-note{max-width:560px;color:#8d867c;font-size:10px;line-height:1.65;margin:13px 0 0;text-align:left}
-.detail-add:after{content:"";display:block}
-@media(max-width:760px){
- .product-detail-overlay{padding:0}
- .product-detail-card{grid-template-columns:1fr;max-width:none}
- .detail-visual{min-height:48vh;height:48vh}
- .detail-image-caption{left:22px;bottom:18px}
- .detail-content{min-height:auto;padding:27px 24px 38px}
- .detail-topline{margin-bottom:25px}
- .detail-content h2{font-size:clamp(32px,8vw,46px);letter-spacing:-1.6px}
- .detail-description{font-size:14px}
- .detail-price{font-size:32px}
-}
-@media(prefers-reduced-motion:reduce){.product-detail-card,.detail-product-image{animation:none!important;transition:none!important}}
-
+.detail-gallery-tag{position:absolute;z-index:2;top:20px;left:20px;padding:10px 15px;border-radius:999px;background:#087c40;color:#fff;font-size:11px;font-weight:800;letter-spacing:.5px}
+.detail-gallery-arrow{position:absolute;z-index:3;bottom:18px;width:46px;height:46px;border:0;border-radius:50%;background:#ffffffed;color:#252522;font-size:28px;box-shadow:0 5px 18px #00000012;transition:transform .25s}
+.detail-gallery-arrow:hover{transform:scale(1.07)}
+.detail-gallery-arrow.prev{left:18px}.detail-gallery-arrow.next{right:18px}
+.detail-image-caption{position:absolute;z-index:2;left:25px;bottom:25px;color:#292723;font-size:11px;font-weight:900;letter-spacing:3px}
+.detail-image-caption span{display:block;margin-top:7px;color:#81786d;font-size:9px;font-weight:650;letter-spacing:2px}
+.detail-content{min-width:0;min-height:0;padding:20px 0 0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;background:#fff;color:#292723}
+.detail-category{display:inline-flex;margin-bottom:16px;padding:9px 13px;border:1px solid #e8ded0;border-radius:999px;background:#f4efe8;color:#806447;font-size:10px;font-weight:850;letter-spacing:1px}
+.detail-kicker{margin-bottom:12px;color:#927653;font-size:10px;font-weight:850;letter-spacing:2.2px}
+.detail-content h2{max-width:700px;margin:0 0 13px;color:#242321;font-size:clamp(38px,4.4vw,68px);font-weight:850;line-height:1.02;letter-spacing:-2.8px}
+.detail-rating{margin:0 0 22px;color:#a17951;font-size:11px;font-weight:850;letter-spacing:1.2px}
+.detail-description{max-width:570px;margin:0 0 24px;color:#777168;font-size:15px;line-height:1.8}
+.detail-feature-list{display:grid;gap:13px;margin:0 0 29px;padding:0;list-style:none;color:#57534d;font-size:13px}
+.detail-feature-list li{display:flex;align-items:center;gap:10px}
+.detail-check{flex:0 0 26px;width:26px;height:26px;display:grid;place-items:center;border:1px solid #d6e8da;border-radius:8px;background:#edf5ef;color:#367a58;font-size:14px}
+.detail-price-line{display:flex;align-items:center;gap:15px;margin:0 0 20px}
+.detail-price{color:#242321;font-size:40px;font-weight:900;letter-spacing:-1.8px}
+.detail-discount{padding:9px 13px;border-radius:9px;background:#edf5ef;color:#347b57;font-size:10px;font-weight:900;letter-spacing:.4px}
+.detail-add{width:100%;max-width:650px;min-height:64px;border:0;border-radius:17px;background:#252421;color:#fff;font-size:16px;font-weight:850;box-shadow:0 14px 30px #24232118;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,background .35s}
+.detail-add:hover:not(:disabled){transform:translateY(-3px);background:#111;color:#fff;box-shadow:0 20px 38px #24232125}
+.detail-add:disabled{opacity:.6;cursor:not-allowed}
+.detail-note{max-width:650px;margin:12px 0 20px;color:#8d867c;font-size:10px;line-height:1.65;text-align:left}
+.detail-assurances{width:100%;max-width:650px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding:18px 16px;border:1px solid #eeece8;border-radius:17px;background:#fbfbfa}
+.detail-assurances div{display:grid;grid-template-columns:28px 1fr;column-gap:8px;align-items:center;min-width:0}
+.detail-assurances div>span{grid-row:span 2;color:#13894d;font-size:20px}
+.detail-assurances strong{color:#34322e;font-size:11px}
+.detail-assurances small{color:#827d75;font-size:9px}
+.detail-assurances i{width:1px;height:34px;background:#e4e0da}
+@media(max-width:1050px){.detail-nav-links{gap:15px}.detail-nav-right{min-width:0}.detail-nav-right>span:nth-child(2){display:none}.detail-main{gap:30px}.detail-gallery{grid-template-columns:78px minmax(0,1fr);gap:12px}.detail-thumb{height:92px}.detail-content h2{font-size:clamp(34px,4.4vw,52px)}}
+@media(max-width:720px){.detail-nav{height:auto;min-height:66px;padding:12px 18px;flex-wrap:wrap;gap:12px}.detail-brand{font-size:21px}.detail-nav-links{order:3;width:100%;justify-content:center;padding:7px 0 2px;font-size:12px}.detail-nav-right{margin-left:auto}.detail-nav-icon{width:36px;height:36px}.detail-breadcrumb{min-height:58px;padding:10px 18px;gap:7px;font-size:11px;flex-wrap:wrap}.detail-breadcrumb .detail-close{height:36px;padding:0 11px}.detail-main{grid-template-columns:1fr;gap:26px;padding:8px 18px 38px}.detail-gallery{grid-template-columns:70px minmax(0,1fr);gap:10px}.detail-thumbnails{gap:10px;padding-top:0}.detail-thumb{height:82px}.detail-visual{height:54vh;min-height:330px;max-height:560px;border-radius:21px}.detail-content{padding:0 2px}.detail-content h2{font-size:clamp(34px,9vw,48px);letter-spacing:-1.8px}.detail-description{font-size:14px}.detail-price{font-size:34px}.detail-assurances{gap:8px;padding:14px 10px}.detail-assurances div{grid-template-columns:22px 1fr;column-gap:5px}.detail-assurances strong{font-size:9px}.detail-assurances small{font-size:8px}.detail-assurances i{height:30px}}
+@media(max-width:390px){.detail-nav-links{gap:10px}.detail-breadcrumb{font-size:10px}.detail-gallery{grid-template-columns:58px minmax(0,1fr)}.detail-thumb{height:70px}.detail-visual{min-height:290px}.detail-gallery-tag{top:12px;left:12px;font-size:9px}.detail-assurances{flex-wrap:wrap}.detail-assurances i{display:none}}
+@media(prefers-reduced-motion:reduce){.product-detail-card,.detail-product-image,.detail-thumb,.detail-gallery-arrow,.detail-add{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -922,16 +939,33 @@ button:disabled{cursor:not-allowed}
 </div>
 <div class="product-detail-overlay" id="productDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="detailName">
   <section class="product-detail-card">
-    <div class="detail-visual"><img class="detail-product-image" id="detailImage" alt="Product preview"><span class="detail-product-icon" id="detailIcon" aria-hidden="true">🎧</span><div class="detail-image-caption">NEXORA <span>STYLE EDIT</span></div></div>
-    <div class="detail-content">
-      <div class="detail-topline"><span class="detail-category" id="detailCategory">A Nexora pick</span><button class="detail-close" id="detailClose" aria-label="Back to shop">← <span>Back to shop</span></button></div>
-      <h2 id="detailName">Product name</h2>
-      <div class="detail-rating" id="detailRating">★★★★★ <span>Rated by shoppers</span></div>
-      <p class="detail-description" id="detailDescription">A thoughtful everyday upgrade for your setup.</p>
-      <ul class="detail-feature-list"><li><span class="detail-check">✓</span> Selected for everyday convenience</li><li><span class="detail-check">✓</span> Simple, setup-friendly design</li><li><span class="detail-check">✓</span> Easy to add to your demo cart</li></ul>
-      <div class="detail-price-line"><span class="detail-price" id="detailPrice">₹499</span><span class="detail-old" id="detailOld">₹799</span><span class="detail-discount" id="detailDiscount">SAVE 36%</span></div>
-      <button class="detail-add" id="detailAddButton">＋ &nbsp; Add to Cart</button>
-      <p class="detail-note">Catalogue preview · Prices, discounts and ratings are examples, not verified offers or customer reviews. No real orders or payments are processed.</p>
+    <header class="detail-nav">
+      <a class="detail-brand" href="#" aria-label="Nexora home"><span class="detail-brand-mark">N</span><span>Nexora</span></a>
+      <nav class="detail-nav-links" aria-label="Product navigation"><a href="#shop" id="detailHomeLink">Home</a><a href="#shop" id="detailShopLink">Shop</a><span>Categories</span><span>About</span></nav>
+      <div class="detail-nav-right"><span class="detail-search-icon">⌕</span><span>Search products</span><button type="button" class="detail-nav-icon" aria-label="Account">♙</button><button type="button" class="detail-nav-icon" aria-label="Shopping bag">♧</button></div>
+    </header>
+    <div class="detail-breadcrumb"><span>⌂</span><span>›</span><span>Shop</span><span>›</span><span id="detailCrumbCategory">Men's Wear</span><span>›</span><strong id="detailCrumbName">Nexora product</strong><button class="detail-close" id="detailClose" aria-label="Back to shop">← <span>Back to shop</span></button></div>
+    <div class="detail-main">
+      <div class="detail-gallery">
+        <div class="detail-thumbnails" aria-label="Product image previews">
+          <button class="detail-thumb active" type="button" data-view="0" aria-label="View image 1"><img id="detailThumb0" alt=""></button>
+          <button class="detail-thumb" type="button" data-view="1" aria-label="View image 2"><img id="detailThumb1" alt=""></button>
+          <button class="detail-thumb" type="button" data-view="2" aria-label="View image 3"><img id="detailThumb2" alt=""></button>
+        </div>
+        <div class="detail-visual"><img class="detail-product-image" id="detailImage" alt="Product preview"><span class="detail-product-icon" id="detailIcon" aria-hidden="true">🎧</span><span class="detail-gallery-tag">✦ &nbsp; NEXORA STYLE EDIT</span><button class="detail-gallery-arrow prev" id="detailPrev" type="button" aria-label="Previous image">‹</button><button class="detail-gallery-arrow next" id="detailNext" type="button" aria-label="Next image">›</button><div class="detail-image-caption">NEXORA <span>STYLE EDIT</span></div></div>
+      </div>
+      <div class="detail-content">
+        <div class="detail-category" id="detailCategory">MEN'S WEAR · NEXORA PICK</div>
+        <div class="detail-kicker">THE EVERYDAY EDIT</div>
+        <h2 id="detailName">Product name</h2>
+        <div class="detail-rating" id="detailRating">DEMO PRODUCT · not for sale</div>
+        <p class="detail-description" id="detailDescription">Style inspiration only. Product details will be confirmed after supplier verification.</p>
+        <ul class="detail-feature-list"><li><span class="detail-check">✓</span><span>Selected for everyday styling</span></li><li><span class="detail-check">✓</span><span>Simple, versatile design preview</span></li><li><span class="detail-check">✓</span><span>Part of the Nexora style edit</span></li></ul>
+        <div class="detail-price-line"><span class="detail-price" id="detailPrice">₹799</span><span class="detail-discount" id="detailDiscount">DEMO PRICE ONLY</span></div>
+        <button class="detail-add" id="detailAddButton">＋ &nbsp; Add to Cart</button>
+        <p class="detail-note">DEMO ONLY: Sample price, not a real offer. This item is not available to buy. Cart and checkout are for testing only; no order or payment will be made.</p>
+        <div class="detail-assurances"><div><span>◈</span><strong>Secure checkout</strong><small>Demo experience only</small></div><i></i><div><span>▣</span><strong>Demo store</strong><small>For learning purposes</small></div><i></i><div><span>◉</span><strong>Support</strong><small>Help when you need it</small></div></div>
+      </div>
     </div>
   </section>
 </div>
@@ -1192,20 +1226,40 @@ let selectedDetailProduct=null;
 function productDescription(p){
  return 'Style inspiration only. Final product photos, fabric, fit, size options, materials and care details will be added after the supplier listing is checked and confirmed.';
 }
+let detailGalleryImages=[];
+let detailGalleryIndex=0;
+function setDetailGallery(index){
+ if(!detailGalleryImages.length)return;
+ detailGalleryIndex=(index+detailGalleryImages.length)%detailGalleryImages.length;
+ const main=document.getElementById('detailImage');
+ main.src=detailGalleryImages[detailGalleryIndex];main.alt=(selectedDetailProduct?.name||'Product')+' style preview '+(detailGalleryIndex+1);
+ document.querySelectorAll('.detail-thumb').forEach((b,i)=>b.classList.toggle('active',i===detailGalleryIndex));
+}
+document.querySelectorAll('.detail-thumb').forEach(b=>b.addEventListener('click',()=>setDetailGallery(Number(b.dataset.view))));
+document.getElementById('detailPrev').addEventListener('click',()=>setDetailGallery(detailGalleryIndex-1));
+document.getElementById('detailNext').addEventListener('click',()=>setDetailGallery(detailGalleryIndex+1));
+document.getElementById('detailHomeLink').addEventListener('click',closeProductDetails);
+document.getElementById('detailShopLink').addEventListener('click',closeProductDetails);
 function openProductDetails(id){
  const p=products.find(item=>item.id===id);if(!p)return;selectedDetailProduct=p;
  document.getElementById('detailIcon').textContent=p.icon;
- const detailImage=document.getElementById('detailImage');detailImage.src=productImage(p);detailImage.alt=p.name+' style preview';
- document.getElementById('detailCategory').textContent=p.category+' · NEXORA PICK';
+ const image=productImage(p);
+ detailGalleryImages=[image,image+(image.includes('?')?'&':'?')+'crop=entropy',image+(image.includes('?')?'&':'?')+'sat=-12'];
+ document.getElementById('detailThumb0').src=detailGalleryImages[0];
+ document.getElementById('detailThumb1').src=detailGalleryImages[1];
+ document.getElementById('detailThumb2').src=detailGalleryImages[2];
+ setDetailGallery(0);
+ document.getElementById('detailCategory').textContent=p.category.toUpperCase()+' · NEXORA PICK';
+ document.getElementById('detailCrumbCategory').textContent=p.category;
+ document.getElementById('detailCrumbName').textContent=p.name;
  document.getElementById('detailName').textContent=p.name;
- document.getElementById('detailRating').textContent=p.demo?'DEMO PRODUCT · not for sale':'Style preview · not a verified supplier listing';
+ document.getElementById('detailRating').textContent=p.demo?'DEMO PRODUCT · not for sale':'STYLE PREVIEW · supplier listing not verified';
  document.getElementById('detailDescription').textContent=productDescription(p);
  document.getElementById('detailPrice').textContent=p.price==null?'Price coming soon':money(p.price);
- document.getElementById('detailOld').textContent='';
- document.getElementById('detailDiscount').textContent=p.demo?'DEMO PRICE ONLY':'Supplier check pending';
+ document.getElementById('detailDiscount').textContent=p.demo?'DEMO PRICE ONLY':'SUPPLIER CHECK PENDING';
  const detailAdd=document.getElementById('detailAddButton');
  detailAdd.disabled=!Number.isFinite(p.price);
- detailAdd.textContent=detailAdd.disabled?'Available after supplier confirmation':'＋ Add to Cart';
+ detailAdd.textContent=detailAdd.disabled?'Available after supplier confirmation':'＋  Add to Cart';
  document.querySelector('.detail-note').textContent=p.demo?'DEMO ONLY: ₹799 is a sample price, not a real offer. This item is not available to buy. Cart and checkout are for testing only; no order or payment will be made.':'Style preview only. Product photos, stock, prices and availability are not confirmed yet. No real orders or payments are processed.';
  detailOverlay.classList.add('open');document.body.style.overflow='hidden';
 }
