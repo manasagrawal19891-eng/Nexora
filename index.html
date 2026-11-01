@@ -910,7 +910,7 @@ body[data-theme="gifts"]{--detail-page-bg:#efd0a7;--detail-top-bg:#dfb783;--deta
 .cat:hover:before,.cat:focus-visible:before,.cat.active:before{opacity:1}
 .cat span{display:inline-block;transform:none!important;transition:filter .5s ease!important}
 .cat:hover span,.cat:focus-visible span,.cat.active span{transform:none!important;filter:drop-shadow(0 5px 9px color-mix(in srgb,var(--theme-accent) 32%,transparent))}
-.category-flight-icon{position:fixed;z-index:9999;display:grid;place-items:center;pointer-events:none;font-size:clamp(150px,16vw,210px);line-height:1;filter:drop-shadow(0 22px 30px #0004);will-change:transform,opacity;transform-origin:center}
+.category-flight-icon{position:absolute;z-index:9999;display:grid;place-items:center;pointer-events:none;font-size:clamp(150px,16vw,210px);line-height:1;filter:drop-shadow(0 22px 30px #0004);will-change:transform,opacity;transform-origin:center}
 body[data-theme="men"] .category-flight-icon,body[data-theme="tops"] .category-flight-icon{filter:hue-rotate(175deg) saturate(1.45) drop-shadow(0 22px 30px #0004)}
 body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1,.3,1)}
 @keyframes categoryBackgroundPulse{0%{opacity:.35;transform:scale(.96)}45%{opacity:1;transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
@@ -1093,9 +1093,9 @@ function animateCategoryFlight(button){
  icon.className='category-flight-icon category-ambient-icon';icon.textContent=source.textContent.trim();icon.setAttribute('aria-hidden','true');
  if(categoryAmbientIcon)categoryAmbientIcon.remove();document.body.appendChild(icon);categoryAmbientIcon=icon;
  const mobile=window.matchMedia('(max-width:720px)').matches;
- const box=mobile?185:260,centerX=from.left+from.width/2,centerY=from.top+from.height/2;
+ const box=mobile?185:260,centerX=from.left+window.scrollX+from.width/2,centerY=from.top+window.scrollY+from.height/2;
  const startX=centerX-box/2,startY=centerY-box/2;
- const endX=mobile?4:8,endY=Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-box-55));
+ const endX=window.scrollX+(mobile?4:8),endY=window.scrollY+Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-box-55));
  const dx=endX-startX,dy=endY-startY;
  icon.style.left=startX+'px';icon.style.top=startY+'px';
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){icon.style.left=endX+'px';icon.style.top=endY+'px';icon.classList.add('settled');return;}
@@ -1110,9 +1110,10 @@ function animateCategoryFlight(button){
 function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
  if(!active)return;
- categoryAura.style.width=active.offsetWidth+'px';
- categoryAura.style.height=active.offsetHeight+'px';
- categoryAura.style.transform='translate3d('+active.offsetLeft+'px,'+active.offsetTop+'px,0)';
+ const parent=categoriesEl.getBoundingClientRect(),item=active.getBoundingClientRect();
+ categoryAura.style.width=item.width+'px';
+ categoryAura.style.height=item.height+'px';
+ categoryAura.style.transform='translate3d('+(item.left-parent.left)+'px,'+(item.top-parent.top)+'px,0)';
  categoryAura.style.opacity='1';
 }
 window.addEventListener('resize',()=>requestAnimationFrame(moveCategoryAura),{passive:true});
@@ -1286,7 +1287,7 @@ let toastTimer;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
 function addToCart(id){const product=products.find(p=>p.id===id);if(!product||!Number.isFinite(product.price)){toast('This style is a preview. Supplier price and availability are not confirmed yet.');return}cart.push(id);updateCart();toast(product.name+' added to your cart!')}
 function applyCategoryTheme(category){const themes={"All":"all","Men's Wear":"men","Women's Wear":"women","Streetwear":"street","Hoodies & Sweatshirts":"hoodie","T-shirts & Tops":"tops","Baggy Pants & Cargo":"cargo","Bags & Backpacks":"bags","Footwear":"footwear","Wallets & Accessories":"accessories","Gifts":"gifts"};document.body.dataset.theme=themes[category]||'all';document.body.classList.remove('theme-shift');void document.body.offsetWidth;document.body.classList.add('theme-shift');window.setTimeout(()=>document.body.classList.remove('theme-shift'),700);}
-document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');animateCategorySelection(btn);activeCategory=btn.dataset.category;applyCategoryTheme(activeCategory);render(true)}));
+document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');animateCategorySelection(btn);requestAnimationFrame(moveCategoryAura);activeCategory=btn.dataset.category;applyCategoryTheme(activeCategory);render(true)}));
 searchEl.addEventListener('input',()=>{render();showSearchSuggestions()});
 searchEl.addEventListener('focus',()=>{if(searchEl.value.trim())showSearchSuggestions()});
 searchEl.addEventListener('keydown',e=>{
@@ -1307,7 +1308,7 @@ function renderCart(){const root=document.getElementById('cartContents'),counts=
 function openCart(){cartOverlay.classList.add('open');document.body.style.overflow='hidden';renderCart()}
 function closeCart(){cartOverlay.classList.remove('open');document.body.style.overflow=''}
 document.getElementById('cartButton').addEventListener('click',openCart);document.getElementById('cartClose').addEventListener('click',closeCart);cartOverlay.addEventListener('click',e=>{if(e.target===cartOverlay)closeCart()});document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeCart();}});
-document.getElementById('viewAll').addEventListener('click',()=>{activeCategory='All';document.querySelectorAll('.cat').forEach(b=>b.classList.toggle('active',b.dataset.category==='All'));animateCategorySelection(document.querySelector('.cat.active'));searchEl.value='';render(true)});
+document.getElementById('viewAll').addEventListener('click',()=>{activeCategory='All';document.querySelectorAll('.cat').forEach(b=>b.classList.toggle('active',b.dataset.category==='All'));animateCategorySelection(document.querySelector('.cat.active'));requestAnimationFrame(moveCategoryAura);searchEl.value='';render(true)});
 
 const detailOverlay=document.getElementById('productDetailOverlay');
 let selectedDetailProduct=null;
