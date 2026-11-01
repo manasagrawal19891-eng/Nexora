@@ -971,6 +971,21 @@ body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1
 }
 </style>
 
+<style id="nexora-disable-category-float-mobile">
+@media screen and (max-width: 720px), screen and (max-device-width: 720px) {
+  .category-flight-icon,
+  .category-ambient-icon,
+  .category-flight-icon.category-ambient-icon,
+  .category-aura-fly,
+  .category-flying-emoji {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1138,6 +1153,8 @@ function animateCategorySelection(button){
  animateCategoryFlight(button);
 }
 let categoryAmbientIcon=null;
+// Remove any leftover floating category overlays from older cached builds.
+document.querySelectorAll('.category-flight-icon,.category-ambient-icon,.category-flying-emoji').forEach(el=>el.remove());
 function animateCategoryFlight(button){
   const mobile=window.matchMedia('(max-width:720px)').matches ||
     Math.min(window.innerWidth||9999,document.documentElement.clientWidth||9999,screen.width||9999)<=720;
