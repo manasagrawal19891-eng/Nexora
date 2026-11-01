@@ -701,6 +701,49 @@ body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG 
 @media(hover:none){.product:hover{transform:none!important;box-shadow:none!important}.product:hover .product-info{transform:none}}
 @media(prefers-reduced-motion:reduce){.product,.product-image img,.product-info{transition:none!important}}
 
+
+/* Final button hover polish: gentle glide instead of a sudden pop */
+button,.links a,.viewall,.hero-secondary{
+  transition:
+    transform .55s cubic-bezier(.22,.7,.25,1),
+    box-shadow .55s cubic-bezier(.22,.7,.25,1),
+    border-color .45s ease,
+    background-color .45s ease,
+    color .45s ease,
+    filter .45s ease !important;
+  backface-visibility:hidden;
+}
+@media(hover:hover) and (pointer:fine){
+  button:hover{
+    transform:translate3d(0,-2px,0) !important;
+    filter:brightness(1.025);
+    box-shadow:0 8px 20px rgba(45,37,27,.10);
+  }
+  .primary:hover,.add:hover,.details-btn:hover,.address-submit:hover,
+  .checkout-btn:hover,.detail-add:hover,.continue-btn:hover{
+    transform:translate3d(0,-2px,0) !important;
+    filter:brightness(1.035);
+    box-shadow:0 10px 24px rgba(45,37,27,.14) !important;
+  }
+  .account-btn:hover,.cart:hover,.controller-preview-toggle:hover,
+  .login-close:hover,.qty-btn:hover{
+    transform:translate3d(0,-2px,0) !important;
+  }
+  .categories .cat:hover{
+    transform:translate3d(0,-2px,0) !important;
+    box-shadow:0 9px 22px rgba(48,41,27,.09);
+  }
+  .links a:hover,.viewall:hover,.hero-secondary:hover{
+    transform:translate3d(0,-1px,0);
+  }
+}
+@media(hover:none){
+  button:hover{transform:none !important;filter:none}
+}
+@media(prefers-reduced-motion:reduce){
+  button,.links a,.viewall,.hero-secondary{transition:none !important}
+}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
