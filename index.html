@@ -860,6 +860,25 @@ button:disabled{cursor:not-allowed}
  .detail-main{grid-template-columns:minmax(0,1fr)!important}
 }
 </style>
+<style>
+/* Carry selected collection atmosphere into the full product detail view */
+.product-detail-card{background:#fbfaf7!important;transition:background .65s ease!important}
+.detail-main{background:transparent!important}
+.detail-visual{transition:background .75s ease!important}
+body[data-theme="men"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fff9f0 0%,#eee2d2 70%,#dfcbb3 100%)!important}
+body[data-theme="women"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fff8fc 0%,#f3e5ed 70%,#e8d2df 100%)!important}
+body[data-theme="street"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fff7f3 0%,#f3e3dc 70%,#e7c9bd 100%)!important}
+body[data-theme="hoodie"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fbf8ff 0%,#ebe5f5 70%,#d9cde9 100%)!important}
+body[data-theme="tops"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fffaf0 0%,#f4ead5 70%,#e8d7b7 100%)!important}
+body[data-theme="cargo"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#f9fbf5 0%,#e6ecdf 70%,#d0dbc5 100%)!important}
+body[data-theme="bags"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#f4fbfb 0%,#dfeeed 70%,#c7dfdf 100%)!important}
+body[data-theme="footwear"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#f5f8ff 0%,#e2eaf7 70%,#cbd9ee 100%)!important}
+body[data-theme="accessories"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fffdf6 0%,#f0ead8 70%,#e2d5b9 100%)!important}
+body[data-theme="gifts"] .detail-visual{background:radial-gradient(ellipse at 50% 42%,#fffaf1 0%,#f4ead8 70%,#e9d5b6 100%)!important}
+body.theme-shift .detail-visual{animation:detailThemeBloom .68s ease both}
+@keyframes detailThemeBloom{0%{filter:saturate(.85) brightness(.97)}45%{filter:saturate(1.2) brightness(1.04)}100%{filter:none}}
+@media(prefers-reduced-motion:reduce){.detail-visual,.product-detail-card{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
