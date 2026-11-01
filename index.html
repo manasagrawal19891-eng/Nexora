@@ -733,7 +733,11 @@ body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG 
 </section>
 <section class="section" id="shop">
   <div class="section-head"><div><h2>New Arrivals <span aria-hidden="true">✦</span></h2><p class="sub">Our first fashion collection is being curated. Supplier listings will appear here after verification.</p></div><a class="viewall" href="#shop" id="viewAll">View all →</a></div>
-  <div class="products" id="products"></div>
+  <div class="products" id="products">
+    <article class="product"><div class="product-image"><span class="tag">DEMO ONLY</span><img loading="lazy" src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=850&q=85" alt="Oversized hoodie preview"></div><div class="product-info"><h3>Nexora Essential Oversized Hoodie</h3><p>Men's Wear · Demo product</p><strong>₹799</strong><button class="primary" type="button" onclick="document.getElementById('entryScreen')?.remove()">Preview product</button></div></article>
+    <article class="product"><div class="product-image"><span class="tag">STYLE PREVIEW</span><img loading="lazy" src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=850&q=85" alt="Everyday tee preview"></div><div class="product-info"><h3>Relaxed Fit Everyday Tee</h3><p>Men's Wear · Catalogue preview</p><strong>Price coming soon</strong></div></article>
+    <article class="product"><div class="product-image"><span class="tag">GIFT IDEA</span><img loading="lazy" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=850&q=85" alt="Minimal watch gift preview"></div><div class="product-info"><h3>Midnight Minimal Watch</h3><p>Gifts · Catalogue preview</p><strong>Price coming soon</strong></div></article>
+  </div>
 </section>
 <section class="banner" id="about"><div><div class="eyebrow">Nexora · Style edit</div><h2>Everyday fits. <span class="gradient">Your own identity.</span></h2><p>Streetwear, daily wear, bags, footwear and accessories — thoughtfully brought together.</p></div><button class="primary" onclick="document.querySelector('#shop').scrollIntoView({behavior:'smooth'})">Explore collections →</button></section>
 </main>
@@ -822,7 +826,7 @@ const products=[
 {id:127,name:"Premium Sunglasses",category:"Gifts",icon:"🕶️",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
 {id:128,name:"Nexora Gift Set",category:"Gifts",icon:"🎁",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""}
 ];
-let cart=JSON.parse(localStorage.getItem('nexoraCart')||'[]').filter(id=>products.some(p=>p.id===id&&Number.isFinite(p.price))),activeCategory='All';
+let cart=[];try{const savedCart=JSON.parse(localStorage.getItem('nexoraCart')||'[]');cart=Array.isArray(savedCart)?savedCart.filter(id=>products.some(p=>p.id===id&&Number.isFinite(p.price))):[]}catch(error){cart=[]}let activeCategory='All';
 const productsEl=document.getElementById('products'),searchEl=document.getElementById('search');
 let productTransitionToken=0,productSwitchTimeout=0;
 productsEl.classList.add('product-motion-enabled');
