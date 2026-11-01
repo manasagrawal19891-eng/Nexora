@@ -1139,8 +1139,10 @@ function animateCategorySelection(button){
 }
 let categoryAmbientIcon=null;
 function animateCategoryFlight(button){
-  const source=button.querySelector('span');if(!source)return;
-  const from=source.getBoundingClientRect(),icon=document.createElement('span');
+  const source=button.querySelector('span');
+  if(!source)return;
+  const from=source.getBoundingClientRect();
+  const icon=document.createElement('span');
   icon.className='category-flight-icon category-ambient-icon is-flying';
   icon.textContent=source.textContent.trim();
   icon.setAttribute('aria-hidden','true');
@@ -1149,34 +1151,47 @@ function animateCategoryFlight(button){
   categoryAmbientIcon=icon;
 
   const mobile=window.matchMedia('(max-width:720px)').matches;
-  const box=mobile?185:260;
-  /* Start in viewport coordinates so the emoji visibly grows out of the
-     selected button's own icon, not from an unrelated document position. */
-  const startX=from.left+from.width/2-box/2;
-  const startY=from.top+from.height/2-box/2;
+  const targetSize=mobile?185:260;
+  const startSize=Math.max(18,Math.min(from.width,from.height));
+  const startX=from.left+from.width/2-startSize/2;
+  const startY=from.top+from.height/2-startSize/2;
   const endX=mobile?4:8;
-  const endY=Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-box-55));
+  const endY=Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-targetSize-55));
   const dx=endX-startX,dy=endY-startY;
+  const grow=targetSize/startSize;
+
+  /* Begin at the exact on-screen emoji bounds. The first frame is visible
+     at the button itself; it then enlarges and travels, so it cannot pop
+     into existence at the destination. */
+  icon.style.position='fixed';
   icon.style.left=startX+'px';
   icon.style.top=startY+'px';
+  icon.style.width=startSize+'px';
+  icon.style.height=startSize+'px';
+  icon.style.fontSize=getComputedStyle(source).fontSize;
+  icon.style.display='grid';
+  icon.style.placeItems='center';
+  icon.style.lineHeight='1';
+  icon.style.opacity='1';
+  icon.style.transformOrigin='center center';
 
   const settle=()=>{
-    /* Convert the final viewport point to document coordinates before
-       switching back to absolute positioning. */
     icon.style.left=(window.scrollX+endX)+'px';
     icon.style.top=(window.scrollY+endY)+'px';
+    icon.style.width=targetSize+'px';
+    icon.style.height=targetSize+'px';
+    icon.style.fontSize=(mobile?132:190)+'px';
     icon.style.transform='';
     icon.classList.remove('is-flying');
     icon.classList.add('settled');
   };
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){settle();return;}
 
   const animation=icon.animate([
-    {transform:'translate3d(0,0,0) scale(.12) rotate(-16deg)',opacity:0},
-    {transform:'translate3d('+dx*.16+'px,'+(dy*.16-10)+'px,0) scale(.48) rotate(-10deg)',opacity:1,offset:.22},
-    {transform:'translate3d('+dx*.55+'px,'+(dy*.55-24)+'px,0) scale(.84) rotate(4deg)',opacity:1,offset:.68},
-    {transform:'translate3d('+dx+'px,'+dy+'px,0) scale(1) rotate(0deg)',opacity:1}
-  ],{duration:1900,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+    {transform:'translate3d(0,0,0) scale(1) rotate(-8deg)',opacity:1},
+    {transform:'translate3d('+dx*.18+'px,'+(dy*.18-8)+'px,0) scale('+(1+(grow-1)*.35)+') rotate(-5deg)',opacity:1,offset:.25},
+    {transform:'translate3d('+dx*.62+'px,'+(dy*.62-20)+'px,0) scale('+(1+(grow-1)*.78)+') rotate(3deg)',opacity:1,offset:.7},
+    {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+grow+') rotate(0deg)',opacity:1}
+  ],{duration:2100,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
   animation.onfinish=settle;
 }
 function moveCategoryAura(){
