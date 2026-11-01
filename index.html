@@ -786,6 +786,53 @@ button:disabled{cursor:not-allowed}
 }
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
+<style>
+
+/* Nexora product page visual refresh */
+.product-detail-overlay{padding:0;background:#f7f7f5;backdrop-filter:none;overflow:auto}
+.product-detail-overlay.open{align-items:stretch}
+.product-detail-card{width:100%;max-width:none;min-height:100vh;margin:0;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:0;border:0;border-radius:0;background:#fff;box-shadow:none;animation:detailReveal .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes detailReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.detail-visual{min-height:100vh;background:radial-gradient(circle at 50% 46%,#fff 0%,#f3eee7 65%,#e9e1d6 100%);isolation:isolate}
+.detail-visual:before{width:min(65%,520px);height:auto;aspect-ratio:1;border-color:#aa927333;box-shadow:0 0 0 30px #aa92730a,0 0 70px #aa92731a}
+.detail-visual:after{width:min(49%,390px);height:auto;aspect-ratio:1;border-color:#aa927326}
+.detail-product-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.96;mix-blend-mode:multiply;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.product-detail-card:hover .detail-product-image{transform:scale(1.018)}
+.detail-product-icon{display:none}
+.detail-image-caption{position:absolute;left:clamp(24px,5vw,80px);bottom:clamp(25px,5vh,58px);z-index:2;color:#292723;font-size:12px;font-weight:900;letter-spacing:3px}
+.detail-image-caption span{display:block;margin-top:8px;color:#81786d;font-size:10px;font-weight:650;letter-spacing:2px}
+.detail-content{min-height:100vh;padding:clamp(32px,5vw,76px) clamp(28px,6.5vw,100px);background:#fff;color:#292723;align-items:flex-start;justify-content:center}
+.detail-topline{width:100%;margin-bottom:clamp(30px,5vh,58px)}
+.detail-category{color:#806447;background:#f4efe8;border:1px solid #e8ded0;border-radius:999px;padding:10px 14px;font-size:10px;letter-spacing:1.2px}
+.detail-close{width:auto;height:42px;padding:0 15px;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#39352f;border:1px solid #e9e2d9;border-radius:999px;font-size:12px;font-weight:750;white-space:nowrap}
+.detail-content h2{max-width:620px;color:#292723;font-size:clamp(36px,4.2vw,64px);line-height:1.04;letter-spacing:-2.6px;margin:0 0 15px}
+.detail-rating{color:#9b7855;font-size:11px;font-weight:850;letter-spacing:1px;margin-bottom:22px}
+.detail-rating span{color:#8b857d;margin-left:8px;letter-spacing:0}
+.detail-description{max-width:550px;color:#777168;font-size:15px;line-height:1.8;margin:0 0 27px}
+.detail-feature-list{gap:13px;margin:0 0 31px;color:#504b44;font-size:13px}
+.detail-check{width:25px;height:25px;border-radius:8px;background:#edf5ef;border:1px solid #d6e8da;color:#367a58}
+.detail-price-line{width:100%;margin:0 0 19px;gap:12px}
+.detail-price{font-size:38px;color:#292723;letter-spacing:-1.5px}
+.detail-old{color:#9a948c}
+.detail-discount{color:#347b57;background:#edf5ef;padding:8px 11px;border-radius:9px;font-size:10px;letter-spacing:.35px}
+.detail-add{max-width:560px;min-height:62px;border-radius:16px;background:#292723;color:#fff;box-shadow:0 14px 30px #29272318;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,background .35s}
+.detail-add:hover{transform:translateY(-3px);background:#171614;box-shadow:0 20px 38px #29272325;filter:none}
+.detail-note{max-width:560px;color:#8d867c;font-size:10px;line-height:1.65;margin:13px 0 0;text-align:left}
+.detail-add:after{content:"";display:block}
+@media(max-width:760px){
+ .product-detail-overlay{padding:0}
+ .product-detail-card{grid-template-columns:1fr;max-width:none}
+ .detail-visual{min-height:48vh;height:48vh}
+ .detail-image-caption{left:22px;bottom:18px}
+ .detail-content{min-height:auto;padding:27px 24px 38px}
+ .detail-topline{margin-bottom:25px}
+ .detail-content h2{font-size:clamp(32px,8vw,46px);letter-spacing:-1.6px}
+ .detail-description{font-size:14px}
+ .detail-price{font-size:32px}
+}
+@media(prefers-reduced-motion:reduce){.product-detail-card,.detail-product-image{animation:none!important;transition:none!important}}
+
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1403,50 +1450,3 @@ window.nexoraFirebaseAuth = auth;
 
 </body>
 </html>
-<style>
-
-/* Nexora product page visual refresh */
-.product-detail-overlay{padding:0;background:#f7f7f5;backdrop-filter:none;overflow:auto}
-.product-detail-overlay.open{align-items:stretch}
-.product-detail-card{width:100%;max-width:none;min-height:100vh;margin:0;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:0;border:0;border-radius:0;background:#fff;box-shadow:none;animation:detailReveal .55s cubic-bezier(.16,1,.3,1) both}
-@keyframes detailReveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.detail-visual{min-height:100vh;background:radial-gradient(circle at 50% 46%,#fff 0%,#f3eee7 65%,#e9e1d6 100%);isolation:isolate}
-.detail-visual:before{width:min(65%,520px);height:auto;aspect-ratio:1;border-color:#aa927333;box-shadow:0 0 0 30px #aa92730a,0 0 70px #aa92731a}
-.detail-visual:after{width:min(49%,390px);height:auto;aspect-ratio:1;border-color:#aa927326}
-.detail-product-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;opacity:.96;mix-blend-mode:multiply;transition:transform .9s cubic-bezier(.16,1,.3,1)}
-.product-detail-card:hover .detail-product-image{transform:scale(1.018)}
-.detail-product-icon{display:none}
-.detail-image-caption{position:absolute;left:clamp(24px,5vw,80px);bottom:clamp(25px,5vh,58px);z-index:2;color:#292723;font-size:12px;font-weight:900;letter-spacing:3px}
-.detail-image-caption span{display:block;margin-top:8px;color:#81786d;font-size:10px;font-weight:650;letter-spacing:2px}
-.detail-content{min-height:100vh;padding:clamp(32px,5vw,76px) clamp(28px,6.5vw,100px);background:#fff;color:#292723;align-items:flex-start;justify-content:center}
-.detail-topline{width:100%;margin-bottom:clamp(30px,5vh,58px)}
-.detail-category{color:#806447;background:#f4efe8;border:1px solid #e8ded0;border-radius:999px;padding:10px 14px;font-size:10px;letter-spacing:1.2px}
-.detail-close{width:auto;height:42px;padding:0 15px;display:inline-flex;align-items:center;gap:9px;background:#fff;color:#39352f;border:1px solid #e9e2d9;border-radius:999px;font-size:12px;font-weight:750;white-space:nowrap}
-.detail-content h2{max-width:620px;color:#292723;font-size:clamp(36px,4.2vw,64px);line-height:1.04;letter-spacing:-2.6px;margin:0 0 15px}
-.detail-rating{color:#9b7855;font-size:11px;font-weight:850;letter-spacing:1px;margin-bottom:22px}
-.detail-rating span{color:#8b857d;margin-left:8px;letter-spacing:0}
-.detail-description{max-width:550px;color:#777168;font-size:15px;line-height:1.8;margin:0 0 27px}
-.detail-feature-list{gap:13px;margin:0 0 31px;color:#504b44;font-size:13px}
-.detail-check{width:25px;height:25px;border-radius:8px;background:#edf5ef;border:1px solid #d6e8da;color:#367a58}
-.detail-price-line{width:100%;margin:0 0 19px;gap:12px}
-.detail-price{font-size:38px;color:#292723;letter-spacing:-1.5px}
-.detail-old{color:#9a948c}
-.detail-discount{color:#347b57;background:#edf5ef;padding:8px 11px;border-radius:9px;font-size:10px;letter-spacing:.35px}
-.detail-add{max-width:560px;min-height:62px;border-radius:16px;background:#292723;color:#fff;box-shadow:0 14px 30px #29272318;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s,background .35s}
-.detail-add:hover{transform:translateY(-3px);background:#171614;box-shadow:0 20px 38px #29272325;filter:none}
-.detail-note{max-width:560px;color:#8d867c;font-size:10px;line-height:1.65;margin:13px 0 0;text-align:left}
-.detail-add:after{content:"";display:block}
-@media(max-width:760px){
- .product-detail-overlay{padding:0}
- .product-detail-card{grid-template-columns:1fr;max-width:none}
- .detail-visual{min-height:48vh;height:48vh}
- .detail-image-caption{left:22px;bottom:18px}
- .detail-content{min-height:auto;padding:27px 24px 38px}
- .detail-topline{margin-bottom:25px}
- .detail-content h2{font-size:clamp(32px,8vw,46px);letter-spacing:-1.6px}
- .detail-description{font-size:14px}
- .detail-price{font-size:32px}
-}
-@media(prefers-reduced-motion:reduce){.product-detail-card,.detail-product-image{animation:none!important;transition:none!important}}
-
-</style>
