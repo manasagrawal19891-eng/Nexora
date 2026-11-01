@@ -879,6 +879,28 @@ body.theme-shift .detail-visual{animation:detailThemeBloom .68s ease both}
 @keyframes detailThemeBloom{0%{filter:saturate(.85) brightness(.97)}45%{filter:saturate(1.2) brightness(1.04)}100%{filter:none}}
 @media(prefers-reduced-motion:reduce){.detail-visual,.product-detail-card{transition:none!important;animation:none!important}}
 </style>
+<style>
+/* Stronger full-page category colour wash for the product detail screen */
+.product-detail-overlay{background:var(--detail-page-bg,#f4eee5)!important;transition:background .7s ease!important}
+.product-detail-card{background:var(--detail-page-bg,#f4eee5)!important}
+.detail-breadcrumb{background:var(--detail-top-bg,#eee3d5)!important;transition:background .7s ease!important}
+.detail-main{background:transparent!important}
+.detail-content{background:var(--detail-info-bg,#fffaf3)!important;border-radius:24px;padding:clamp(28px,3vw,48px)!important;transition:background .7s ease!important}
+.detail-visual{background:var(--detail-gallery-bg,#e7d5bd)!important;transition:background .7s ease!important}
+body[data-theme="all"]{--detail-page-bg:#f3f1eb;--detail-top-bg:#e8e6df;--detail-info-bg:#fffefa;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff 0%,#e9e7df 66%,#d7d4ca 100%)}
+body[data-theme="men"]{--detail-page-bg:#e9d6bd;--detail-top-bg:#d8bd9d;--detail-info-bg:#fff5e8;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff7e9 0%,#e9cba6 62%,#cda77c 100%)}
+body[data-theme="women"]{--detail-page-bg:#ead0df;--detail-top-bg:#dcb5cb;--detail-info-bg:#fff2f8;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff5fa 0%,#e8bfd5 62%,#ce9eb9 100%)}
+body[data-theme="street"]{--detail-page-bg:#e9c4b7;--detail-top-bg:#d8a393;--detail-info-bg:#fff1eb;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff4ee 0%,#e6b5a4 62%,#c98e7b 100%)}
+body[data-theme="hoodie"]{--detail-page-bg:#d9cdec;--detail-top-bg:#c1afd9;--detail-info-bg:#f8f2ff;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fbf6ff 0%,#d4c1eb 62%,#ad95cf 100%)}
+body[data-theme="tops"]{--detail-page-bg:#ead8b2;--detail-top-bg:#d8c18f;--detail-info-bg:#fff8e9;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff9e9 0%,#e8d09b 62%,#cbb171 100%)}
+body[data-theme="cargo"]{--detail-page-bg:#cbd8bd;--detail-top-bg:#aebf9b;--detail-info-bg:#f4f8ed;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#f8fbed 0%,#cbd9b8 62%,#9fb28a 100%)}
+body[data-theme="bags"]{--detail-page-bg:#bfdbdc;--detail-top-bg:#9fc4c6;--detail-info-bg:#effafa;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#f1fbfb 0%,#b8d9d9 62%,#8db9bc 100%)}
+body[data-theme="footwear"]{--detail-page-bg:#c7d5ed;--detail-top-bg:#a7bcdf;--detail-info-bg:#f0f5ff;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#f3f7ff 0%,#c2d3ef 62%,#91acd7 100%)}
+body[data-theme="accessories"]{--detail-page-bg:#e3d5ae;--detail-top-bg:#cfbd8d;--detail-info-bg:#fff9e8;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fffbed 0%,#e4d5a9 62%,#c5ae77 100%)}
+body[data-theme="gifts"]{--detail-page-bg:#efd0a7;--detail-top-bg:#dfb783;--detail-info-bg:#fff5e7;--detail-gallery-bg:radial-gradient(ellipse at 50% 40%,#fff7e9 0%,#edc995 62%,#d4a568 100%)}
+@media(max-width:720px){.detail-content{padding:25px 20px!important;border-radius:20px!important}.detail-breadcrumb{padding:12px 18px}}
+@media(prefers-reduced-motion:reduce){.product-detail-overlay,.detail-breadcrumb,.detail-content,.detail-visual{transition:none!important}}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1271,6 +1293,7 @@ document.getElementById('detailHomeLink').addEventListener('click',closeProductD
 document.getElementById('detailShopLink').addEventListener('click',closeProductDetails);
 function openProductDetails(id){
  const p=products.find(item=>item.id===id);if(!p)return;selectedDetailProduct=p;
+ applyCategoryTheme(p.category);
  document.getElementById('detailIcon').textContent=p.icon;
  const image=productImage(p);
  detailGalleryImages=[image,image+(image.includes('?')?'&':'?')+'crop=entropy',image+(image.includes('?')?'&':'?')+'sat=-12'];
