@@ -902,29 +902,23 @@ body[data-theme="gifts"]{--detail-page-bg:#efd0a7;--detail-top-bg:#dfb783;--deta
 @media(prefers-reduced-motion:reduce){.product-detail-overlay,.detail-breadcrumb,.detail-content,.detail-visual{transition:none!important}}
 </style>
 <style>
-/* Category icon flight animation: button to oversized floating category emblem */
-.cat{position:relative;isolation:isolate;overflow:hidden;cursor:pointer;transition:transform .42s cubic-bezier(.16,1,.3,1),border-color .4s,background .4s,box-shadow .42s!important}
-.cat:before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--theme-accent) 34%,transparent),transparent 72%);opacity:0;transform:scale(.65);transition:opacity .45s,transform .55s cubic-bezier(.16,1,.3,1)}
-.cat:hover,.cat:focus-visible{transform:translateY(-8px) scale(1.035)!important;border-color:var(--theme-accent)!important;box-shadow:0 16px 34px color-mix(in srgb,var(--theme-accent) 24%,transparent)!important;outline:none}
-.cat:hover:before,.cat:focus-visible:before,.cat.active:before{opacity:1;transform:scale(1)}
-.cat span{display:inline-block;transform-origin:center;transition:transform .5s cubic-bezier(.16,1,.3,1),filter .4s}
-.cat:hover span,.cat:focus-visible span{transform:translateY(-5px) scale(1.32) rotate(-8deg);filter:drop-shadow(0 8px 10px color-mix(in srgb,var(--theme-accent) 48%,transparent))}
-.cat.active span{transform:scale(1.13)}
-.cat.tab-just-selected{animation:categoryButtonLand .56s cubic-bezier(.16,1,.3,1)}
-@keyframes categoryButtonLand{0%{transform:translateY(0) scale(1)}38%{transform:translateY(-9px) scale(1.055)}72%{transform:translateY(1px) scale(.99)}100%{transform:translateY(0) scale(1)}}
-.category-flight-icon{position:fixed;z-index:9999;display:grid;place-items:center;pointer-events:none;font-size:clamp(90px,10vw,132px);line-height:1;filter:drop-shadow(0 18px 24px #0003);will-change:transform,opacity;transform-origin:center}
-body[data-theme="men"] .category-flight-icon,body[data-theme="tops"] .category-flight-icon{filter:hue-rotate(175deg) saturate(1.45) drop-shadow(0 18px 24px #0003)}
+/* Category selection: calm controls, oversized emblem with continuous headphone-like drift */
+.cat{position:relative;isolation:isolate;overflow:hidden;cursor:pointer;transform:none!important;animation:none!important;transition:border-color .55s ease,background .55s ease,box-shadow .55s ease!important}
+.cat:hover,.cat:focus-visible,.cat.active,.cat.tab-just-selected{transform:none!important;animation:none!important;outline:none}
+.cat:hover,.cat:focus-visible,.cat.active{border-color:var(--theme-accent)!important;box-shadow:0 10px 28px color-mix(in srgb,var(--theme-accent) 18%,transparent)!important}
+.cat:before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--theme-accent) 30%,transparent),transparent 72%);opacity:0;transform:none;transition:opacity .6s ease}
+.cat:hover:before,.cat:focus-visible:before,.cat.active:before{opacity:1}
+.cat span{display:inline-block;transform:none!important;transition:filter .5s ease!important}
+.cat:hover span,.cat:focus-visible span,.cat.active span{transform:none!important;filter:drop-shadow(0 5px 9px color-mix(in srgb,var(--theme-accent) 32%,transparent))}
+.category-flight-icon{position:fixed;z-index:9999;display:grid;place-items:center;pointer-events:none;font-size:clamp(150px,16vw,210px);line-height:1;filter:drop-shadow(0 22px 30px #0004);will-change:transform,opacity;transform-origin:center}
+body[data-theme="men"] .category-flight-icon,body[data-theme="tops"] .category-flight-icon{filter:hue-rotate(175deg) saturate(1.45) drop-shadow(0 22px 30px #0004)}
 body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1,.3,1)}
 @keyframes categoryBackgroundPulse{0%{opacity:.35;transform:scale(.96)}45%{opacity:1;transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
-@media(prefers-reduced-motion:reduce){.cat,.cat span{transition:none!important}.cat.tab-just-selected{animation:none!important}}
-</style>
-<style>
-/* Large category emblem with a slow, soft floating finish */
-.category-flight-icon.category-ambient-icon{position:fixed;z-index:85;width:210px;height:210px;display:grid;place-items:center;pointer-events:none;font-size:132px;line-height:1;filter:drop-shadow(0 20px 28px #0003);transform-origin:center}
-.category-flight-icon.category-ambient-icon.settled{animation:categoryEmblemFloat 5.2s ease-in-out infinite;filter:drop-shadow(0 22px 30px color-mix(in srgb,var(--theme-accent) 38%,transparent))}
-@keyframes categoryEmblemFloat{0%,100%{translate:0 0;rotate:-3deg}50%{translate:0 -22px;rotate:3deg}}
-@media(max-width:720px){.category-flight-icon.category-ambient-icon{width:145px;height:145px;font-size:94px}}
-@media(prefers-reduced-motion:reduce){.category-flight-icon.category-ambient-icon.settled{animation:none}}
+.category-flight-icon.category-ambient-icon{position:fixed;z-index:85;width:260px;height:260px;display:grid;place-items:center;pointer-events:none;font-size:190px;line-height:1;filter:drop-shadow(0 22px 30px #0004);transform-origin:center}
+.category-flight-icon.category-ambient-icon.settled{animation:categoryHeadphoneDrift 5.8s cubic-bezier(.37,0,.22,1) infinite;filter:drop-shadow(0 24px 32px color-mix(in srgb,var(--theme-accent) 38%,transparent))}
+@keyframes categoryHeadphoneDrift{0%,100%{translate:0 0;rotate:-10deg}25%{translate:18px -9px;rotate:-6deg}50%{translate:28px -18px;rotate:0deg}75%{translate:12px -8px;rotate:5deg}}
+@media(max-width:720px){.category-flight-icon.category-ambient-icon{width:185px;height:185px;font-size:132px}}
+@media(prefers-reduced-motion:reduce){.cat,.cat span{transition:none!important}.category-flight-icon.category-ambient-icon.settled{animation:none}}
 </style>
 </head>
 <body>
@@ -1090,11 +1084,7 @@ categoryAura.setAttribute('aria-hidden','true');
 categoriesEl.prepend(categoryAura);
 function animateCategorySelection(button){
  if(!button)return;
- document.querySelectorAll('.cat').forEach(item=>item.classList.remove('tab-just-selected'));
- void button.offsetWidth;
- button.classList.add('tab-just-selected');
  animateCategoryFlight(button);
- window.setTimeout(()=>button.classList.remove('tab-just-selected'),540);
 }
 let categoryAmbientIcon=null;
 function animateCategoryFlight(button){
@@ -1103,19 +1093,18 @@ function animateCategoryFlight(button){
  icon.className='category-flight-icon category-ambient-icon';icon.textContent=source.textContent.trim();icon.setAttribute('aria-hidden','true');
  if(categoryAmbientIcon)categoryAmbientIcon.remove();document.body.appendChild(icon);categoryAmbientIcon=icon;
  const mobile=window.matchMedia('(max-width:720px)').matches;
- const box=mobile?145:210,centerX=from.left+from.width/2,centerY=from.top+from.height/2;
+ const box=mobile?185:260,centerX=from.left+from.width/2,centerY=from.top+from.height/2;
  const startX=centerX-box/2,startY=centerY-box/2;
- const endX=mobile?12:24,endY=Math.max(120,Math.min(window.innerHeight*.38,window.innerHeight-box-70));
+ const endX=mobile?4:8,endY=Math.max(105,Math.min(window.innerHeight*.34,window.innerHeight-box-55));
  const dx=endX-startX,dy=endY-startY;
  icon.style.left=startX+'px';icon.style.top=startY+'px';
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){icon.style.left=endX+'px';icon.style.top=endY+'px';icon.classList.add('settled');return;}
  const animation=icon.animate([
-  {transform:'translate3d(0,0,0) scale(.16) rotate(-24deg)',opacity:0,filter:'blur(3px)'},
-  {transform:'translate3d('+dx*.24+'px,'+(dy*.24-34)+'px,0) scale(.48) rotate(-13deg)',opacity:1,filter:'blur(0)',offset:.28},
-  {transform:'translate3d('+dx*.68+'px,'+(dy*.68-46)+'px,0) scale(.86) rotate(7deg)',opacity:1,filter:'blur(0)',offset:.72},
-  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale(1.04) rotate(-2deg)',opacity:1,filter:'blur(0)',offset:.94},
-  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale(1) rotate(0deg)',opacity:1,filter:'blur(0)'}
- ],{duration:1750,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});
+  {transform:'translate3d(0,0,0) scale(.22) rotate(-12deg)',opacity:0},
+  {transform:'translate3d('+dx*.18+'px,'+(dy*.18-12)+'px,0) scale(.52) rotate(-8deg)',opacity:1,offset:.24},
+  {transform:'translate3d('+dx*.58+'px,'+(dy*.58-22)+'px,0) scale(.86) rotate(3deg)',opacity:1,offset:.68},
+  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale(1) rotate(0deg)',opacity:1}
+ ],{duration:2100,easing:'cubic-bezier(.37,0,.22,1)',fill:'forwards'});
  animation.onfinish=()=>{icon.style.left=endX+'px';icon.style.top=endY+'px';icon.style.transform='';icon.classList.add('settled')};
 }
 function moveCategoryAura(){
