@@ -1142,49 +1142,46 @@ function animateCategoryFlight(button){
   const source=button.querySelector('span');
   if(!source)return;
   const from=source.getBoundingClientRect();
+  const mobile=window.matchMedia('(max-width:720px)').matches;
   const icon=document.createElement('span');
-  icon.className='category-flight-icon category-ambient-icon is-flying';
   icon.textContent=source.textContent.trim();
   icon.setAttribute('aria-hidden','true');
   if(categoryAmbientIcon)categoryAmbientIcon.remove();
   document.body.appendChild(icon);
   categoryAmbientIcon=icon;
 
-  const mobile=window.matchMedia('(max-width:720px)').matches;
-  const finalFont=mobile?42:120;
-  const startFont=Math.max(18,Math.min(28,parseFloat(getComputedStyle(source).fontSize)||22));
   const startX=from.left+from.width/2;
   const startY=from.top+from.height/2;
   const endX=mobile?8:12;
-  const endY=Math.max(90,Math.min(window.innerHeight*.2,window.innerHeight-(mobile?58:150)-30));
+  const endY=Math.max(90,Math.min(window.innerHeight*.2,window.innerHeight-85));
   const dx=endX-startX,dy=endY-startY;
+  const base= Math.max(18,Math.min(26,parseFloat(getComputedStyle(source).fontSize)||22));
 
-  icon.style.setProperty('position','fixed','important');
-  icon.style.setProperty('left',startX+'px','important');
-  icon.style.setProperty('top',startY+'px','important');
-  icon.style.setProperty('width','auto','important');
-  icon.style.setProperty('height','auto','important');
-  icon.style.setProperty('font-size',startFont+'px','important');
-  icon.style.setProperty('line-height','1','important');
-  icon.style.setProperty('display','block','important');
-  icon.style.setProperty('transform-origin','center','important');
-  icon.style.setProperty('filter','drop-shadow(0 5px 8px #0003)','important');
-
-  const settle=()=>{
-    icon.style.left=(window.scrollX+endX)+'px';
-    icon.style.top=(window.scrollY+endY)+'px';
-    icon.style.setProperty('font-size',finalFont+'px','important');
-    icon.style.transform='';
-    icon.classList.remove('is-flying');
-    icon.classList.add('settled');
+  // Isolate this temporary glyph from all site-wide emoji sizing rules.
+  const styles={
+    all:'initial',position:'fixed',left:startX+'px',top:startY+'px',
+    display:'block',width:'auto',height:'auto',margin:'0',padding:'0',
+    'font-family':getComputedStyle(source).fontFamily,
+    'font-size':base+'px','font-weight':'400','line-height':'1',
+    'white-space':'nowrap','pointer-events':'none','z-index':'99999',
+    'transform-origin':'center center','filter':'drop-shadow(0 4px 6px #0003)'
   };
+  Object.entries(styles).forEach(([key,value])=>icon.style.setProperty(key,value,'important'));
 
   const animation=icon.animate([
-    {transform:'translate3d(-50%,-50%,0) rotate(-8deg)',fontSize:startFont+'px'},
-    {transform:'translate3d('+(-50+dx*.45)+'%,'+(-50+dy*.45)+'px,0) rotate(-4deg)',fontSize:(startFont+(finalFont-startFont)*.55)+'px',offset:.55},
-    {transform:'translate3d('+(-50+dx)+'%,'+(-50+dy)+'px,0) rotate(0deg)',fontSize:finalFont+'px'}
-  ],{duration:1350,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
-  animation.onfinish=settle;
+    {transform:'translate(-50%,-50%) translate(0,0) scale(1) rotate(-6deg)'},
+    {transform:'translate(-50%,-50%) translate('+dx*.55+'px,'+dy*.55+'px) scale(1.35) rotate(-3deg)',offset:.6},
+    {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale(1.65) rotate(0deg)'}
+  ],{duration:1100,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+
+  animation.onfinish=()=>{
+    icon.getAnimations().forEach(a=>a.cancel());
+    icon.style.setProperty('position','absolute','important');
+    icon.style.setProperty('left',(window.scrollX+endX)+'px','important');
+    icon.style.setProperty('top',(window.scrollY+endY)+'px','important');
+    icon.style.setProperty('transform','translate(-50%,-50%)','important');
+    icon.style.setProperty('font-size',(mobile?38:90)+'px','important');
+  };
 }function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
  if(!active)return;
