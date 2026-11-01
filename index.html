@@ -672,11 +672,28 @@ body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG 
 @keyframes brandWordReveal{0%{opacity:0;transform:translateY(15px);filter:blur(8px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
 @media(prefers-reduced-motion:reduce){.entry-name{animation:none!important;opacity:1!important;visibility:visible!important}}
 
+
+/* Bright, welcoming intro with an independent skip path */
+.entry-screen{background:radial-gradient(ellipse at 50% 35%,#fff 0%,#faf7f1 55%,#eee8dd 100%)!important;color:#292723!important}
+.entry-content{gap:15px!important}
+.entry-mark{background:linear-gradient(135deg,#34312d,#9a8062)!important;color:#fff!important;box-shadow:0 10px 35px #92795b35!important}
+.entry-name{color:#292723!important;-webkit-text-fill-color:#292723!important;text-shadow:none!important}
+.entry-name .gradient{background:linear-gradient(100deg,#97734e,#c4a47b)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important}
+.entry-tagline{color:#82786c!important}
+.entry-loader{background:#e8e0d5!important;width:138px!important;height:4px!important}
+.entry-loader:after{background:linear-gradient(90deg,#8b6c4b,#c4a47b,#e0c9a8)!important}
+.entry-loader span{display:none!important}
+.entry-skip{margin-top:15px;padding:12px 22px;border:1px solid #e1d6c8;border-radius:999px;background:#fff;color:#514536;font-size:13px;font-weight:750;box-shadow:0 8px 22px #7c654019;transition:transform .2s,box-shadow .2s}
+.entry-skip:hover{transform:translateY(-2px);box-shadow:0 12px 26px #7c65402a}
+.entry-screen.is-leaving{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .55s ease,visibility .55s ease!important}
+@media(prefers-reduced-motion:reduce){.entry-screen.is-leaving{transition:none!important}.entry-skip{transition:none!important}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
 <body>
-<div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora" role="status"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span style="display:block;width:100%;height:100%;background:linear-gradient(90deg,#16baff,#a06aff);opacity:.9"></span></div></div></div>
+<div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
+<script>(function(){var s=document.getElementById("entryScreen");if(!s)return;var done=false;function enter(){if(done)return;done=true;s.classList.add("is-leaving");window.setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s)},650)}var b=document.getElementById("entrySkip");if(b)b.addEventListener("click",enter);window.setTimeout(enter,1500);})();</script>
 
 <header class="nav">
   <a class="brand" href="#" style="color:inherit;text-decoration:none"><span class="logo">N</span>Nexora</a>
@@ -1144,16 +1161,7 @@ addressForm.addEventListener('submit',e=>{
 loadSavedAddress();
 document.getElementById('year').textContent=new Date().getFullYear();render();updateCart();
 
-// Stable loader: keep every element still and fade the screen away once.
-(function(){
-  const screen=document.getElementById('entryScreen');
-  if(!screen) return;
-  const reduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.setTimeout(()=>{
-    screen.classList.add('is-leaving');
-    window.setTimeout(()=>screen.remove(),reduced?50:400);
-  },reduced?250:1900);
-})();
+// Intro dismissal is handled by the independent failsafe script beside the intro markup.
 
 </script>
 
