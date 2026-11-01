@@ -986,6 +986,20 @@ body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1
   }
 }
 </style>
+<style id="nexora-mobile-product-gallery-size">
+@media screen and (max-width:760px){
+  .detail-main{padding:8px 14px 34px!important;gap:22px!important}
+  .detail-gallery{display:flex!important;flex-direction:column!important;gap:12px!important;width:100%!important}
+  .detail-visual{order:1!important;width:100%!important;height:62svh!important;min-height:390px!important;max-height:620px!important;border-radius:22px!important}
+  .detail-product-image{object-fit:contain!important;object-position:center!important;padding:0!important;transform:scale(1.16)!important}
+  .detail-thumbnails{order:2!important;display:flex!important;flex-direction:row!important;justify-content:center!important;gap:10px!important;width:100%!important;padding:0!important}
+  .detail-thumb{flex:0 0 76px!important;width:76px!important;height:76px!important;border-radius:12px!important}
+}
+@media screen and (max-width:390px){
+  .detail-visual{height:60svh!important;min-height:350px!important}
+  .detail-product-image{transform:scale(1.12)!important}
+}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
