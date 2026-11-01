@@ -1139,51 +1139,39 @@ function animateCategorySelection(button){
 }
 let categoryAmbientIcon=null;
 function animateCategoryFlight(button){
+  const mobile=window.matchMedia('(max-width:720px)').matches ||
+    Math.min(window.innerWidth||9999,document.documentElement.clientWidth||9999,screen.width||9999)<=720;
+  if(mobile){
+    if(categoryAmbientIcon){categoryAmbientIcon.remove();categoryAmbientIcon=null;}
+    return;
+  }
   const source=button.querySelector('span');
   if(!source)return;
   const from=source.getBoundingClientRect();
-  const mobile=Math.min(window.innerWidth||9999,document.documentElement.clientWidth||9999,screen.width||9999)<=720;
   const icon=document.createElement('span');
   icon.textContent=source.textContent.trim();
   icon.setAttribute('aria-hidden','true');
   if(categoryAmbientIcon)categoryAmbientIcon.remove();
   document.body.appendChild(icon);
   categoryAmbientIcon=icon;
-
-  const startX=from.left+from.width/2;
-  const startY=from.top+from.height/2;
-  // Distinct motion profiles: expressive on desktop, compact on phones.
-  const profile=mobile
-    ? {endX:6, endY:Math.max(72,Math.min(window.innerHeight*.12,window.innerHeight-58)), base:18, final:24, scale:1.12, duration:750}
-    : {endX:18, endY:Math.max(120,Math.min(window.innerHeight*.28,window.innerHeight-145)), base:24, final:112, scale:2.8, duration:1750};
-  const dx=profile.endX-startX,dy=profile.endY-startY;
-
-  // Isolate this temporary glyph from all site-wide emoji sizing rules.
-  const styles={
-    all:'initial',position:'fixed',left:startX+'px',top:startY+'px',
-    display:'block',width:'auto',height:'auto',margin:'0',padding:'0',
-    'font-family':getComputedStyle(source).fontFamily,
-    'font-size':profile.base+'px','font-weight':'400','line-height':'1',
-    'white-space':'nowrap','pointer-events':'none','z-index':'99999',
-    'transform-origin':'center center','filter':'drop-shadow(0 5px 8px #0003)'
-  };
+  const startX=from.left+from.width/2,startY=from.top+from.height/2;
+  const endX=18,endY=Math.max(120,Math.min(window.innerHeight*.28,window.innerHeight-145));
+  const dx=endX-startX,dy=endY-startY,base=24,final=112,scale=2.8;
+  const styles={all:'initial',position:'fixed',left:startX+'px',top:startY+'px',display:'block',width:'auto',height:'auto',margin:'0',padding:'0','font-family':getComputedStyle(source).fontFamily,'font-size':base+'px','font-weight':'400','line-height':'1','white-space':'nowrap','pointer-events':'none','z-index':'99999','transform-origin':'center center','filter':'drop-shadow(0 5px 8px #0003)'};
   Object.entries(styles).forEach(([key,value])=>icon.style.setProperty(key,value,'important'));
-
   const animation=icon.animate([
     {transform:'translate(-50%,-50%) translate(0,0) scale(1) rotate(-7deg)'},
-    {transform:'translate(-50%,-50%) translate('+dx*.28+'px,'+dy*.28+'px) scale('+(1+(profile.scale-1)*.35)+') rotate(-4deg)',offset:.32},
-    {transform:'translate(-50%,-50%) translate('+dx*.72+'px,'+dy*.72+'px) scale('+(1+(profile.scale-1)*.82)+') rotate(3deg)',offset:.76},
-    {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale('+profile.scale+') rotate(0deg)'}
-  ],{duration:profile.duration,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
-
+    {transform:'translate(-50%,-50%) translate('+dx*.28+'px,'+dy*.28+'px) scale(1.63) rotate(-4deg)',offset:.32},
+    {transform:'translate(-50%,-50%) translate('+dx*.72+'px,'+dy*.72+'px) scale(2.48) rotate(3deg)',offset:.76},
+    {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale('+scale+') rotate(0deg)'}
+  ],{duration:1750,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
   animation.onfinish=()=>{
     icon.getAnimations().forEach(a=>a.cancel());
     icon.style.setProperty('position','absolute','important');
-    icon.style.setProperty('left',(window.scrollX+profile.endX)+'px','important');
-    icon.style.setProperty('top',(window.scrollY+profile.endY)+'px','important');
+    icon.style.setProperty('left',(window.scrollX+endX)+'px','important');
+    icon.style.setProperty('top',(window.scrollY+endY)+'px','important');
     icon.style.setProperty('transform','translate(-50%,-50%)','important');
-    icon.style.setProperty('font-size',profile.final+'px','important');
-    icon.style.setProperty('filter','drop-shadow(0 12px 18px #0003)','important');
+    icon.style.setProperty('font-size',final+'px','important');
   };
 }function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
