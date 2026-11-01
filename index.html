@@ -1142,7 +1142,7 @@ function animateCategoryFlight(button){
   const source=button.querySelector('span');
   if(!source)return;
   const from=source.getBoundingClientRect();
-  const mobile=window.matchMedia('(max-width:720px)').matches;
+  const mobile=Math.min(window.innerWidth||9999,document.documentElement.clientWidth||9999,screen.width||9999)<=720;
   const icon=document.createElement('span');
   icon.textContent=source.textContent.trim();
   icon.setAttribute('aria-hidden','true');
@@ -1154,7 +1154,7 @@ function animateCategoryFlight(button){
   const startY=from.top+from.height/2;
   // Distinct motion profiles: expressive on desktop, compact on phones.
   const profile=mobile
-    ? {endX:8, endY:Math.max(82,Math.min(window.innerHeight*.16,window.innerHeight-72)), base:20, final:36, scale:1.35, duration:900}
+    ? {endX:6, endY:Math.max(72,Math.min(window.innerHeight*.12,window.innerHeight-58)), base:18, final:24, scale:1.12, duration:750}
     : {endX:18, endY:Math.max(120,Math.min(window.innerHeight*.28,window.innerHeight-145)), base:24, final:112, scale:2.8, duration:1750};
   const dx=profile.endX-startX,dy=profile.endY-startY;
 
