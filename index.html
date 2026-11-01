@@ -1152,35 +1152,38 @@ function animateCategoryFlight(button){
 
   const startX=from.left+from.width/2;
   const startY=from.top+from.height/2;
-  const endX=mobile?8:12;
-  const endY=Math.max(90,Math.min(window.innerHeight*.2,window.innerHeight-85));
-  const dx=endX-startX,dy=endY-startY;
-  const base= Math.max(18,Math.min(26,parseFloat(getComputedStyle(source).fontSize)||22));
+  // Distinct motion profiles: expressive on desktop, compact on phones.
+  const profile=mobile
+    ? {endX:8, endY:Math.max(82,Math.min(window.innerHeight*.16,window.innerHeight-72)), base:20, final:36, scale:1.35, duration:900}
+    : {endX:18, endY:Math.max(120,Math.min(window.innerHeight*.28,window.innerHeight-145)), base:24, final:112, scale:2.8, duration:1750};
+  const dx=profile.endX-startX,dy=profile.endY-startY;
 
   // Isolate this temporary glyph from all site-wide emoji sizing rules.
   const styles={
     all:'initial',position:'fixed',left:startX+'px',top:startY+'px',
     display:'block',width:'auto',height:'auto',margin:'0',padding:'0',
     'font-family':getComputedStyle(source).fontFamily,
-    'font-size':base+'px','font-weight':'400','line-height':'1',
+    'font-size':profile.base+'px','font-weight':'400','line-height':'1',
     'white-space':'nowrap','pointer-events':'none','z-index':'99999',
-    'transform-origin':'center center','filter':'drop-shadow(0 4px 6px #0003)'
+    'transform-origin':'center center','filter':'drop-shadow(0 5px 8px #0003)'
   };
   Object.entries(styles).forEach(([key,value])=>icon.style.setProperty(key,value,'important'));
 
   const animation=icon.animate([
-    {transform:'translate(-50%,-50%) translate(0,0) scale(1) rotate(-6deg)'},
-    {transform:'translate(-50%,-50%) translate('+dx*.55+'px,'+dy*.55+'px) scale(1.35) rotate(-3deg)',offset:.6},
-    {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale(1.65) rotate(0deg)'}
-  ],{duration:1100,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+    {transform:'translate(-50%,-50%) translate(0,0) scale(1) rotate(-7deg)'},
+    {transform:'translate(-50%,-50%) translate('+dx*.28+'px,'+dy*.28+'px) scale('+(1+(profile.scale-1)*.35)+') rotate(-4deg)',offset:.32},
+    {transform:'translate(-50%,-50%) translate('+dx*.72+'px,'+dy*.72+'px) scale('+(1+(profile.scale-1)*.82)+') rotate(3deg)',offset:.76},
+    {transform:'translate(-50%,-50%) translate('+dx+'px,'+dy+'px) scale('+profile.scale+') rotate(0deg)'}
+  ],{duration:profile.duration,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
 
   animation.onfinish=()=>{
     icon.getAnimations().forEach(a=>a.cancel());
     icon.style.setProperty('position','absolute','important');
-    icon.style.setProperty('left',(window.scrollX+endX)+'px','important');
-    icon.style.setProperty('top',(window.scrollY+endY)+'px','important');
+    icon.style.setProperty('left',(window.scrollX+profile.endX)+'px','important');
+    icon.style.setProperty('top',(window.scrollY+profile.endY)+'px','important');
     icon.style.setProperty('transform','translate(-50%,-50%)','important');
-    icon.style.setProperty('font-size',(mobile?38:90)+'px','important');
+    icon.style.setProperty('font-size',profile.final+'px','important');
+    icon.style.setProperty('filter','drop-shadow(0 12px 18px #0003)','important');
   };
 }function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
