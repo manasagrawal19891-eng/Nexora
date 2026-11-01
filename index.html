@@ -664,6 +664,14 @@ body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG 
 @keyframes entryLoad{from{transform:scaleX(.03)}to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){body,.hero,.section,.banner{transition:none!important}body.theme-shift:after{display:none!important}.entry-mark,.entry-name,.entry-tagline,.entry-loader span{animation:none!important}}
 
+
+/* Make the Nexora wordmark unmistakable on the intro screen */
+.entry-content{gap:16px!important}
+.entry-name{display:block!important;min-height:48px!important;position:relative!important;z-index:5!important;opacity:1!important;visibility:visible!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font-size:clamp(34px,7vw,46px)!important;font-weight:900!important;letter-spacing:-1.7px!important;line-height:1.15!important;text-shadow:0 3px 22px #8bbcff55!important;animation:brandWordReveal .8s cubic-bezier(.2,.8,.2,1) .35s both!important}
+.entry-name .gradient{background:linear-gradient(100deg,#55d9ff,#c5a0ff)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important}
+@keyframes brandWordReveal{0%{opacity:0;transform:translateY(15px);filter:blur(8px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){.entry-name{animation:none!important;opacity:1!important;visibility:visible!important}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -1144,7 +1152,7 @@ document.getElementById('year').textContent=new Date().getFullYear();render();up
   window.setTimeout(()=>{
     screen.classList.add('is-leaving');
     window.setTimeout(()=>screen.remove(),reduced?50:400);
-  },reduced?250:1300);
+  },reduced?250:1900);
 })();
 
 </script>
