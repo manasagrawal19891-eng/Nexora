@@ -621,6 +621,49 @@ body{background:#fbfaf7;color:#242321}
 @media(max-width:380px){.detail-content{padding-left:18px!important;padding-right:18px!important}.detail-close{padding:0 11px!important}.detail-close span{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.product-detail-card{animation:none!important}}
 
+
+/* Nexora collection atmospheres and refined motion */
+:root{--theme-glow:rgba(105,130,190,.18);--theme-accent:#a9b7dc}
+body{position:relative;isolation:isolate;transition:background 650ms ease,color 450ms ease}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 14% 18%,var(--theme-glow),transparent 42%),radial-gradient(ellipse at 88% 75%,color-mix(in srgb,var(--theme-accent) 11%,transparent),transparent 38%);transition:background 700ms ease,opacity 500ms ease}
+body[data-theme="men"]{--theme-glow:rgba(183,130,82,.2);--theme-accent:#c99a69}
+body[data-theme="women"]{--theme-glow:rgba(203,139,177,.2);--theme-accent:#d69ac1}
+body[data-theme="street"]{--theme-glow:rgba(238,92,61,.19);--theme-accent:#ee765e}
+body[data-theme="hoodie"]{--theme-glow:rgba(150,120,205,.2);--theme-accent:#b39be8}
+body[data-theme="tops"]{--theme-glow:rgba(224,177,103,.2);--theme-accent:#e3bc7d}
+body[data-theme="cargo"]{--theme-glow:rgba(119,145,99,.2);--theme-accent:#9eb783}
+body[data-theme="bags"]{--theme-glow:rgba(92,157,167,.2);--theme-accent:#83c1c7}
+body[data-theme="footwear"]{--theme-glow:rgba(90,137,213,.2);--theme-accent:#8eb5ee}
+body[data-theme="accessories"]{--theme-glow:rgba(191,166,113,.2);--theme-accent:#d3bd87}
+body[data-theme="gifts"]{--theme-glow:rgba(211,159,91,.22);--theme-accent:#e1b879}
+body.theme-shift:after{content:"";position:fixed;inset:0;z-index:80;pointer-events:none;background:radial-gradient(circle at 50% 40%,var(--theme-glow),transparent 58%);animation:themeBloom .68s ease-out both}
+@keyframes themeBloom{0%{opacity:0;transform:scale(.7)}35%{opacity:1}100%{opacity:0;transform:scale(1.45)}}
+.cat.active{border-color:color-mix(in srgb,var(--theme-accent) 58%,var(--line))!important;box-shadow:0 9px 28px color-mix(in srgb,var(--theme-accent) 16%,transparent)!important}
+.cat.active span{filter:saturate(1.25)}
+.hero,.section,.banner{transition:filter .55s ease,transform .55s ease}
+body.theme-shift .hero{animation:themeHero .65s ease both}
+@keyframes themeHero{0%{filter:brightness(.92);transform:translateY(5px)}55%{filter:brightness(1.08)}100%{filter:none;transform:none}}
+/* Product photography: keep garments contained, never crop a model through the frame */
+.detail-visual{overflow:hidden!important}
+.detail-product-image{object-fit:contain!important;object-position:center!important;padding:clamp(26px,5vw,70px)!important;mix-blend-mode:multiply!important}
+.detail-visual{background:linear-gradient(145deg,#f4f0e9,#e9e2d8)!important}
+.detail-image-caption{z-index:3}
+.product-image img{object-fit:contain!important;padding:12px;background:#f2eee8}
+.product-image{background:#f2eee8!important}
+.section-head h2{letter-spacing:-.8px}
+body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG JOY";display:block;margin-top:8px;font-size:10px;letter-spacing:2px;color:var(--theme-accent)}
+/* Intro screen: premium logo reveal */
+.entry-screen{background:radial-gradient(ellipse at 50% 42%,#28304c 0%,#101421 48%,#080b14 100%)!important}
+.entry-mark{animation:entryMarkReveal .9s cubic-bezier(.2,.85,.25,1) both!important;box-shadow:0 0 0 0 rgba(22,186,255,.28)!important}
+.entry-name{animation:entryTextReveal .75s .18s ease both!important}
+.entry-tagline{animation:entryTextReveal .7s .32s ease both!important}
+.entry-loader{overflow:hidden!important}
+.entry-loader span{animation:entryLoad 1.35s cubic-bezier(.5,0,.25,1) both!important;transform-origin:left}
+@keyframes entryMarkReveal{0%{opacity:0;transform:translateY(20px) scale(.78);box-shadow:0 0 0 0 rgba(22,186,255,.3)}65%{opacity:1;transform:translateY(-3px) scale(1.06);box-shadow:0 0 0 18px rgba(22,186,255,0)}100%{transform:none;box-shadow:0 0 34px rgba(22,186,255,.18)}}
+@keyframes entryTextReveal{from{opacity:0;transform:translateY(10px);letter-spacing:2px}to{opacity:1;transform:none}}
+@keyframes entryLoad{from{transform:scaleX(.03)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){body,.hero,.section,.banner{transition:none!important}body.theme-shift:after{display:none!important}.entry-mark,.entry-name,.entry-tagline,.entry-loader span{animation:none!important}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -661,6 +704,7 @@ body{background:#fbfaf7;color:#242321}
   <button class="cat" data-category="Bags & Backpacks"><span>🎒</span><small>Bags</small></button>
   <button class="cat" data-category="Footwear"><span>👟</span><small>Footwear</small></button>
   <button class="cat" data-category="Wallets & Accessories"><span>🕶️</span><small>Accessories</small></button>
+  <button class="cat" data-category="Gifts"><span>🎁</span><small>Gift Picks</small></button>
 </section>
 <section class="section" id="shop">
   <div class="section-head"><div><h2>New Arrivals <span aria-hidden="true">✦</span></h2><p class="sub">Our first fashion collection is being curated. Supplier listings will appear here after verification.</p></div><a class="viewall" href="#shop" id="viewAll">View all →</a></div>
@@ -745,7 +789,13 @@ const products=[
 {id:119,name:"Comfort Slides",category:"Footwear",icon:"🩴",price:null,old:null,rating:"—",reviews:0,tag:"Style preview",discount:""},
 {id:120,name:"Slim Everyday Wallet",category:"Wallets & Accessories",icon:"👛",price:null,old:null,rating:"—",reviews:0,tag:"Style preview",discount:""},
 {id:121,name:"Classic Cap",category:"Wallets & Accessories",icon:"🧢",price:null,old:null,rating:"—",reviews:0,tag:"Style preview",discount:""},
-{id:122,name:"Everyday Sunglasses",category:"Wallets & Accessories",icon:"🕶️",price:null,old:null,rating:"—",reviews:0,tag:"Style preview",discount:""}
+{id:122,name:"Everyday Sunglasses",category:"Wallets & Accessories",icon:"🕶️",price:null,old:null,rating:"—",reviews:0,tag:"Style preview",discount:""},
+{id:123,name:"Midnight Minimal Watch",category:"Gifts",icon:"⌚",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
+{id:124,name:"Classic Silver Dial Watch",category:"Gifts",icon:"⌚",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
+{id:125,name:"Everyday Leather Wallet",category:"Gifts",icon:"👛",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
+{id:126,name:"Minimal Bracelet Set",category:"Gifts",icon:"✨",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
+{id:127,name:"Premium Sunglasses",category:"Gifts",icon:"🕶️",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""},
+{id:128,name:"Nexora Gift Set",category:"Gifts",icon:"🎁",price:null,old:null,rating:"—",reviews:0,tag:"Gift idea · preview",discount:""}
 ];
 let cart=JSON.parse(localStorage.getItem('nexoraCart')||'[]').filter(id=>products.some(p=>p.id===id&&Number.isFinite(p.price))),activeCategory='All';
 const productsEl=document.getElementById('products'),searchEl=document.getElementById('search');
@@ -848,7 +898,10 @@ function setActiveSuggestion(nextIndex){
 }
 function productImage(p){
  const n=p.name.toLowerCase();
- if(n.includes('hoodie')||n.includes('sweatshirt'))return 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=850&q=85';
+ if(n.includes('hoodie')||n.includes('sweatshirt'))return 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=1100&q=90';
+ if(n.includes('watch'))return 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85';
+ if(n.includes('bracelet'))return 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=85';
+ if(n.includes('gift set'))return 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=900&q=85';
  if(n.includes('t-shirt')||n.includes('tee')||n.includes('top'))return 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=850&q=85';
  if(n.includes('cargo')||n.includes('pants')||n.includes('jeans'))return 'https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=850&q=85';
  if(n.includes('bag')||n.includes('backpack'))return 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=850&q=85';
@@ -927,7 +980,8 @@ function updateCart(){document.getElementById('cartCount').textContent=cart.leng
 let toastTimer;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
 function addToCart(id){const product=products.find(p=>p.id===id);if(!product||!Number.isFinite(product.price)){toast('This style is a preview. Supplier price and availability are not confirmed yet.');return}cart.push(id);updateCart();toast(product.name+' added to your cart!')}
-document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');animateCategorySelection(btn);activeCategory=btn.dataset.category;render(true)}));
+function applyCategoryTheme(category){const themes={\"All\":\"all\",\"Men's Wear\":\"men\",\"Women's Wear\":\"women\",\"Streetwear\":\"street\",\"Hoodies & Sweatshirts\":\"hoodie\",\"T-shirts & Tops\":\"tops\",\"Baggy Pants & Cargo\":\"cargo\",\"Bags & Backpacks\":\"bags\",\"Footwear\":\"footwear\",\"Wallets & Accessories\":\"accessories\",\"Gifts\":\"gifts\"};document.body.dataset.theme=themes[category]||'all';document.body.classList.remove('theme-shift');void document.body.offsetWidth;document.body.classList.add('theme-shift');window.setTimeout(()=>document.body.classList.remove('theme-shift'),700);}
+document.querySelectorAll('.cat').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));btn.classList.add('active');animateCategorySelection(btn);activeCategory=btn.dataset.category;applyCategoryTheme(activeCategory);render(true)}));
 searchEl.addEventListener('input',()=>{render();showSearchSuggestions()});
 searchEl.addEventListener('focus',()=>{if(searchEl.value.trim())showSearchSuggestions()});
 searchEl.addEventListener('keydown',e=>{
