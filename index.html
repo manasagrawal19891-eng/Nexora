@@ -920,6 +920,52 @@ body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1
 @media(max-width:720px){.category-flight-icon.category-ambient-icon{width:185px;height:185px;font-size:132px}}
 @media(prefers-reduced-motion:reduce){.cat,.cat span{transition:none!important}.category-flight-icon.category-ambient-icon.settled{animation:none}}
 </style>
+
+<style id="nexora-final-category-motion-fix">
+/* Final category motion fix: emblem belongs to the document, not the viewport. */
+.category-flight-icon.category-ambient-icon{
+  position:absolute!important;
+  z-index:85!important;
+}
+/* Restore the travelling selection pill and keep category buttons visually calm. */
+.categories{position:relative!important;isolation:isolate!important}
+.categories .category-aura{
+  display:block!important;
+  position:absolute!important;
+  z-index:1!important;
+  opacity:0;
+  pointer-events:none!important;
+  border:1px solid #b9a5ffb8!important;
+  border-radius:15px!important;
+  background:linear-gradient(135deg,#855cff35,#5636bf42 56%,#a879ff35)!important;
+  box-shadow:inset 0 0 0 1px #ffffff10,0 5px 20px #7955ff20!important;
+  transition:transform .72s cubic-bezier(.22,1,.36,1),width .5s cubic-bezier(.22,1,.36,1),height .5s cubic-bezier(.22,1,.36,1),opacity .2s ease!important;
+  will-change:transform,width,height;
+}
+.categories .cat,
+.categories .cat:hover,
+.categories .cat.active{
+  position:relative!important;
+  z-index:2!important;
+  transform:none!important;
+  animation:none!important;
+  transition:color .35s ease,border-color .45s ease,background .45s ease!important;
+}
+.categories .cat{background:rgba(255,255,255,.78)!important}
+.categories .cat:hover{background:rgba(255,255,255,.92)!important}
+.categories .cat.active{
+  background:transparent!important;
+  color:#292723!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+.categories .cat.active small{color:#51483e!important}
+@media(prefers-reduced-motion:reduce){
+ .categories .category-aura{transition:none!important}
+ .category-flight-icon.category-ambient-icon.settled{animation:none!important}
+}
+</style>
+
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1117,6 +1163,7 @@ function moveCategoryAura(){
  categoryAura.style.opacity='1';
 }
 window.addEventListener('resize',()=>requestAnimationFrame(moveCategoryAura),{passive:true});
+requestAnimationFrame(()=>requestAnimationFrame(moveCategoryAura));
 function money(n){return '₹'+n.toLocaleString('en-IN')}
 function normalizeSearch(value){
  return String(value||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
