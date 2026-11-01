@@ -744,6 +744,25 @@ button,.links a,.viewall,.hero-secondary{
   button,.links a,.viewall,.hero-secondary{transition:none !important}
 }
 
+
+/* Interaction safety + restrained hover: keep every control clickable */
+button,a,[role="button"],input,select,textarea{pointer-events:auto}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+@media(hover:hover) and (pointer:fine){
+  button:hover,.cat:hover{
+    transform:translate3d(0,-1px,0) !important;
+    filter:none !important;
+    box-shadow:0 6px 16px rgba(45,37,27,.09) !important;
+  }
+  .primary:hover,.add:hover,.details-btn:hover,.address-submit:hover,
+  .checkout-btn:hover,.detail-add:hover,.continue-btn:hover{
+    transform:translate3d(0,-1px,0) !important;
+    filter:brightness(1.02) !important;
+    box-shadow:0 8px 18px rgba(45,37,27,.12) !important;
+  }
+}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -1072,7 +1091,7 @@ productsEl.addEventListener('keydown',event=>{
   event.preventDefault();openProductDetails(Number(event.target.dataset.productId));
  }
 });
-function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
+function updateCart(){document.getElementById('cartCount').textContent=cart.length;try{localStorage.setItem('nexoraCart',JSON.stringify(cart))}catch(error){/* Cart remains usable for this page even when browser storage is blocked. */}if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
 let toastTimer;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
 function addToCart(id){const product=products.find(p=>p.id===id);if(!product||!Number.isFinite(product.price)){toast('This style is a preview. Supplier price and availability are not confirmed yet.');return}cart.push(id);updateCart();toast(product.name+' added to your cart!')}
