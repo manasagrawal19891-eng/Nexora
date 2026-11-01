@@ -688,6 +688,19 @@ body[data-theme="gifts"] .section-head h2:after{content:" · LITTLE THINGS, BIG 
 .entry-screen.is-leaving{opacity:0!important;visibility:hidden!important;pointer-events:none!important;transition:opacity .55s ease,visibility .55s ease!important}
 @media(prefers-reduced-motion:reduce){.entry-screen.is-leaving{transition:none!important}.entry-skip{transition:none!important}}
 
+
+/* Calm, gliding product-card interaction */
+.product{cursor:pointer;transform:translate3d(0,0,0);transition:transform .48s cubic-bezier(.2,.75,.25,1),border-color .48s ease,box-shadow .48s ease,background .48s ease;will-change:transform}
+.product:hover,.product:focus-visible{transform:translate3d(0,-4px,0)!important;border-color:#c4a47b!important;box-shadow:0 14px 34px rgba(61,48,32,.12)!important;outline:none}
+.product-image img{transition:transform .65s cubic-bezier(.2,.75,.25,1),filter .65s ease!important}
+.product:hover .product-image img{transform:scale(1.025)!important;filter:saturate(1.06)}
+.product-info{transition:transform .48s cubic-bezier(.2,.75,.25,1)}
+.product:hover .product-info{transform:translateY(-2px)}
+.product-actions button{cursor:pointer}
+.product-transition-layer .product{transition:transform .48s cubic-bezier(.2,.75,.25,1),border-color .48s ease,box-shadow .48s ease}
+@media(hover:none){.product:hover{transform:none!important;box-shadow:none!important}.product:hover .product-info{transform:none}}
+@media(prefers-reduced-motion:reduce){.product,.product-image img,.product-info{transition:none!important}}
+
 </style>
 <meta name="design-preview" content="Generated visual reference included separately"><!-- Reference image data length: 2118850 characters -->
 </head>
@@ -952,7 +965,7 @@ function render(animateProducts=false){
   // a saved category or search filter from an earlier visit.
   return p.demo || (matchesCategory&&matchesSearch);
  });
- const nextProductMarkup=list.length?list.map((p,i)=>`<article class="product ${p.id===1?"has-controller-preview":""}" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()">${p.id===1?`<div class="controller-preview-scene" aria-hidden="true"><span class="controller-preview-label">NEXORA · AFTER HOURS</span><span class="controller-preview-floor"></span><span class="controller-preview-pad"></span><span class="controller-preview-stand"></span><img class="controller-preview-controller" alt="" aria-hidden="true" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 240 150%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f4f7ff%22/%3E%3Cstop offset=%22.48%22 stop-color=%22%23aab8d2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23404e69%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22b%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop stop-color=%22%23354460%22/%3E%3Cstop offset=%221%22 stop-color=%22%230d1423%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%22M55 40 Q68 27 91 35 L149 35 Q172 27 185 40 Q201 51 213 104 Q216 124 201 128 Q187 132 170 109 L151 91 L89 91 L70 109 Q53 132 39 128 Q24 124 27 104 Q39 51 55 40Z%22 fill=%22url(%23g)%22 stroke=%22%23eaf2ff%22 stroke-width=%223%22/%3E%3Cpath d=%22M62 61h27v9H62z M71 52v27h9V52z%22 fill=%22%23202b42%22/%3E%3Ccircle cx=%22160%22 cy=%2260%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22178%22 cy=%2275%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22156%22 cy=%2280%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22175%22 cy=%2255%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Cpath d=%22M101 62h38%22 stroke=%22%237c8da9%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M104 73h32%22 stroke=%22%237c8da9%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/svg%3E"><span class="controller-preview-caption">SESSION COMPLETE · SET IT DOWN IN STYLE</span></div><button class="controller-preview-toggle" type="button" aria-pressed="false" onclick="toggleControllerPreview(event,this)">▶ Preview</button>`:""}</div><div class="product-info"><h3>${p.name}</h3><div class="rating"><span>Style preview · supplier listing not confirmed</span></div><div class="price-row"><span class="price">${Number.isFinite(p.price)?money(p.price)+(p.demo?' · demo':''):'Price coming soon'}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">${p.demo?'View Product ↗':'View Style ↗'}</button><button class="add" type="button" ${Number.isFinite(p.price)?'onclick="addToCart('+p.id+')" ':'disabled'}>${Number.isFinite(p.price)?'Add to Cart':'Coming Soon'}</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
+ const nextProductMarkup=list.length?list.map((p,i)=>`<article class="product ${p.id===1?"has-controller-preview":""}" data-product-id="${p.id}" tabindex="0" role="button" aria-label="View ${p.name}" style="animation-delay:${i*55}ms"><div class="product-image"><span class="tag">${p.tag}</span><img loading="lazy" src="${productImage(p)}" alt="${p.name}" onerror="this.remove()">${p.id===1?`<div class="controller-preview-scene" aria-hidden="true"><span class="controller-preview-label">NEXORA · AFTER HOURS</span><span class="controller-preview-floor"></span><span class="controller-preview-pad"></span><span class="controller-preview-stand"></span><img class="controller-preview-controller" alt="" aria-hidden="true" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 240 150%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop stop-color=%22%23f4f7ff%22/%3E%3Cstop offset=%22.48%22 stop-color=%22%23aab8d2%22/%3E%3Cstop offset=%221%22 stop-color=%22%23404e69%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22b%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop stop-color=%22%23354460%22/%3E%3Cstop offset=%221%22 stop-color=%22%230d1423%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%22M55 40 Q68 27 91 35 L149 35 Q172 27 185 40 Q201 51 213 104 Q216 124 201 128 Q187 132 170 109 L151 91 L89 91 L70 109 Q53 132 39 128 Q24 124 27 104 Q39 51 55 40Z%22 fill=%22url(%23g)%22 stroke=%22%23eaf2ff%22 stroke-width=%223%22/%3E%3Cpath d=%22M62 61h27v9H62z M71 52v27h9V52z%22 fill=%22%23202b42%22/%3E%3Ccircle cx=%22160%22 cy=%2260%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22178%22 cy=%2275%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22156%22 cy=%2280%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Ccircle cx=%22175%22 cy=%2255%22 r=%227%22 fill=%22%232d3a55%22/%3E%3Cpath d=%22M101 62h38%22 stroke=%22%237c8da9%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3Cpath d=%22M104 73h32%22 stroke=%22%237c8da9%22 stroke-width=%225%22 stroke-linecap=%22round%22/%3E%3C/svg%3E"><span class="controller-preview-caption">SESSION COMPLETE · SET IT DOWN IN STYLE</span></div><button class="controller-preview-toggle" type="button" aria-pressed="false" onclick="toggleControllerPreview(event,this)">▶ Preview</button>`:""}</div><div class="product-info"><h3>${p.name}</h3><div class="rating"><span>Style preview · supplier listing not confirmed</span></div><div class="price-row"><span class="price">${Number.isFinite(p.price)?money(p.price)+(p.demo?' · demo':''):'Price coming soon'}</span></div><div class="product-actions"><button class="details-btn" onclick="openProductDetails(${p.id})">${p.demo?'View Product ↗':'View Style ↗'}</button><button class="add" type="button" ${Number.isFinite(p.price)?'onclick="addToCart('+p.id+')" ':'disabled'}>${Number.isFinite(p.price)?'Add to Cart':'Coming Soon'}</button></div></div></article>`).join(''):'<div class="empty">No products found. Try another search or category.</div>';
  if(animateProducts && productsEl.children.length){
   const transitionId=++productTransitionToken;
   window.clearTimeout(productSwitchTimeout);
@@ -1005,6 +1018,17 @@ function render(animateProducts=false){
  }
  requestAnimationFrame(moveCategoryAura);
 }
+// Make the whole product card open its detail page, including after category transitions.
+productsEl.addEventListener('click',event=>{
+ const card=event.target.closest('.product[data-product-id]');
+ if(!card||event.target.closest('button,a'))return;
+ openProductDetails(Number(card.dataset.productId));
+});
+productsEl.addEventListener('keydown',event=>{
+ if((event.key==='Enter'||event.key===' ')&&event.target.matches('.product[data-product-id]')){
+  event.preventDefault();openProductDetails(Number(event.target.dataset.productId));
+ }
+});
 function updateCart(){document.getElementById('cartCount').textContent=cart.length;localStorage.setItem('nexoraCart',JSON.stringify(cart));if(document.getElementById('cartOverlay').classList.contains('open'))renderCart()}
 let toastTimer;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2300)}
