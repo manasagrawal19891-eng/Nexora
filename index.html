@@ -1151,46 +1151,39 @@ function animateCategoryFlight(button){
   categoryAmbientIcon=icon;
 
   const mobile=window.matchMedia('(max-width:720px)').matches;
-  // Keep the floating emoji deliberately compact on phones.
-  const targetSize=mobile?68:190;
-  const targetFont=mobile?48:138;
-  const startSize=Math.max(18,Math.min(from.width,from.height));
-  const startX=from.left+from.width/2-startSize/2;
-  const startY=from.top+from.height/2-startSize/2;
-  const endX=mobile?6:8;
-  const endY=Math.max(90,Math.min(window.innerHeight*.22,window.innerHeight-targetSize-35));
+  const finalFont=mobile?42:120;
+  const startFont=Math.max(18,Math.min(28,parseFloat(getComputedStyle(source).fontSize)||22));
+  const startX=from.left+from.width/2;
+  const startY=from.top+from.height/2;
+  const endX=mobile?8:12;
+  const endY=Math.max(90,Math.min(window.innerHeight*.2,window.innerHeight-(mobile?58:150)-30));
   const dx=endX-startX,dy=endY-startY;
-  const grow=targetSize/startSize;
 
-  icon.style.position='fixed';
-  icon.style.left=startX+'px';
-  icon.style.top=startY+'px';
-  icon.style.width=startSize+'px';
-  icon.style.height=startSize+'px';
-  icon.style.fontSize=getComputedStyle(source).fontSize;
-  icon.style.display='grid';
-  icon.style.placeItems='center';
-  icon.style.lineHeight='1';
-  icon.style.opacity='1';
-  icon.style.transformOrigin='center center';
+  icon.style.setProperty('position','fixed','important');
+  icon.style.setProperty('left',startX+'px','important');
+  icon.style.setProperty('top',startY+'px','important');
+  icon.style.setProperty('width','auto','important');
+  icon.style.setProperty('height','auto','important');
+  icon.style.setProperty('font-size',startFont+'px','important');
+  icon.style.setProperty('line-height','1','important');
+  icon.style.setProperty('display','block','important');
+  icon.style.setProperty('transform-origin','center','important');
+  icon.style.setProperty('filter','drop-shadow(0 5px 8px #0003)','important');
 
   const settle=()=>{
     icon.style.left=(window.scrollX+endX)+'px';
     icon.style.top=(window.scrollY+endY)+'px';
-    icon.style.width=targetSize+'px';
-    icon.style.height=targetSize+'px';
-    icon.style.fontSize=targetFont+'px';
+    icon.style.setProperty('font-size',finalFont+'px','important');
     icon.style.transform='';
     icon.classList.remove('is-flying');
     icon.classList.add('settled');
   };
 
   const animation=icon.animate([
-    {transform:'translate3d(0,0,0) scale(1) rotate(-8deg)',opacity:1},
-    {transform:'translate3d('+dx*.2+'px,'+(dy*.2-4)+'px,0) scale('+(1+(grow-1)*.35)+') rotate(-5deg)',opacity:1,offset:.25},
-    {transform:'translate3d('+dx*.68+'px,'+(dy*.68-8)+'px,0) scale('+(1+(grow-1)*.8)+') rotate(3deg)',opacity:1,offset:.72},
-    {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+grow+') rotate(0deg)',opacity:1}
-  ],{duration:1500,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
+    {transform:'translate3d(-50%,-50%,0) rotate(-8deg)',fontSize:startFont+'px'},
+    {transform:'translate3d('+(-50+dx*.45)+'%,'+(-50+dy*.45)+'px,0) rotate(-4deg)',fontSize:(startFont+(finalFont-startFont)*.55)+'px',offset:.55},
+    {transform:'translate3d('+(-50+dx)+'%,'+(-50+dy)+'px,0) rotate(0deg)',fontSize:finalFont+'px'}
+  ],{duration:1350,easing:'cubic-bezier(.2,.8,.2,1)',fill:'forwards'});
   animation.onfinish=settle;
 }function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
