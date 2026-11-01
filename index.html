@@ -850,6 +850,16 @@ button:disabled{cursor:not-allowed}
 @media(max-width:390px){.detail-nav-links{gap:10px}.detail-breadcrumb{font-size:10px}.detail-gallery{grid-template-columns:58px minmax(0,1fr)}.detail-thumb{height:70px}.detail-visual{min-height:290px}.detail-gallery-tag{top:12px;left:12px;font-size:9px}.detail-assurances{flex-wrap:wrap}.detail-assurances i{display:none}}
 @media(prefers-reduced-motion:reduce){.product-detail-card,.detail-product-image,.detail-thumb,.detail-gallery-arrow,.detail-add{animation:none!important;transition:none!important}}
 </style>
+<style>
+/* Desktop grid conflict fix: make the redesigned header and breadcrumb span the full page */
+.product-detail-card{display:block!important;grid-template-columns:none!important;width:100%!important;max-width:none!important;height:auto!important;min-height:100vh!important;overflow:visible!important}
+.detail-nav{width:100%!important;box-sizing:border-box!important}
+.detail-breadcrumb{width:100%!important;box-sizing:border-box!important}
+.detail-main{width:100%!important;box-sizing:border-box!important;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important}
+@media(max-width:720px){
+ .detail-main{grid-template-columns:minmax(0,1fr)!important}
+}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
