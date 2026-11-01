@@ -918,6 +918,14 @@ body.theme-shift:before{animation:categoryBackgroundPulse .9s cubic-bezier(.16,1
 @keyframes categoryBackgroundPulse{0%{opacity:.35;transform:scale(.96)}45%{opacity:1;transform:scale(1.025)}100%{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.cat,.cat span{transition:none!important}.cat.tab-just-selected{animation:none!important}}
 </style>
+<style>
+/* Category icon settles into a persistent floating emblem on the left */
+.category-flight-icon.category-ambient-icon{position:fixed;z-index:85;display:grid;place-items:center;pointer-events:none;font-size:clamp(44px,6vw,76px);line-height:1;filter:drop-shadow(0 18px 22px #0003);transform-origin:center}
+.category-flight-icon.category-ambient-icon.settled{animation:categoryEmblemFloat 4.2s ease-in-out infinite;filter:drop-shadow(0 18px 24px color-mix(in srgb,var(--theme-accent) 35%,transparent))}
+@keyframes categoryEmblemFloat{0%,100%{translate:0 0;rotate:-4deg}50%{translate:0 -18px;rotate:4deg}}
+@media(max-width:720px){.category-flight-icon.category-ambient-icon{font-size:54px}}
+@media(prefers-reduced-motion:reduce){.category-flight-icon.category-ambient-icon.settled{animation:none}}
+</style>
 </head>
 <body>
 <div class="entry-screen" id="entryScreen" aria-label="Welcome to Nexora"><div class="entry-content"><div class="entry-mark" aria-hidden="true">N</div><div class="entry-name">Nexora<span class="gradient">.</span></div><div class="entry-tagline">Upgrade your everyday</div><div class="entry-loader" aria-hidden="true"><span></span></div><button class="entry-skip" id="entrySkip" type="button">Enter store <span aria-hidden="true">→</span></button></div></div>
@@ -1088,30 +1096,24 @@ function animateCategorySelection(button){
  animateCategoryFlight(button);
  window.setTimeout(()=>button.classList.remove('tab-just-selected'),540);
 }
+let categoryAmbientIcon=null;
 function animateCategoryFlight(button){
- const source=button.querySelector('span');
- if(!source||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- const from=source.getBoundingClientRect();
- const icon=document.createElement('span');
- icon.className='category-flight-icon';
- icon.textContent=source.textContent.trim();
- icon.setAttribute('aria-hidden','true');
- document.body.appendChild(icon);
- const size=Math.max(from.width,from.height,30);
- const startX=from.left+from.width/2-size/2;
- const startY=from.top+from.height/2-size/2;
- const endSize=Math.min(150,window.innerWidth*.22);
- const endX=Math.max(24,Math.min(window.innerWidth*.09,90));
- const endY=Math.max(115,Math.min(window.innerHeight*.48,window.innerHeight-190));
+ const source=button.querySelector('span');if(!source)return;
+ const from=source.getBoundingClientRect(),icon=document.createElement('span');
+ icon.className='category-flight-icon category-ambient-icon';icon.textContent=source.textContent.trim();icon.setAttribute('aria-hidden','true');
+ if(categoryAmbientIcon)categoryAmbientIcon.remove();document.body.appendChild(icon);categoryAmbientIcon=icon;
+ const size=Math.max(from.width,from.height,30),startX=from.left+from.width/2-size/2,startY=from.top+from.height/2-size/2;
+ const endSize=Math.min(154,window.innerWidth*.2),endX=Math.max(22,Math.min(window.innerWidth*.075,76)),endY=Math.max(125,Math.min(window.innerHeight*.43,window.innerHeight-210));
  icon.style.left=startX+'px';icon.style.top=startY+'px';icon.style.width=size+'px';icon.style.height=size+'px';
  const dx=endX-startX,dy=endY-startY,scale=endSize/size;
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){icon.style.left=endX+'px';icon.style.top=endY+'px';icon.style.width=endSize+'px';icon.style.height=endSize+'px';icon.classList.add('settled');return;}
  const animation=icon.animate([
-  {transform:'translate3d(0,0,0) scale(1) rotate(0deg)',opacity:0,filter:'blur(2px)'},
-  {transform:'translate3d(0,0,0) scale(1.12) rotate(-9deg)',opacity:1,filter:'blur(0)',offset:.16},
-  {transform:'translate3d('+dx*.72+'px,'+dy*.72+'px,0) scale('+(1+(scale-1)*.72)+') rotate(5deg)',opacity:1,filter:'blur(0)',offset:.78},
-  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+scale+') rotate(0deg)',opacity:0,filter:'blur(1px)'}
- ],{duration:920,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});
- animation.onfinish=()=>icon.remove();
+  {transform:'translate3d(0,0,0) scale(.65) rotate(-18deg)',opacity:0,filter:'blur(5px)'},
+  {transform:'translate3d(0,0,0) scale(1.08) rotate(-8deg)',opacity:1,filter:'blur(0)',offset:.2},
+  {transform:'translate3d('+dx*.72+'px,'+dy*.72+'px,0) scale('+(1+(scale-1)*.72)+') rotate(8deg)',opacity:1,filter:'blur(0)',offset:.78},
+  {transform:'translate3d('+dx+'px,'+dy+'px,0) scale('+scale+') rotate(0deg)',opacity:1,filter:'blur(0)'}
+ ],{duration:1050,easing:'cubic-bezier(.16,1,.3,1)',fill:'forwards'});
+ animation.onfinish=()=>{icon.style.left=endX+'px';icon.style.top=endY+'px';icon.style.width=endSize+'px';icon.style.height=endSize+'px';icon.style.transform='';icon.classList.add('settled')};
 }
 function moveCategoryAura(){
  const active=categoriesEl.querySelector('.cat.active');
